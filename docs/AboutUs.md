@@ -16,7 +16,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](https://github.com/ZealousGinger)]
 
 * Role: Developer
-* Responsibilities: Testing
+* Responsibilities: Testing, Git expert
 
 ### Jane Doe
 
@@ -46,3 +46,4 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Developer
 * Responsibilities: Dev Ops + Threading
+
