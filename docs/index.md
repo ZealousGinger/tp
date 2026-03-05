@@ -6,7 +6,6 @@ title: Task Forge
 [![Java CI](https://github.com/AY2526S2-CS2103T-W09-4/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/AY2526S2-CS2103T-W09-4/tp/actions/workflows/gradle.yml)
 [![codecov](https://codecov.io/github/AY2526S2-CS2103T-W09-4/tp/graph/badge.svg?token=T3MH2JS7FW)](https://codecov.io/github/AY2526S2-CS2103T-W09-4/tp)
 
-// Don't forget to modify later
 ![Ui](images/Ui.png)
 
 **AddressBook is a desktop application for managing your contact details.** While it has a GUI, most of the user interactions happen using a CLI (Command Line Interface).
