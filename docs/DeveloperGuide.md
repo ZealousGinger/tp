@@ -288,30 +288,116 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `TaskForge` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: UC01 Add a contact**
+
+**Guarantee**
+
+1. The new contact specified will be added to TaskForge if the command parameters are valid.
+2. The new contact will not be added to TaskForge if there is a missing or invalid parameter needed for the contact.
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User enters the command in the input to add a new contact.
+2.  TaskForge displays a success message in the reply dialog.
+3.  TaskForge displays the new contact in the contact list.
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. TaskForge detects incorrect command input.
 
-  Use case ends.
-
-* 3a. The given index is invalid.
-
-    * 3a1. AddressBook shows an error message.
+    * 1a1. TaskForge displays an error message on the invalid parameter.
+    * 1a2. User enters the command again.
+    * Steps 1a1-1a2 are repeated until the command entered is valid.
 
       Use case resumes at step 2.
+  Use case ends.
+
+**Use case: UC02 Add a project to a contact**
+
+**Guarantee**
+
+1. The new project will be successfully added to the specified contact when the command is valid.
+2. The new project will not be added to non-existing or invalid contact.
+
+**MSS**
+
+1. User requests to view all contacts.
+2. TaskForge displays the list of contacts.
+3. User requests to add a project to a contact.
+4. TaskForge checks the existence of the contact.
+5. TaskForge adds a project to a contact and displays success message.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. TaskForge detects invalid command input.
+	   * 1a1. TaskForge displays an error message.
+	   * 1a2. User enters the command again.
+      * Steps 1a1-1a2 are repeated until the input entered are valid.
+   
+   Use case resumes from step 2.
+
+* 2a. TaskForge could not find the mentioned contact.
+	   * 2a1. TaskForge displays an error message.
+	   * 2a2. User enters the command again.
+	   * Steps 2a1-2a2 are repeated until the input entered are valid.
+   
+   Use case resumes from step 2.
+
+**Use case: UC03 Delete a task from a contact**
+
+**Guarantee**
+
+1. The task is deleted from the contact if successful.
+2. The task is not deleted if there is missing information or invalid input.
+
+**MSS**
+
+1. User requests for a list of all tasks assigned to the contact.
+2. TaskForge displays the tasks assigned to the selected contact.
+3. User requests to delete the selected task.
+4. TaskForge deletes the task and shows a confirmation message.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. Contact does not exist.
+	   * 1a1. TaskForge shows an error message.
+	   * 1a2. User enters new input.
+      * Steps 1a1-1a2 are repeated until the input entered are valid.
+   
+   Use case ends.
+
+* 2a. Task does not exist.
+	   * 2a1. TaskForge shows an error message.
+	   * 2a2. User enters new input.
+	   * Steps 2a1-2a2 are repeated until the input entered are valid.
+   
+   Use case ends.
+
+**Use case: UC04 View all contacts**
+
+**MSS**
+
+1. User request to view all contacts.
+2. TaskForge return the list with all contacts.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. TaskForge detects error in CLI command.
+	   * 1a1. TaskForge returns the error message.
+	   * 1a2. User input another command.
+      * Steps 1a1 - 1a2 are repeated until the command is correct.
+   
+   Use case ends.
 
 *{More to be added}*
 
