@@ -1,9 +1,9 @@
 ---
 layout: page
-title: AddressBook Level-3
+title: Task Forge
 ---
 
-[![CI Status](https://github.com/se-edu/addressbook-level3/workflows/Java%20CI/badge.svg)](https://github.com/se-edu/addressbook-level3/actions)
+[![Java CI](https://github.com/AY2526S2-CS2103T-W09-4/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/AY2526S2-CS2103T-W09-4/tp/actions/workflows/gradle.yml)
 [![codecov](https://codecov.io/github/AY2526S2-CS2103T-W09-4/tp/graph/badge.svg?token=T3MH2JS7FW)](https://codecov.io/github/AY2526S2-CS2103T-W09-4/tp)
 
 ![Ui](images/Ui.png)
