@@ -262,27 +262,28 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* Tech project managers and team leads who manage multiple ongoing projects and team members, regularly update team information and task assignments, and prefer efficient keyboard-driven workflows over traditional GUI-heavy tools.
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+Tech lead and project managers who prefer efficient keyboard-driven workflows, comfortable with working with CLI commands and need to manage multiple projects and team members regularly.
+
+**Value proposition**: manage tasks/projects more efficiently. A project management system supports dynamic task tracking and human resource management.
 
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *`  | new user                                   | see usage instructions         | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person               |                                                                        |
-| `* * *`  | user                                       | delete a person                | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name          | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details   | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name           | locate a person easily                                                 |
+| Priority | As a …​ | I want to …​                           | So that I can…​                                                              |
+|----------|------|----------------------------------------|------------------------------------------------------------------------------|
+| `* * *`  | user | add a contact                          | keep track of project members.                                               |
+| `* * *`  | user | delete a contact                       | remove outdated information or remove a member from the project.             |
+| `* * *`  | user | add a project to a contact             | assign member to the project                                                 |
+| `* * *`  | user | delete a project from a contact        | remove members from a project                                                |
+| `* * *`  | user | assign tasks to contact                | clearly know about their responsibilities                                    |
+| `* * *`  | user | delete tasks from a contact            | easily remove tasks that is falsely assigned to the contact or has been done |
+| `* * *`  | user | view all contacts                      | see all the project members contacts                                         |
+| `* * *`  | user | view all projects                      | easily have an overview of all projects                                      |
+| `* * *`  | user | view all tasks assigned to the contact | see all the tasks assigned to a contact                                      |
 
 *{More to be added}*
 
