@@ -81,9 +81,6 @@ public class Task {
     /**
      * Format state as text for viewing.
      */
-//    public String toString() {
-//        return '[' + taskName + ',' + (isDone ? "O" : "X") + ']';
-//    }
     public String toString() {
         return '[' + taskName + ']';
     }
