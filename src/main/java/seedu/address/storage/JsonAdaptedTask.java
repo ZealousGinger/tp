@@ -11,26 +11,26 @@ import seedu.address.model.task.Task;
  */
 class JsonAdaptedTask {
 
-    private final String taskName;
+    private final String description;
 
     /**
-     * Constructs a {@code JsonAdaptedTask} with the given {@code taskName}.
+     * Constructs a {@code JsonAdaptedTask} with the given {@code description}.
      */
     @JsonCreator
-    public JsonAdaptedTask(String taskName) {
-        this.taskName = taskName;
+    public JsonAdaptedTask(String description) {
+        this.description = description;
     }
 
     /**
      * Converts a given {@code Task} into this class for Jackson use.
      */
     public JsonAdaptedTask(Task source) {
-        taskName = source.taskName;
+        description = source.description;
     }
 
     @JsonValue
-    public String getTaskName() {
-        return taskName;
+    public String getDescription() {
+        return description;
     }
 
     /**
@@ -39,10 +39,10 @@ class JsonAdaptedTask {
      * @throws IllegalValueException if there were any data constraints violated in the adapted task.
      */
     public Task toModelType() throws IllegalValueException {
-        if (!Task.isValidTaskName(taskName)) {
+        if (!Task.isValidTaskDescription(description)) {
             throw new IllegalValueException(Task.MESSAGE_CONSTRAINTS);
         }
-        return new Task(taskName);
+        return new Task(description);
     }
 
 }

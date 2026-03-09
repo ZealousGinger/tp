@@ -35,7 +35,7 @@ public class PersonUtil {
         sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
         sb.append(PREFIX_ADDRESS + person.getAddress().value + " ");
         person.getTasks().stream().forEach(
-            s -> sb.append(PREFIX_TASK + s.taskName + " ")
+            s -> sb.append(PREFIX_TASK + s.description + " ")
         );
         return sb.toString();
     }
@@ -54,7 +54,7 @@ public class PersonUtil {
             if (tasks.isEmpty()) {
                 sb.append(PREFIX_TASK);
             } else {
-                tasks.forEach(s -> sb.append(PREFIX_TASK).append(s.taskName).append(" "));
+                tasks.forEach(s -> sb.append(PREFIX_TASK).append(s.description).append(" "));
             }
         }
         return sb.toString();

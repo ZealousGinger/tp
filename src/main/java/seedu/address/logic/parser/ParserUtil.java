@@ -104,7 +104,7 @@ public class ParserUtil {
     public static Task parseTask(String task) throws ParseException {
         requireNonNull(task);
         String trimmedTask = task.trim();
-        if (!Task.isValidTaskName(trimmedTask)) {
+        if (!Task.isValidTaskDescription(trimmedTask)) {
             throw new ParseException(Task.MESSAGE_CONSTRAINTS);
         }
         return new Task(trimmedTask);
@@ -116,8 +116,8 @@ public class ParserUtil {
     public static Set<Task> parseTasks(Collection<String> tasks) throws ParseException {
         requireNonNull(tasks);
         final Set<Task> taskSet = new HashSet<>();
-        for (String taskName : tasks) {
-            taskSet.add(parseTask(taskName));
+        for (String description : tasks) {
+            taskSet.add(parseTask(description));
         }
         return taskSet;
     }

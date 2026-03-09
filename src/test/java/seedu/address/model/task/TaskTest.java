@@ -12,15 +12,15 @@ public class TaskTest {
     }
 
     @Test
-    public void constructor_invalidTaskName_throwsIllegalArgumentException() {
-        String invalidTaskName = "";
-        assertThrows(IllegalArgumentException.class, () -> new Task(invalidTaskName));
+    public void constructor_invalidTaskDescription_throwsIllegalArgumentException() {
+        String invalidTaskDescription = "";
+        assertThrows(IllegalArgumentException.class, () -> new Task(invalidTaskDescription));
     }
 
     @Test
-    public void isValidTaskName() {
+    public void isValidTaskDescription() {
         // null task name
-        assertThrows(NullPointerException.class, () -> Task.isValidTaskName(null));
+        assertThrows(NullPointerException.class, () -> Task.isValidTaskDescription(null));
     }
 
 }

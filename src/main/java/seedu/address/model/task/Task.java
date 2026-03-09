@@ -5,26 +5,26 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Task in the address book.
- * Guarantees: immutable; name is valid as declared in {@link #isValidTaskName(String)}
+ * Guarantees: immutable; description is valid as declared in {@link #isValidTaskDescription(String)}
  */
 public class Task {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Task names should be alphanumeric, with single spaces between words.";
+            "Task descriptions should be alphanumeric, with single spaces between words.";
     public static final String VALIDATION_REGEX = "\\p{Alnum}+( \\p{Alnum}+)*";
 
-    public final String taskName;
+    public final String description;
     protected boolean isDone;
 
     /**
      * Constructs a {@code Task}.
      *
-     * @param taskName A valid task name.
+     * @param description A valid task name.
      */
-    public Task(String taskName) {
-        requireNonNull(taskName);
-        checkArgument(isValidTaskName(taskName), MESSAGE_CONSTRAINTS);
-        this.taskName = taskName;
+    public Task(String description) {
+        requireNonNull(description);
+        checkArgument(isValidTaskDescription(description), MESSAGE_CONSTRAINTS);
+        this.description = description;
         isDone = false;
     }
 
@@ -54,7 +54,7 @@ public class Task {
     /**
      * Returns true if a given string is a valid task name.
      */
-    public static boolean isValidTaskName(String test) {
+    public static boolean isValidTaskDescription(String test) {
         return test.matches(VALIDATION_REGEX);
     }
 
@@ -70,19 +70,19 @@ public class Task {
         }
 
         Task otherTask = (Task) other;
-        return taskName.equals(otherTask.taskName);
+        return description.equals(otherTask.description);
     }
 
     @Override
     public int hashCode() {
-        return taskName.hashCode();
+        return description.hashCode();
     }
 
     /**
      * Format state as text for viewing.
      */
     public String toString() {
-        return '[' + taskName + ']';
+        return '[' + description + ']';
     }
 
 }
