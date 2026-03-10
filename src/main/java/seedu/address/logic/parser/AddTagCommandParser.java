@@ -1,12 +1,14 @@
 package seedu.address.logic.parser;
 
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import seedu.address.logic.commands.project.AddTagCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
+/**
+ * Parses input arguments and creates a new AddTagCommand object.
+ */
 public class AddTagCommandParser implements Parser<AddTagCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the AddTagCommand
