@@ -56,6 +56,28 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_personWithValidTags_addSuccessful() throws Exception {
+        Person personWithValidTags = new PersonBuilder().withTags("friends").build();
+        AddCommand addCommand = new AddCommand(personWithValidTags);
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+
+        CommandResult commandResult = addCommand.execute(modelStub);
+
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(personWithValidTags)),
+                commandResult.getFeedbackToUser());
+        assertEquals(Arrays.asList(personWithValidTags), modelStub.personsAdded);
+    }
+
+    @Test
+    public void execute_personWithInvalidTags_throwsCommandException() {
+        Person personWithInvalidTags = new PersonBuilder().withTags("invalidTag").build();
+        AddCommand addCommand = new AddCommand(personWithInvalidTags);
+        ModelStubWithoutTag modelStub = new ModelStubWithoutTag();
+
+        assertThrows(CommandException.class, AddCommand.MESSAGE_TAG_NOT_FOUND, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
     public void equals() {
         Person alice = new PersonBuilder().withName("Alice").build();
         Person bob = new PersonBuilder().withName("Bob").build();
@@ -225,6 +247,31 @@ public class AddCommandTest {
         public void addPerson(Person person) {
             requireNonNull(person);
             personsAdded.add(person);
+        }
+
+        @Override
+        public ReadOnlyAddressBook getAddressBook() {
+            return new AddressBook();
+        }
+    }
+
+    /**
+     * A Model stub that rejects all tags (simulating empty tag list).
+     */
+    private class ModelStubWithoutTag extends ModelStub {
+        @Override
+        public boolean hasPerson(Person person) {
+            return false;
+        }
+
+        @Override
+        public boolean hasTag(Tag tag) {
+            return false;
+        }
+
+        @Override
+        public void addPerson(Person person) {
+            throw new AssertionError("This method should not be called.");
         }
 
         @Override
