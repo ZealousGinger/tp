@@ -31,7 +31,7 @@ public class AddTaskCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New task added: %1$s";
     public static final String MESSAGE_USAGE = "task-add INDEX -d TASK_DESCRIPTION";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This task already exists for this person!";
+    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists for this person!";
     public static final String MESSAGE_NOT_EDITED = "At least one task to add must be provided";
 
     private final Index index;
@@ -61,10 +61,6 @@ public class AddTaskCommand extends Command {
         Person personToEdit = lastShownList.get(index.getZeroBased());
         Person editedPerson = createEditedPerson(personToEdit, addTaskDescriptor);
 
-        if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-        }
-
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(editedPerson)));
@@ -86,8 +82,17 @@ public class AddTaskCommand extends Command {
 
         List<Task> newTasks = new ArrayList<>(personToEdit.getTasks());
         newTasks.addAll(addTaskDescriptor.getTasks().orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED)));
+        checkUniqueTasks(newTasks);
 
         return new Person(name, phone, email, address, newTasks);
+    }
+
+    public static List<Task> checkUniqueTasks(List<Task> tasks) throws CommandException {
+        long distinctCount = tasks.stream().distinct().count();
+        if (distinctCount != tasks.size()) {
+            throw new CommandException(MESSAGE_DUPLICATE_TASK);
+        }
+        return tasks;
     }
 
     @Override

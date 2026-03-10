@@ -71,6 +71,48 @@ public class AddTaskCommandTest {
     }
 
     @Test
+    public void execute_addOneTaskDuplicateUnfilteredList_exceptionThrown() {
+        Index indexFirstPerson = Index.fromOneBased(1);
+        AddTaskDescriptor descriptor = new AddTaskDescriptorBuilder()
+                .withTasks(VALID_TASK_REFACTOR).build();
+        AddTaskCommand addTaskCommand = new AddTaskCommand(indexFirstPerson, descriptor);
+
+        assertCommandFailure(addTaskCommand, model, AddTaskCommand.MESSAGE_DUPLICATE_TASK);
+    }
+
+    @Test
+    public void execute_addOneTaskDuplicateFilteredList_exceptionThrown() {
+        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        AddTaskDescriptor descriptor = new AddTaskDescriptorBuilder()
+                .withTasks(VALID_TASK_REFACTOR).build();
+        AddTaskCommand addTaskCommand = new AddTaskCommand(INDEX_FIRST_PERSON, descriptor);
+
+        assertCommandFailure(addTaskCommand, model, AddTaskCommand.MESSAGE_DUPLICATE_TASK);
+    }
+
+    @Test
+    public void execute_addMultipleTasksDuplicateUnfilteredList_exceptionThrown() {
+        Index indexFirstPerson = Index.fromOneBased(1);
+        AddTaskDescriptor descriptor = new AddTaskDescriptorBuilder().withTasks(VALID_TASK_FIX_ERROR,
+                VALID_TASK_IMPLEMENT_X, VALID_TASK_IMPLEMENT_Y,
+                VALID_TASK_IMPLEMENT_Z, VALID_TASK_REFACTOR).build();
+        AddTaskCommand addTaskCommand = new AddTaskCommand(indexFirstPerson, descriptor);
+
+        assertCommandFailure(addTaskCommand, model, AddTaskCommand.MESSAGE_DUPLICATE_TASK);
+    }
+
+    @Test
+    public void execute_addMultipleTasksDuplicateFilteredList_exceptionThrown() {
+        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        AddTaskDescriptor descriptor = new AddTaskDescriptorBuilder().withTasks(VALID_TASK_FIX_ERROR,
+                VALID_TASK_IMPLEMENT_X, VALID_TASK_IMPLEMENT_Y,
+                VALID_TASK_IMPLEMENT_Z, VALID_TASK_REFACTOR).build();
+        AddTaskCommand addTaskCommand = new AddTaskCommand(INDEX_FIRST_PERSON, descriptor);
+
+        assertCommandFailure(addTaskCommand, model, AddTaskCommand.MESSAGE_DUPLICATE_TASK);
+    }
+
+    @Test
     public void execute_addMultipleTasksUnfilteredList_success() {
         Index indexFirstPerson = Index.fromOneBased(1);
         Person firstPerson = model.getFilteredPersonList().get(indexFirstPerson.getZeroBased());
