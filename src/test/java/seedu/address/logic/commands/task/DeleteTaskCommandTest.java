@@ -1,4 +1,4 @@
-package seedu.address.logic.commands;
+package seedu.address.logic.commands.task;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
-import seedu.address.logic.commands.task.DeleteTaskCommand;
 import seedu.address.logic.commands.task.DeleteTaskCommand.DeleteTaskDescriptor;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;

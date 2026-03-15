@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.projectcommand.DeleteProjectCommand;
-import seedu.address.logic.commands.projectcommand.DeleteProjectCommand.DeleteProjectDescriptor;
-import seedu.address.logic.commands.task.DeleteTaskCommand;
+import seedu.address.logic.commands.project.DeleteProjectCommand;
+import seedu.address.logic.commands.project.DeleteProjectCommand.DeleteProjectDescriptor;
 import seedu.address.logic.parser.ArgumentMultimap;
 import seedu.address.logic.parser.ArgumentTokenizer;
 import seedu.address.logic.parser.Parser;
@@ -44,7 +43,7 @@ public class DeleteProjectCommandParser implements Parser<DeleteProjectCommand> 
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    DeleteTaskCommand.MESSAGE_USAGE), pe);
+                    DeleteProjectCommand.MESSAGE_USAGE), pe);
         }
 
         DeleteProjectDescriptor deleteProjectDescriptor = new DeleteProjectDescriptor();

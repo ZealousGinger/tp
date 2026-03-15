@@ -100,6 +100,21 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String project} into an {@code Project}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code project} is invalid.
+     */
+    public static Project parseProject(String project) throws ParseException {
+        requireNonNull(project);
+        String trimmedProject = project.trim();
+        if (!Project.isValidProjectTitle(trimmedProject)) {
+            throw new ParseException(Project.MESSAGE_CONSTRAINTS);
+        }
+        return new Project(trimmedProject);
+    }
+
+    /**
      * Parses a {@code String task} into a {@code Task}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -165,21 +180,6 @@ public class ParserUtil {
             taskIndexSet.add(parseIndex(oneBasedIndex));
         }
         return taskIndexSet;
-    }
-
-    /**
-     * Parses a {@code String project} into an {@code Project}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code project} is invalid.
-     */
-    public static Project parseProject(String project) throws ParseException {
-        requireNonNull(project);
-        String trimmedProject = project.trim();
-        if (!Project.isValidProjectTitle(trimmedProject)) {
-            throw new ParseException(Project.MESSAGE_CONSTRAINTS);
-        }
-        return new Project(trimmedProject);
     }
 
     /**

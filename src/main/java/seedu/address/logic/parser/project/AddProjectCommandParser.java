@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.projectcommand.AddProjectCommand;
-import seedu.address.logic.commands.projectcommand.AddProjectCommand.AddProjectDescriptor;
+import seedu.address.logic.commands.project.AddProjectCommand;
+import seedu.address.logic.commands.project.AddProjectCommand.AddProjectDescriptor;
 import seedu.address.logic.parser.ArgumentMultimap;
 import seedu.address.logic.parser.ArgumentTokenizer;
 import seedu.address.logic.parser.Parser;

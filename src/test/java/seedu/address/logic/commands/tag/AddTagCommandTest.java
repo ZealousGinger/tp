@@ -1,4 +1,4 @@
-package seedu.address.logic.commands.project;
+package seedu.address.logic.commands.tag;
 
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;

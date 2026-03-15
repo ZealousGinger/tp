@@ -9,7 +9,7 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_PROJECT_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_PROJECT_TITLE;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TASK_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
@@ -217,7 +217,7 @@ public class AddCommandParserTest {
 
         // invalid project
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + INVALID_PROJECT_DESC + PROJECT_DESC_BETA + TASK_REFACTOR + TASK_FIX_ERROR,
+                + INVALID_PROJECT_TITLE + PROJECT_DESC_BETA + TASK_REFACTOR + TASK_FIX_ERROR,
                 Project.MESSAGE_CONSTRAINTS);
 
         // invalid task

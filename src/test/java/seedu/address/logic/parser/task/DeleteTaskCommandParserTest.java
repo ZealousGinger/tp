@@ -1,4 +1,4 @@
-package seedu.address.logic.parser;
+package seedu.address.logic.parser.task;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TASK_DELETE;
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.task.DeleteTaskCommand;
 import seedu.address.logic.commands.task.DeleteTaskCommand.DeleteTaskDescriptor;
-import seedu.address.logic.parser.task.DeleteTaskCommandParser;
+import seedu.address.logic.parser.ParserUtil;
 import seedu.address.testutil.DeleteTaskDescriptorBuilder;
 
 public class DeleteTaskCommandParserTest {

@@ -6,8 +6,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PROJECT_INDEX;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PROJECT_TITLE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_DESCRIPTION;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -39,7 +39,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                        PREFIX_ADDRESS, PREFIX_PROJECT_INDEX, PREFIX_TASK);
+                        PREFIX_ADDRESS, PREFIX_PROJECT_TITLE, PREFIX_TASK_DESCRIPTION);
 
         Index index;
 
@@ -66,10 +66,10 @@ public class EditCommandParser implements Parser<EditCommand> {
             editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
         }
 
-        parseProjectsForEdit(argMultimap.getAllValues(PREFIX_PROJECT_INDEX))
+        parseProjectsForEdit(argMultimap.getAllValues(PREFIX_PROJECT_TITLE))
                 .ifPresent(editPersonDescriptor::setProjects);
 
-        parseTasksForEdit(argMultimap.getAllValues(PREFIX_TASK))
+        parseTasksForEdit(argMultimap.getAllValues(PREFIX_TASK_DESCRIPTION))
                 .ifPresent(editPersonDescriptor::setTasks);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {

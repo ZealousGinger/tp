@@ -9,7 +9,7 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_PROJECT_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_PROJECT_TITLE;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TASK_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
@@ -30,8 +30,8 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TASK_REFACTOR;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PROJECT_INDEX;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PROJECT_TITLE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_DESCRIPTION;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
@@ -55,8 +55,8 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
 
 public class EditCommandParserTest {
 
-    private static final String PROJECT_EMPTY = " " + PREFIX_PROJECT_INDEX;
-    private static final String TASK_EMPTY = " " + PREFIX_TASK;
+    private static final String PROJECT_EMPTY = " " + PREFIX_PROJECT_TITLE;
+    private static final String TASK_EMPTY = " " + PREFIX_TASK_DESCRIPTION;
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
@@ -96,14 +96,14 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // invalid phone
         assertParseFailure(parser, "1" + INVALID_EMAIL_DESC, Email.MESSAGE_CONSTRAINTS); // invalid email
         assertParseFailure(parser, "1" + INVALID_ADDRESS_DESC, Address.MESSAGE_CONSTRAINTS); // invalid address
-        assertParseFailure(parser, "1" + INVALID_PROJECT_DESC, Project.MESSAGE_CONSTRAINTS); // invalid Project
+        assertParseFailure(parser, "1" + INVALID_PROJECT_TITLE, Project.MESSAGE_CONSTRAINTS); // invalid Project
         assertParseFailure(parser, "1" + INVALID_TASK_DESC, Task.MESSAGE_CONSTRAINTS); // invalid task
 
         // invalid phone followed by valid email
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
 
         // while parsing {@code PREFIX_PROJECT_TITLE} alone will reset the tags of the {@code Person} being edited,
-        // parsing it together with a valid tag results in error
+        // parsing it together with a valid project results in error
         assertParseFailure(parser, "1" + PROJECT_DESC_BETA + PROJECT_DESC_ALPHA + PROJECT_EMPTY,
                 Project.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + PROJECT_DESC_BETA + PROJECT_EMPTY + PROJECT_DESC_ALPHA,
