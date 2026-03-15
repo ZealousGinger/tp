@@ -1,5 +1,7 @@
 package seedu.address.logic.commands.project;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PROJECT_ALPHA;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PROJECT_BETA;
@@ -10,18 +12,22 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PROJECT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PROJECT;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.project.AddProjectCommand.AddProjectDescriptor;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.model.util.SampleDataUtil;
 import seedu.address.testutil.AddProjectDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 
@@ -198,5 +204,58 @@ public class AddProjectCommandTest {
                 new AddProjectDescriptorBuilder().withProjects(VALID_PROJECT_X).build());
 
         assertCommandFailure(addProjectCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void equals() {
+        AddProjectDescriptor descriptor = new AddProjectDescriptor();
+        AddProjectCommand command = new AddProjectCommand(INDEX_FIRST_PROJECT, descriptor);
+
+        // same values
+        AddProjectCommand commandCopy = new AddProjectCommand(INDEX_FIRST_PROJECT, descriptor);
+        assertEquals(command, commandCopy);
+
+        // same object
+        assertEquals(command, command);
+
+        // null -> false
+        assertNotEquals(command, null);
+
+        // different type -> false
+        assertNotEquals(command, 5);
+
+        // different index -> false
+        AddProjectCommand secondProjectCommand = new AddProjectCommand(INDEX_SECOND_PROJECT, descriptor);
+        assertNotEquals(command, secondProjectCommand);
+
+        // different descriptor -> false
+        AddProjectDescriptor otherDescriptor = new AddProjectDescriptor();
+        otherDescriptor.setProjects(SampleDataUtil.getProjectList(VALID_PROJECT_ALPHA));
+        assertNotEquals(command, new AddProjectCommand(INDEX_FIRST_PROJECT, otherDescriptor));
+    }
+
+    @Test
+    public void addProjectDescriptor_equals() {
+        AddProjectDescriptor descriptor = new AddProjectDescriptor();
+        descriptor.setProjects(SampleDataUtil.getProjectList(VALID_PROJECT_ALPHA));
+
+        // same values
+        AddProjectDescriptor descriptorCopy = new AddProjectDescriptor();
+        descriptorCopy.setProjects(SampleDataUtil.getProjectList(VALID_PROJECT_ALPHA));
+        assertEquals(descriptor, descriptorCopy);
+
+        // same object
+        assertEquals(descriptor, descriptor);
+
+        // null -> false
+        assertNotEquals(descriptor, null);
+
+        // different type -> false
+        assertNotEquals(descriptor, 5);
+
+        // different list -> false
+        AddProjectDescriptor otherDescriptor = new AddProjectDescriptor();
+        descriptor.setProjects(SampleDataUtil.getProjectList(VALID_PROJECT_BETA));
+        assertNotEquals(descriptor, otherDescriptor);
     }
 }

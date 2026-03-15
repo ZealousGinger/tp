@@ -8,6 +8,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PROJECT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_TAG;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_TASK;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,7 @@ import seedu.address.logic.commands.project.AddProjectCommand;
 import seedu.address.logic.commands.project.AddProjectCommand.AddProjectDescriptor;
 import seedu.address.logic.commands.project.DeleteProjectCommand;
 import seedu.address.logic.commands.project.DeleteProjectCommand.DeleteProjectDescriptor;
+import seedu.address.logic.commands.project.ProjectCommand;
 import seedu.address.logic.commands.tag.AddTagCommand;
 import seedu.address.logic.commands.tag.DeleteTagCommand;
 import seedu.address.logic.commands.tag.ViewAllTagCommand;
@@ -156,7 +158,7 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_deleteTask() throws Exception {
-        DeleteTaskDescriptor descriptor = new DeleteTaskDescriptorBuilder(INDEX_FIRST_PROJECT).build();
+        DeleteTaskDescriptor descriptor = new DeleteTaskDescriptorBuilder(INDEX_FIRST_TASK).build();
         DeleteTaskCommand command = (DeleteTaskCommand) parser.parseCommand(DeleteTaskCommand.COMMAND_WORD
                 + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PersonUtil.getDeleteTaskDescriptorDetails(descriptor));
@@ -166,11 +168,25 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() {
         assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
-            -> parser.parseCommand(""));
+                -> parser.parseCommand(""));
     }
 
     @Test
     public void parseCommand_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand("unknownCommand"));
+    }
+
+    @Test
+    public void parseCommand_projectUnrecognisedSubcommand_throwsParseException() {
+        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ProjectCommand.MESSAGE_USAGE), () -> parser.parseCommand(ProjectCommand.COMMAND_WORD));
+    }
+
+    @Test
+    public void parseCommand_projectUnknownSubcommand_throwsParseException() {
+        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ProjectCommand.MESSAGE_USAGE), () -> parser.parseCommand(
+                        ProjectCommand.COMMAND_WORD + " unknownCommand")
+        );
     }
 }

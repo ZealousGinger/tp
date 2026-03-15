@@ -190,5 +190,4 @@ public class DeleteProjectCommandTest {
 
         assertCommandFailure(deleteProjectCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
-
 }

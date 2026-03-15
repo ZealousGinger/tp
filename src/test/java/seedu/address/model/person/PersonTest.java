@@ -9,6 +9,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PROJECT_ALPHA;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PROJECT_BETA;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TASK_FIX_ERROR;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TASK_REFACTOR;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -96,6 +97,10 @@ public class PersonTest {
 
         // different tasks -> returns false
         editedAlice = new PersonBuilder(ALICE).withTasks(VALID_TASK_FIX_ERROR).build();
+        assertFalse(ALICE.equals(editedAlice));
+
+        // different tags -> returns false
+        editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
     }
 
