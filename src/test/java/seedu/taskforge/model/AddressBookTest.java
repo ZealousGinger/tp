@@ -1,0 +1,183 @@
+package seedu.taskforge.model;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_PROJECT_ALPHA;
+import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_REFACTOR;
+import static seedu.taskforge.testutil.Assert.assertThrows;
+import static seedu.taskforge.testutil.TypicalPersons.ALICE;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.exceptions.DuplicatePersonException;
+import seedu.taskforge.model.tag.Tag;
+import seedu.taskforge.model.tag.exceptions.DuplicateTagException;
+import seedu.taskforge.testutil.PersonBuilder;
+
+public class AddressBookTest {
+
+    private final AddressBook addressBook = new AddressBook();
+
+    @Test
+    public void constructor() {
+        assertEquals(Collections.emptyList(), addressBook.getPersonList());
+        assertEquals(Collections.emptyList(), addressBook.getTagList());
+    }
+
+    @Test
+    public void resetData_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> addressBook.resetData(null));
+    }
+
+    @Test
+    public void resetData_withValidReadOnlyAddressBook_replacesData() {
+        AddressBook newData = getTypicalAddressBook();
+        addressBook.resetData(newData);
+        assertEquals(newData, addressBook);
+    }
+
+    @Test
+    public void resetData_withDuplicatePersons_throwsDuplicatePersonException() {
+        // Two persons with the same identity fields
+        Person editedAlice = new PersonBuilder(ALICE)
+                .withProjects(VALID_PROJECT_ALPHA).withTasks(VALID_TASK_REFACTOR)
+                .build();
+        List<Person> newPersons = Arrays.asList(ALICE, editedAlice);
+        AddressBookStub newData = new AddressBookStub(newPersons);
+
+        assertThrows(DuplicatePersonException.class, () -> addressBook.resetData(newData));
+    }
+
+    @Test
+    public void resetData_withDuplicateTags_throwsDuplicateTagException() {
+        Tag friends = new Tag("friends");
+        List<Tag> newTags = Arrays.asList(friends, friends);
+        AddressBookStub newData = new AddressBookStub(Collections.emptyList(), newTags);
+
+        assertThrows(DuplicateTagException.class, () -> addressBook.resetData(newData));
+    }
+
+    @Test
+    public void hasPerson_nullPerson_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> addressBook.hasPerson(null));
+    }
+
+    @Test
+    public void hasPerson_personNotInAddressBook_returnsFalse() {
+        assertFalse(addressBook.hasPerson(ALICE));
+    }
+
+    @Test
+    public void hasPerson_personInAddressBook_returnsTrue() {
+        addressBook.addPerson(ALICE);
+        assertTrue(addressBook.hasPerson(ALICE));
+    }
+
+    @Test
+    public void hasPerson_personWithSameIdentityFieldsInAddressBook_returnsTrue() {
+        addressBook.addPerson(ALICE);
+        Person editedAlice = new PersonBuilder(ALICE)
+                .withProjects(VALID_PROJECT_ALPHA).withTasks(VALID_TASK_REFACTOR)
+                .build();
+        assertTrue(addressBook.hasPerson(editedAlice));
+    }
+
+    @Test
+    public void getPersonList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> addressBook.getPersonList().remove(0));
+    }
+
+    @Test
+    public void hasTag_nullTag_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> addressBook.hasTag(null));
+    }
+
+    @Test
+    public void hasTag_tagNotInAddressBook_returnsFalse() {
+        assertFalse(addressBook.hasTag(new Tag("friends")));
+    }
+
+    @Test
+    public void hasTag_tagInAddressBook_returnsTrue() {
+        Tag friends = new Tag("friends");
+        addressBook.addTag(friends);
+        assertTrue(addressBook.hasTag(friends));
+    }
+
+    @Test
+    public void getTagList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> addressBook.getTagList().remove(0));
+    }
+
+    @Test
+    public void equals() {
+        // same values -> returns true
+        AddressBook addressBookCopy = new AddressBook(addressBook);
+        assertTrue(addressBook.equals(addressBookCopy));
+
+        // same object -> returns true
+        assertTrue(addressBook.equals(addressBook));
+
+        // null -> returns false
+        assertFalse(addressBook.equals(null));
+
+        // different types -> returns false
+        assertFalse(addressBook.equals(5));
+
+        // different data -> returns false
+        AddressBook differentAddressBook = new AddressBook();
+        differentAddressBook.addTag(new Tag("friends"));
+        assertFalse(addressBook.equals(differentAddressBook));
+    }
+
+    @Test
+    public void hashCodeMethod() {
+        AddressBook addressBookCopy = new AddressBook(addressBook);
+        assertEquals(addressBook.hashCode(), addressBookCopy.hashCode());
+    }
+
+    @Test
+    public void toStringMethod() {
+        String expected = AddressBook.class.getCanonicalName() + "{persons=" + addressBook.getPersonList()
+                + ", tags=" + addressBook.getTagList() + "}";
+        assertEquals(expected, addressBook.toString());
+    }
+
+    /**
+     * A stub ReadOnlyAddressBook whose persons list can violate interface constraints.
+     */
+    private static class AddressBookStub implements ReadOnlyAddressBook {
+        private final ObservableList<Person> persons = FXCollections.observableArrayList();
+        private final ObservableList<Tag> tags = FXCollections.observableArrayList();
+
+        AddressBookStub(Collection<Person> persons) {
+            this(persons, Collections.emptyList());
+        }
+
+        AddressBookStub(Collection<Person> persons, Collection<Tag> tags) {
+            this.persons.setAll(persons);
+            this.tags.setAll(tags);
+        }
+
+        @Override
+        public ObservableList<Person> getPersonList() {
+            return persons;
+        }
+
+        @Override
+        public ObservableList<Tag> getTagList() {
+            return tags;
+        }
+    }
+
+}
