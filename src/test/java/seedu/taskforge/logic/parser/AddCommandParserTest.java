@@ -58,7 +58,8 @@ public class AddCommandParserTest {
         Person expectedPerson = new PersonBuilder(BOB).build();
 
         // whitespace only preamble
-        assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + PROJECT_DESC_ALPHA + PROJECT_DESC_BETA + TASK_REFACTOR
+        assertParseSuccess(parser, PREAMBLE_WHITESPACE
+                + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + PROJECT_DESC_ALPHA + PROJECT_DESC_BETA + TASK_REFACTOR
                 + TASK_FIX_ERROR + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, new AddCommand(expectedPerson));
 
         // multiple projects - all accepted
