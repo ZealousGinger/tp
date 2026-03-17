@@ -31,7 +31,7 @@ public class AddTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "add";
 
     public static final String MESSAGE_SUCCESS = "New task added: %1$s";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + " " + SUBCOMMAND_WORD + " INDEX -d TASK_DESCRIPTION";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " " + SUBCOMMAND_WORD + " INDEX -n TASK_DESCRIPTION";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists for this person!";
     public static final String MESSAGE_NOT_EDITED = "At least one task to add must be provided";
 

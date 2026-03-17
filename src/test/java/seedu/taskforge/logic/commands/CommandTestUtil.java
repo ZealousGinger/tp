@@ -70,9 +70,9 @@ public class CommandTestUtil {
     public static final String INVALID_TASK_INDEX = " " + PREFIX_TASK + -1;
 
     // For task related commands not person related
-    public static final String TASK_DESC_IMPLEMENT_X = " " + PREFIX_TASK_DESCRIPTION + VALID_TASK_IMPLEMENT_X;
-    public static final String TASK_DESC_IMPLEMENT_Y = " " + PREFIX_TASK_DESCRIPTION + VALID_TASK_IMPLEMENT_Y;
-    public static final String TASK_DESC_IMPLEMENT_Z = " " + PREFIX_TASK_DESCRIPTION + VALID_TASK_IMPLEMENT_Z;
+    public static final String TASK_DESC_IMPLEMENT_X = " " + PREFIX_NAME + VALID_TASK_IMPLEMENT_X;
+    public static final String TASK_DESC_IMPLEMENT_Y = " " + PREFIX_NAME + VALID_TASK_IMPLEMENT_Y;
+    public static final String TASK_DESC_IMPLEMENT_Z = " " + PREFIX_NAME + VALID_TASK_IMPLEMENT_Z;
 
     public static final String TASK_DELETE_1 = " " + PREFIX_INDEX + "1";
     public static final String TASK_DELETE_2 = " " + PREFIX_INDEX + "2";
@@ -87,7 +87,7 @@ public class CommandTestUtil {
     public static final String PROJECT_DELETE_2 = " " + PREFIX_INDEX + "2";
     public static final String INVALID_PROJECT_DELETE = " " + PREFIX_INDEX + "-1";
 
-    public static final String INVALID_TASK_DESC_ADD = " " + PREFIX_TASK_DESCRIPTION
+    public static final String INVALID_TASK_DESC_ADD = " " + PREFIX_NAME
             + "refactor code*"; // '*' not allowed in tasks
     public static final String INVALID_PROJECT_TITLE = " " + PREFIX_PROJECT_TITLE
             + "alpha*"; // '*' not allowed in projects

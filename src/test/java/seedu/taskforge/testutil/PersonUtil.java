@@ -117,9 +117,9 @@ public class PersonUtil {
         if (descriptor.getTasks().isPresent()) {
             List<Task> tasks = descriptor.getTasks().get();
             if (tasks.isEmpty()) {
-                sb.append(PREFIX_TASK_DESCRIPTION).append(" ");
+                sb.append(PREFIX_NAME).append(" ");
             } else {
-                tasks.forEach(s -> sb.append(PREFIX_TASK_DESCRIPTION).append(s.description).append(" "));
+                tasks.forEach(s -> sb.append(PREFIX_NAME).append(s.description).append(" "));
             }
         }
         return sb.toString();
