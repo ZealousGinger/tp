@@ -2,7 +2,7 @@ package seedu.taskforge.logic.parser.project;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.taskforge.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT_INDEX;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -35,7 +35,7 @@ public class UnassignProjectCommandParser implements Parser<UnassignProjectComma
     public UnassignProjectCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_PROJECT_INDEX);
+                ArgumentTokenizer.tokenize(args, PREFIX_INDEX);
 
         Index index;
 
@@ -48,7 +48,7 @@ public class UnassignProjectCommandParser implements Parser<UnassignProjectComma
 
         UnassignProjectDescriptor unassignProjectDescriptor = new UnassignProjectDescriptor();
 
-        parseProjectsIndexesForAdd(argMultimap.getAllValues(PREFIX_PROJECT_INDEX))
+        parseProjectsIndexesForAdd(argMultimap.getAllValues(PREFIX_INDEX))
                 .ifPresent(unassignProjectDescriptor::setProjectsIndexes);
 
         if (!unassignProjectDescriptor.isProjectFieldEdited()) {

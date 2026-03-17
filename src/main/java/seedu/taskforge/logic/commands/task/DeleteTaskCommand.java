@@ -31,7 +31,7 @@ public class DeleteTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "delete";
 
     public static final String MESSAGE_SUCCESS = "Deleted task: %1$s";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + " " + SUBCOMMAND_WORD + " INDEX -t TASK_INDEX";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " " + SUBCOMMAND_WORD + " INDEX -i TASK_INDEX";
     public static final String MESSAGE_INDEX_OUT_OF_BOUND = "Task index is out of bound";
     public static final String MESSAGE_NOT_EDITED = "At least one task to delete must be provided";
 

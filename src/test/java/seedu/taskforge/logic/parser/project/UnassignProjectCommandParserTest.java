@@ -4,7 +4,7 @@ import static seedu.taskforge.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.taskforge.logic.commands.CommandTestUtil.INVALID_PROJECT_DELETE;
 import static seedu.taskforge.logic.commands.CommandTestUtil.PROJECT_DELETE_1;
 import static seedu.taskforge.logic.commands.CommandTestUtil.PROJECT_DELETE_2;
-import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT_INDEX;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.taskforge.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.taskforge.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
@@ -18,7 +18,7 @@ import seedu.taskforge.logic.parser.ParserUtil;
 import seedu.taskforge.testutil.UnassignProjectDescriptorBuilder;
 
 public class UnassignProjectCommandParserTest {
-    private static final String PROJECT_EMPTY = " " + PREFIX_PROJECT_INDEX;
+    private static final String PROJECT_EMPTY = " " + PREFIX_INDEX;
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnassignProjectCommand.MESSAGE_USAGE);
