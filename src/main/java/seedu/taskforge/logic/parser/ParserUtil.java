@@ -4,9 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import seedu.taskforge.commons.core.index.Index;
 import seedu.taskforge.commons.util.StringUtil;

@@ -10,11 +10,9 @@ import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 import seedu.taskforge.commons.core.index.Index;
 import seedu.taskforge.commons.util.CollectionUtil;

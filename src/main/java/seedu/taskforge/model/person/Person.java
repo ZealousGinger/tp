@@ -4,10 +4,8 @@ import static seedu.taskforge.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import seedu.taskforge.commons.util.ToStringBuilder;
 import seedu.taskforge.model.project.Project;
