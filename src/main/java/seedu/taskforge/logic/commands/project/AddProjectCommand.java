@@ -21,7 +21,6 @@ import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
-import seedu.taskforge.model.tag.Tag;
 import seedu.taskforge.model.task.Task;
 
 /**
@@ -107,7 +106,6 @@ public class AddProjectCommand extends ProjectCommand {
         Name name = personToEdit.getName();
         Phone phone = personToEdit.getPhone();
         Email email = personToEdit.getEmail();
-        Set<Tag> tagSet = personToEdit.getTags();
         List<Task> taskList = personToEdit.getTasks();
 
         List<Project> newProjects = new ArrayList<>(personToEdit.getProjects());
@@ -115,7 +113,7 @@ public class AddProjectCommand extends ProjectCommand {
                 new CommandException(MESSAGE_PROJECT_NOT_FOUND)));
         checkUniqueProjects(newProjects);
 
-        return new Person(name, phone, email, newProjects, taskList, tagSet);
+        return new Person(name, phone, email, newProjects, taskList);
     }
 
     /**

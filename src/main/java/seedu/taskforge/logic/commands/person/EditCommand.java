@@ -29,7 +29,6 @@ import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
-import seedu.taskforge.model.tag.Tag;
 import seedu.taskforge.model.task.Task;
 
 /**
@@ -104,10 +103,9 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         List<Project> updatedProjects = editPersonDescriptor.getProjects().orElse(personToEdit.getProjects());
         List<Task> updatedTasks = editPersonDescriptor.getTasks().orElse(personToEdit.getTasks());
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(updatedName, updatedPhone, updatedEmail,
-                updatedProjects, updatedTasks, updatedTags);
+                updatedProjects, updatedTasks);
     }
 
     @Override
@@ -144,7 +142,6 @@ public class EditCommand extends Command {
         private Email email;
         private List<Project> projects;
         private List<Task> tasks;
-        private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
 
@@ -158,14 +155,13 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setProjects(toCopy.projects);
             setTasks(toCopy.tasks);
-            setTags(toCopy.tags);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, projects, tasks, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, projects, tasks);
         }
 
         public void setName(Name name) {
@@ -226,22 +222,7 @@ public class EditCommand extends Command {
             return (projects != null) ? Optional.of(Collections.unmodifiableList(projects)) : Optional.empty();
         }
 
-        /**
-         * Sets {@code tags} to this object's {@code tags}.
-         * A defensive copy of {@code tags} is used internally.
-         */
-        public void setTags(Set<Tag> tags) {
-            this.tags = (tags != null) ? new HashSet<>(tags) : null;
-        }
 
-        /**
-         * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
-         * if modification is attempted.
-         * Returns {@code Optional#empty()} if {@code tags} is null.
-         */
-        public Optional<Set<Tag>> getTags() {
-            return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
-        }
 
         @Override
         public boolean equals(Object other) {
@@ -270,7 +251,6 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("projects", projects)
                     .add("tasks", tasks)
-                    .add("tags", tags)
                     .toString();
         }
     }
