@@ -5,16 +5,15 @@ import static java.util.Objects.requireNonNull;
 import java.util.stream.Collectors;
 
 import seedu.taskforge.commons.util.ToStringBuilder;
-import seedu.taskforge.logic.commands.Command;
 import seedu.taskforge.logic.commands.CommandResult;
 import seedu.taskforge.model.Model;
 
 /**
  * Lists all projects in the address book to the user.
  */
-public class ViewAllProjectCommand extends Command {
+public class ListProjectCommand extends ProjectCommand {
 
-    public static final String COMMAND_WORD = "view-all-project";
+    public static final String SUBCOMMAND_WORD = "list";
 
     public static final String MESSAGE_SUCCESS = "Listed all projects:";
 
@@ -32,18 +31,18 @@ public class ViewAllProjectCommand extends Command {
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof ViewAllProjectCommand;
+        return other instanceof ListProjectCommand;
     }
 
     @Override
     public int hashCode() {
-        return COMMAND_WORD.hashCode();
+        return SUBCOMMAND_WORD.hashCode();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("commandWord", COMMAND_WORD)
+                .add("subcommandWord", SUBCOMMAND_WORD)
                 .toString();
     }
 }

@@ -19,15 +19,15 @@ import seedu.taskforge.model.ReadOnlyUserPrefs;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
 
-public class ViewAllProjectCommandTest {
+public class ListProjectCommandTest {
 
     @Test
     public void execute_noProjects_showsNone() {
         ModelStubWithProjectList modelStub = new ModelStubWithProjectList();
 
-        CommandResult result = new ViewAllProjectCommand().execute(modelStub);
+        CommandResult result = new ListProjectCommand().execute(modelStub);
 
-        assertEquals(ViewAllProjectCommand.MESSAGE_SUCCESS + " None", result.getFeedbackToUser());
+        assertEquals(ListProjectCommand.MESSAGE_SUCCESS + " None", result.getFeedbackToUser());
     }
 
     @Test
@@ -36,33 +36,33 @@ public class ViewAllProjectCommandTest {
         Project beta = new Project("beta");
         ModelStubWithProjectList modelStub = new ModelStubWithProjectList(alpha, beta);
 
-        CommandResult result = new ViewAllProjectCommand().execute(modelStub);
+        CommandResult result = new ListProjectCommand().execute(modelStub);
 
-        String expected = ViewAllProjectCommand.MESSAGE_SUCCESS + "\n"
+        String expected = ListProjectCommand.MESSAGE_SUCCESS + "\n"
                 + alpha + "\n" + beta;
         assertEquals(expected, result.getFeedbackToUser());
     }
 
     @Test
     public void equals() {
-        ViewAllProjectCommand viewAllProjectCommand = new ViewAllProjectCommand();
+        ListProjectCommand viewAllProjectCommand = new ListProjectCommand();
 
         assertTrue(viewAllProjectCommand.equals(viewAllProjectCommand));
-        assertTrue(viewAllProjectCommand.equals(new ViewAllProjectCommand()));
+        assertTrue(viewAllProjectCommand.equals(new ListProjectCommand()));
         assertFalse(viewAllProjectCommand.equals(1));
         assertFalse(viewAllProjectCommand.equals(null));
     }
 
     @Test
     public void toStringMethod() {
-        String expected = ViewAllProjectCommand.class.getCanonicalName()
-                + "{commandWord=" + ViewAllProjectCommand.COMMAND_WORD + "}";
-        assertEquals(expected, new ViewAllProjectCommand().toString());
+        String expected = ListProjectCommand.class.getCanonicalName()
+                + "{subcommandWord=" + ListProjectCommand.SUBCOMMAND_WORD + "}";
+        assertEquals(expected, new ListProjectCommand().toString());
     }
 
     @Test
     public void hashCodeMethod() {
-        assertEquals(ViewAllProjectCommand.COMMAND_WORD.hashCode(), new ViewAllProjectCommand().hashCode());
+        assertEquals(ListProjectCommand.SUBCOMMAND_WORD.hashCode(), new ListProjectCommand().hashCode());
     }
 
     /**

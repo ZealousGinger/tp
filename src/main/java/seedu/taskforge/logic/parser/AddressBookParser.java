@@ -20,9 +20,9 @@ import seedu.taskforge.logic.commands.person.ListCommand;
 import seedu.taskforge.logic.commands.project.AddProjectCommand;
 import seedu.taskforge.logic.commands.project.AssignProjectCommand;
 import seedu.taskforge.logic.commands.project.DeleteProjectCommand;
+import seedu.taskforge.logic.commands.project.ListProjectCommand;
 import seedu.taskforge.logic.commands.project.ProjectCommand;
 import seedu.taskforge.logic.commands.project.UnassignProjectCommand;
-import seedu.taskforge.logic.commands.project.ViewAllProjectCommand;
 import seedu.taskforge.logic.commands.task.AddTaskCommand;
 import seedu.taskforge.logic.commands.task.DeleteTaskCommand;
 import seedu.taskforge.logic.commands.task.TaskCommand;
@@ -99,9 +99,6 @@ public class AddressBookParser {
         case ProjectCommand.COMMAND_WORD:
             return handleProject(arguments);
 
-        case ViewAllProjectCommand.COMMAND_WORD:
-            return new ViewAllProjectCommand();
-
         // Address book related commands
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
@@ -131,6 +128,9 @@ public class AddressBookParser {
 
         case DeleteProjectCommand.SUBCOMMAND_WORD:
             return new DeleteProjectCommandParser().parse(arguments);
+
+        case ListProjectCommand.SUBCOMMAND_WORD:
+            return new ListProjectCommand();
 
         case AssignProjectCommand.SUBCOMMAND_WORD:
             return new AssignProjectCommandParser().parse(arguments);
