@@ -1,6 +1,7 @@
 package seedu.taskforge.logic.commands.project;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
@@ -31,7 +32,9 @@ public class UnassignProjectCommand extends ProjectCommand {
 
     public static final String SUBCOMMAND_WORD = "unassign";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + " " + SUBCOMMAND_WORD + " INDEX -x PROJECT_INDEX";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " "
+            + SUBCOMMAND_WORD + " INDEX "
+            + PREFIX_INDEX + " PROJECT_INDEX";
 
     public static final String MESSAGE_UNASSIGN_PROJECT_SUCCESS = "Project unassigned: %1$s";
 

@@ -1,6 +1,7 @@
 package seedu.taskforge.logic.commands.project;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
@@ -32,7 +33,9 @@ public class AssignProjectCommand extends ProjectCommand {
     public static final String SUBCOMMAND_WORD = "assign";
 
     public static final String MESSAGE_ASSIGN_PROJECT_SUCCESS = "Project assigned: %1$s";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + " " + SUBCOMMAND_WORD + " INDEX -n PROJECT_TITLE";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " "
+            + SUBCOMMAND_WORD + " INDEX "
+            + PREFIX_NAME + " PROJECT_NAME";
     public static final String MESSAGE_DUPLICATE_PROJECT = "This project already exists for this person!";
     public static final String MESSAGE_PROJECT_NOT_FOUND = "The project to assign does not exist in the address book";
     public static final String MESSAGE_NOT_EDITED = "At least one project to assign must be provided";

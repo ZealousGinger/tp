@@ -1,6 +1,7 @@
 package seedu.taskforge.logic.commands.task;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
@@ -31,7 +32,9 @@ public class AddTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "add";
 
     public static final String MESSAGE_SUCCESS = "New task added: %1$s";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + " " + SUBCOMMAND_WORD + " INDEX -n TASK_DESCRIPTION";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " "
+            + SUBCOMMAND_WORD + " INDEX "
+            + PREFIX_NAME + " TASK_NAME";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists for this person!";
     public static final String MESSAGE_NOT_EDITED = "At least one task to add must be provided";
 
