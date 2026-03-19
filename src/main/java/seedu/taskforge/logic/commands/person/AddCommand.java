@@ -1,6 +1,7 @@
 package seedu.taskforge.logic.commands.person;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.taskforge.logic.commands.project.AssignProjectCommand.validateProjectsExist;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -27,14 +28,14 @@ public class AddCommand extends Command {
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
-            + "[" + PREFIX_PROJECT_TITLE + "PROJECT_TITLE] "
+            + "[" + PREFIX_PROJECT_TITLE + "PROJECT] "
             + "[" + PREFIX_TASK + "TASK]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "johnd@example.com "
-            + PREFIX_PROJECT_TITLE + "Project Y "
-            + PREFIX_TASK + "implement feature x ";
+            + PREFIX_PROJECT_TITLE + "Mobile app "
+            + PREFIX_TASK + "refactor code";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
@@ -56,6 +57,8 @@ public class AddCommand extends Command {
         if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
+
+        validateProjectsExist(toAdd.getProjects(), model);
 
         model.addPerson(toAdd);
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));

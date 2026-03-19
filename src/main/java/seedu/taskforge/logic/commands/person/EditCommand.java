@@ -1,6 +1,7 @@
 package seedu.taskforge.logic.commands.person;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.taskforge.logic.commands.project.AssignProjectCommand.validateProjectsExist;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -82,6 +83,10 @@ public class EditCommand extends Command {
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        }
+
+        if (editPersonDescriptor.getProjects().isPresent()) {
+            validateProjectsExist(editPersonDescriptor.getProjects().get(), model);
         }
 
         model.setPerson(personToEdit, editedPerson);
