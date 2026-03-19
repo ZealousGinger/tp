@@ -297,6 +297,7 @@ TaskForge supports task management through the parent command `task` with two su
    - `AddTaskCommandParser` parses the preamble as the target person `INDEX` and parses task names from repeated `-n` prefixes.
    - `DeleteTaskCommandParser` parses the preamble as the target person `INDEX` and parses task indexes from repeated `-i` prefixes.
    - If no task payload is provided (e.g., `task add 1` or `task delete 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
+   - Similarly, if an empty task name or task index is provided (e.g., `task add 1 -n` or `task delete 1 -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
 
 4. **Execution behavior and validation**
    - Both task commands resolve the target person from `model.getFilteredPersonList()` using the supplied person `INDEX`.
@@ -347,7 +348,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user | delete a contact                       | remove outdated information or remove a member from the project.             |
 | `* * *`  | user | add a project to a contact             | assign member to the project                                                 |
 | `* * *`  | user | delete a project from a contact        | remove members from a project                                                |
-| `* * *`  | user | assign tasks to contact                | clearly know about their responsibilities                                    |
+| `* * *`  | user | add tasks to contact                   | clearly know about their responsibilities                                    |
 | `* * *`  | user | delete tasks from a contact            | easily remove tasks that is falsely assigned to the contact or has been done |
 | `* * *`  | user | view all contacts                      | see all the project members contacts                                         |
 | `* * *`  | user | view all projects                      | easily have an overview of all projects                                      |
