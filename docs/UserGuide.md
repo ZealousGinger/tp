@@ -184,7 +184,7 @@ Example:
 
 Assigns a project to a person
 
-Format: `project assign PERSON_INDEX -nPROJECT_NAME`
+Format: `project assign PERSON_INDEX -n PROJECT_NAME`
 
 * Assigns project(s) from `project list` to a person.
 * Project should exist in `project list` before being assigned to a person.
@@ -194,8 +194,8 @@ Format: `project assign PERSON_INDEX -nPROJECT_NAME`
 * To assign multiple projects in one command, repeat the `-n` prefix.
 
 Example:
-* `project assign 1 -nWebApp` checks whether the project named WebApp exists, then assigns the project to the 1st person in the `list`
-* `project assign 2 -nWebApp -nMobileApp` assigns multiple projects to the 2nd person in the `list`
+* `project assign 1 -n WebApp` checks whether the project named WebApp exists, then assigns the project to the 1st person in the `list`
+* `project assign 2 -n WebApp -n MobileApp` assigns multiple projects to the 2nd person in the `list`
 
 #### Unassigning a project : `project unassign`
 
