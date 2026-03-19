@@ -38,7 +38,7 @@ import seedu.taskforge.logic.parser.project.DeleteProjectCommandParser;
 import seedu.taskforge.logic.parser.project.UnassignProjectCommandParser;
 import seedu.taskforge.logic.parser.task.AddTaskCommandParser;
 import seedu.taskforge.logic.parser.task.DeleteTaskCommandParser;
-import seedu.taskforge.logic.parser.task.ViewTasksCommandParser; 
+import seedu.taskforge.logic.parser.task.ViewTasksCommandParser;
 
 /**
  * Parses user input.
