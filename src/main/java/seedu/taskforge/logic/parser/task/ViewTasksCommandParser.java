@@ -9,6 +9,9 @@ import seedu.taskforge.logic.parser.Parser;
 import seedu.taskforge.logic.parser.ParserUtil;
 import seedu.taskforge.logic.parser.exceptions.ParseException;
 
+/**
+ * Parses user input arguments and creates a new ViewTasksCommand object.
+ */
 public class ViewTasksCommandParser implements Parser<ViewTasksCommand> {
 
     @Override
