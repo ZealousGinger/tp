@@ -272,6 +272,40 @@ When a user adds or edits a person including changing project, each value must b
 
 This ensures a person can only be assigned to valid existing projects.
 
+### Task management feature (`task add`, `task delete`)
+
+TaskForge supports task management through the parent command `task` with two subcommands:
+
+- `task add INDEX -n TASK_NAME`
+- `task delete INDEX -i TASK_INDEX`
+
+#### Implementation overview
+
+1. **Command structure**
+   - `TaskCommand` is the abstract base for task-related commands and defines the top-level command word `task`.
+   - `AddTaskCommand` handles adding one or more tasks to a person.
+   - `DeleteTaskCommand` handles deleting one or more tasks from a person by local task index.
+
+2. **Parser flow**
+   - `AddressBookParser#parseCommand` routes top-level `task` input to `AddressBookParser#handleTask`.
+   - `handleTask` extracts the task subcommand and dispatches as follows:
+      - `add` -> `AddTaskCommandParser`
+      - `delete` -> `DeleteTaskCommandParser`
+   - Unknown or missing task subcommands throw a `ParseException` with `TaskCommand.MESSAGE_USAGE`.
+
+3. **Input parsing details**
+   - `AddTaskCommandParser` parses the preamble as the target person `INDEX` and parses task names from repeated `-n` prefixes.
+   - `DeleteTaskCommandParser` parses the preamble as the target person `INDEX` and parses task indexes from repeated `-i` prefixes.
+   - If no task payload is provided (e.g., `task add 1` or `task delete 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
+
+4. **Execution behavior and validation**
+   - Both task commands resolve the target person from `model.getFilteredPersonList()` using the supplied person `INDEX`.
+   - If the person index is invalid, execution fails with `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX`.
+   - `AddTaskCommand` appends tasks to the person's current task list and rejects duplicates via `MESSAGE_DUPLICATE_TASK`.
+   - `DeleteTaskCommand` resolves each local task index from the selected person's task list and throws
+     `MESSAGE_INDEX_OUT_OF_BOUND` if any task index is invalid.
+   - On success, both commands update the person in the model and refresh the filtered person list.
+
 ### \[Proposed\] Data archiving
 
 _{Explain here how the data archiving feature will be implemented}_
