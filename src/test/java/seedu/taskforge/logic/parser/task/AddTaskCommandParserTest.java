@@ -37,6 +37,9 @@ public class AddTaskCommandParserTest {
         // no field specified
         assertParseFailure(parser, "1", AddTaskCommand.MESSAGE_NOT_EDITED);
 
+        // empty task value after task prefix
+        assertParseFailure(parser, "1" + TASK_EMPTY, AddTaskCommand.MESSAGE_NOT_EDITED);
+
         // no index and no field specified
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
     }
