@@ -1,13 +1,11 @@
 package seedu.taskforge.logic.commands.person;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.taskforge.logic.commands.project.AssignProjectCommand.MESSAGE_PROJECT_NOT_FOUND;
 import static seedu.taskforge.logic.commands.project.AssignProjectCommand.validateProjectsExist;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT_TITLE;
-import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_TASK;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_TASK_DESCRIPTION;
 import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -87,8 +85,9 @@ public class EditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        validateProjectsExist(editPersonDescriptor.getProjects().orElseThrow(() ->
-                new CommandException(MESSAGE_PROJECT_NOT_FOUND)), model);
+        if (editPersonDescriptor.getProjects().isPresent()) {
+            validateProjectsExist(editPersonDescriptor.getProjects().get(), model);
+        }
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);

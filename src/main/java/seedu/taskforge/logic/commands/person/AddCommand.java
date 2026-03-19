@@ -6,7 +6,6 @@ import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT_TITLE;
-import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_TASK;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_TASK_DESCRIPTION;
 
 import seedu.taskforge.commons.util.ToStringBuilder;
