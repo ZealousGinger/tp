@@ -16,20 +16,36 @@ public class PersonContainsKeywordsPredicateTest {
 
     @Test
     public void equals() {
-        List<String> firstPredicateKeywordList = Collections.singletonList("first");
-        List<String> secondPredicateKeywordList = Arrays.asList("first", "second");
+        List<String> firstPredicateNameKeywords = Collections.singletonList("first");
+        List<String> secondPredicateNameKeywords = Arrays.asList("first", "second");
+        List<String> phoneKeywords = Collections.singletonList("91234567");
+        List<String> emailKeywords = Collections.singletonList("alice@example.com");
+        List<String> taskKeywords = Collections.singletonList("Task1");
+        List<String> projectKeywords = Collections.singletonList("Project1");
 
         PersonContainsKeywordsPredicate firstPredicate = new PersonContainsKeywordsPredicate()
-                .setNameKeywords(firstPredicateKeywordList);
+                .setNameKeywords(firstPredicateNameKeywords)
+                .setPhoneKeywords(phoneKeywords)
+                .setEmailKeywords(emailKeywords)
+                .setTaskKeywords(taskKeywords)
+                .setProjectKeywords(projectKeywords);
         PersonContainsKeywordsPredicate secondPredicate = new PersonContainsKeywordsPredicate()
-                .setNameKeywords(secondPredicateKeywordList);
+                .setNameKeywords(secondPredicateNameKeywords)
+                .setPhoneKeywords(phoneKeywords)
+                .setEmailKeywords(emailKeywords)
+                .setTaskKeywords(taskKeywords)
+                .setProjectKeywords(projectKeywords);
 
         // same object -> returns true
         assertTrue(firstPredicate.equals(firstPredicate));
 
         // same values -> returns true
         PersonContainsKeywordsPredicate firstPredicateCopy = new PersonContainsKeywordsPredicate()
-                .setNameKeywords(firstPredicateKeywordList);
+                .setNameKeywords(firstPredicateNameKeywords)
+                .setPhoneKeywords(phoneKeywords)
+                .setEmailKeywords(emailKeywords)
+                .setTaskKeywords(taskKeywords)
+                .setProjectKeywords(projectKeywords);
         assertTrue(firstPredicate.equals(firstPredicateCopy));
 
         // different types -> returns false
