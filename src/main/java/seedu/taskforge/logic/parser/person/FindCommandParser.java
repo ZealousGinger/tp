@@ -37,28 +37,43 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate();
 
-        List<String> nameKeywords = getKeywords(argMultimap.getAllValues(PREFIX_NAME));
-        if (!nameKeywords.isEmpty()) {
+        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
+            List<String> nameKeywords = getKeywords(argMultimap.getAllValues(PREFIX_NAME));
+            if (nameKeywords.isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
             predicate.setNameKeywords(nameKeywords);
         }
 
-        List<String> phoneKeywords = getKeywords(argMultimap.getAllValues(PREFIX_PHONE));
-        if (!phoneKeywords.isEmpty()) {
+        if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
+            List<String> phoneKeywords = getKeywords(argMultimap.getAllValues(PREFIX_PHONE));
+            if (phoneKeywords.isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
             predicate.setPhoneKeywords(phoneKeywords);
         }
 
-        List<String> emailKeywords = getKeywords(argMultimap.getAllValues(PREFIX_EMAIL));
-        if (!emailKeywords.isEmpty()) {
+        if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
+            List<String> emailKeywords = getKeywords(argMultimap.getAllValues(PREFIX_EMAIL));
+            if (emailKeywords.isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
             predicate.setEmailKeywords(emailKeywords);
         }
 
-        List<String> taskKeywords = getKeywords(argMultimap.getAllValues(PREFIX_TASK));
-        if (!taskKeywords.isEmpty()) {
+        if (argMultimap.getValue(PREFIX_TASK).isPresent()) {
+            List<String> taskKeywords = getKeywords(argMultimap.getAllValues(PREFIX_TASK));
+            if (taskKeywords.isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
             predicate.setTaskKeywords(taskKeywords);
         }
 
-        List<String> projectKeywords = getKeywords(argMultimap.getAllValues(PREFIX_PROJECT_TITLE));
-        if (!projectKeywords.isEmpty()) {
+        if (argMultimap.getValue(PREFIX_PROJECT_TITLE).isPresent()) {
+            List<String> projectKeywords = getKeywords(argMultimap.getAllValues(PREFIX_PROJECT_TITLE));
+            if (projectKeywords.isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
             predicate.setProjectKeywords(projectKeywords);
         }
 
