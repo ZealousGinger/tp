@@ -7,14 +7,12 @@ import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT_TITLE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_TASK;
 
-import java.util.function.Predicate;
-
 import seedu.taskforge.commons.util.ToStringBuilder;
 import seedu.taskforge.logic.Messages;
 import seedu.taskforge.logic.commands.Command;
 import seedu.taskforge.logic.commands.CommandResult;
 import seedu.taskforge.model.Model;
-import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonContainsKeywordsPredicate;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -33,9 +31,9 @@ public class FindCommand extends Command {
             + "[" + PREFIX_PROJECT_TITLE + "PROJECT]...\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_NAME + "alice bob " + PREFIX_PHONE + "91234567";
 
-    private final Predicate<Person> predicate;
+    private final PersonContainsKeywordsPredicate predicate;
 
-    public FindCommand(Predicate<Person> predicate) {
+    public FindCommand(PersonContainsKeywordsPredicate predicate) {
         this.predicate = predicate;
     }
 
