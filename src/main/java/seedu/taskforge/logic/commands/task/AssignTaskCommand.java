@@ -62,8 +62,8 @@ public class AssignTaskCommand extends TaskCommand {
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
         List<Task> tasksToAssign = assignTaskDescriptor.getTasks().orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED));
-        checkTasksExistInAssignedProjects(tasksToAssign, personToEdit, model);
-        Person editedPerson = createEditedPerson(personToEdit, assignTaskDescriptor);
+        List<Task> resolvedTasksToAssign = resolveTasksWithProjectTracking(tasksToAssign, personToEdit, model);
+        Person editedPerson = createEditedPerson(personToEdit, resolvedTasksToAssign);
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -76,7 +76,7 @@ public class AssignTaskCommand extends TaskCommand {
      */
     private static Person createEditedPerson(
             Person personToEdit,
-            AssignTaskDescriptor assignTaskDescriptor) throws CommandException {
+            List<Task> tasksToAssign) throws CommandException {
         assert personToEdit != null;
 
         Name name = personToEdit.getName();
@@ -85,25 +85,37 @@ public class AssignTaskCommand extends TaskCommand {
         List<Project> projectList = personToEdit.getProjects();
 
         List<Task> newTasks = new ArrayList<>(personToEdit.getTasks());
-        newTasks.addAll(assignTaskDescriptor.getTasks().orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED)));
+        newTasks.addAll(tasksToAssign);
         checkUniqueTasks(newTasks);
 
         return new Person(name, phone, email, projectList, newTasks);
     }
 
-    private static void checkTasksExistInAssignedProjects(List<Task> tasks, Person person, Model model)
+    private static List<Task> resolveTasksWithProjectTracking(List<Task> tasks, Person person, Model model)
             throws CommandException {
         List<Project> assignedProjects = person.getProjects();
         List<Project> allProjects = model.getProjectList();
 
-        boolean allTasksExist = tasks.stream().allMatch(task ->
-                assignedProjects.stream().anyMatch(assignedProject ->
-                        allProjects.stream().anyMatch(project -> assignedProject.equals(project)
-                                && project.getTasks().contains(task))));
+        List<Task> resolvedTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            Project matchedProject = null;
+            for (Project assignedProject : assignedProjects) {
+                matchedProject = allProjects.stream()
+                        .filter(project -> project.equals(assignedProject) && project.getTasks().contains(task))
+                        .findFirst()
+                        .orElse(null);
+                if (matchedProject != null) {
+                    break;
+                }
+            }
 
-        if (!allTasksExist) {
-            throw new CommandException(MESSAGE_TASK_NOT_IN_ASSIGNED_PROJECTS);
+            if (matchedProject == null) {
+                throw new CommandException(MESSAGE_TASK_NOT_IN_ASSIGNED_PROJECTS);
+            }
+            resolvedTasks.add(new Task(task.description, matchedProject.title));
         }
+
+        return resolvedTasks;
     }
 
     /**
