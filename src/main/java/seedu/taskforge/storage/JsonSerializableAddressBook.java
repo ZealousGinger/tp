@@ -25,7 +25,7 @@ class JsonSerializableAddressBook {
     public static final String MESSAGE_DUPLICATE_PROJECT = "Projects list contains duplicate project(s).";
     public static final String MESSAGE_PERSON_PROJECT_NOT_IN_PROJECT_LIST =
             "Person %1$s contains project %2$s that does not exist in the project list.";
-        public static final String MESSAGE_PERSON_TASK_NOT_IN_ASSIGNED_PROJECTS =
+    public static final String MESSAGE_PERSON_TASK_NOT_IN_ASSIGNED_PROJECTS =
             "Person %1$s contains task %2$s that does not exist in any assigned project.";
 
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();

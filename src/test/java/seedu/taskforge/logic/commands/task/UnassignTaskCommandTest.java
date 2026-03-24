@@ -1,11 +1,11 @@
 package seedu.taskforge.logic.commands.task;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_FIX_ERROR;
+import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_REFACTOR;
 import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.taskforge.logic.commands.CommandTestUtil.showPersonAtIndex;
-import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_FIX_ERROR;
-import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_REFACTOR;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
@@ -24,8 +24,8 @@ import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
-import seedu.taskforge.testutil.UnassignTaskDescriptorBuilder;
 import seedu.taskforge.testutil.PersonBuilder;
+import seedu.taskforge.testutil.UnassignTaskDescriptorBuilder;
 
 public class UnassignTaskCommandTest {
     private Model model = createModelWithProjectTasks();
@@ -165,14 +165,16 @@ public class UnassignTaskCommandTest {
 
     @Test
     public void execute_noTaskSpecifiedUnfilteredList_errorThrown() {
-        UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(INDEX_FIRST_PERSON, new UnassignTaskDescriptor());
+        UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(INDEX_FIRST_PERSON,
+                new UnassignTaskDescriptor());
         assertCommandFailure(unassignTaskCommand, model, UnassignTaskCommand.MESSAGE_NOT_EDITED);
     }
 
     @Test
     public void execute_noTaskSpecifiedFilteredList_errorThrown() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
-        UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(INDEX_FIRST_PERSON, new UnassignTaskDescriptor());
+        UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(INDEX_FIRST_PERSON,
+                new UnassignTaskDescriptor());
         assertCommandFailure(unassignTaskCommand, model, UnassignTaskCommand.MESSAGE_NOT_EDITED);
     }
 
@@ -205,11 +207,16 @@ public class UnassignTaskCommandTest {
 
     @Test
     public void execute_taskNotInAssignedProjects_failure() {
-        Model unseededModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model modelWithMissingTask = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        modelWithMissingTask.setProject(new Project("alpha"), new Project("alpha", Arrays.asList(
+            new Task(VALID_TASK_FIX_ERROR)
+        )));
+
         UnassignTaskDescriptor descriptor = new UnassignTaskDescriptorBuilder().withTasks("1").build();
         UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(INDEX_FIRST_PERSON, descriptor);
 
-        assertCommandFailure(unassignTaskCommand, unseededModel, TaskCommand.MESSAGE_TASK_NOT_IN_ASSIGNED_PROJECTS);
+        assertCommandFailure(unassignTaskCommand, modelWithMissingTask,
+            TaskCommand.MESSAGE_TASK_NOT_IN_ASSIGNED_PROJECTS);
     }
 
 }

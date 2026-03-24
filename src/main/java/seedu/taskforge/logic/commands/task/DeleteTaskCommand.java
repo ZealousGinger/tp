@@ -33,6 +33,9 @@ public class DeleteTaskCommand extends TaskCommand {
     private final Index projectIndex;
     private final DeleteTaskDescriptor deleteTaskDescriptor;
 
+    /**
+     * Creates a DeleteTaskCommand to delete a task from a project.
+     */
     public DeleteTaskCommand(Index projectIndex, DeleteTaskDescriptor deleteTaskDescriptor) {
         requireNonNull(projectIndex);
         requireNonNull(deleteTaskDescriptor);

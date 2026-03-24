@@ -33,6 +33,9 @@ public class AddTaskCommand extends TaskCommand {
     private final Index projectIndex;
     private final AddTaskDescriptor addTaskDescriptor;
 
+    /**
+     * Creates an AddTaskCommand to add a task to a project.
+     */
     public AddTaskCommand(Index projectIndex, AddTaskDescriptor addTaskDescriptor) {
         requireNonNull(projectIndex);
         requireNonNull(addTaskDescriptor);
@@ -62,7 +65,8 @@ public class AddTaskCommand extends TaskCommand {
         assert projectToEdit != null;
 
         Project editedProject = new Project(projectToEdit.title, projectToEdit.getTasks());
-        List<Task> tasksToAdd = addTaskDescriptor.getTasks().orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED));
+        List<Task> tasksToAdd = addTaskDescriptor.getTasks()
+                .orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED));
 
         try {
             for (Task task : tasksToAdd) {

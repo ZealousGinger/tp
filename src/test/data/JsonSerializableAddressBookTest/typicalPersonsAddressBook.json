@@ -1,8 +1,20 @@
 {
   "_comment": "AddressBook save file which contains the same Person values as in TypicalPersons#getTypicalAddressBook()",
   "projects" : [
-    { "title" : "alpha", "tasks" : [] },
-    { "title" : "beta", "tasks" : [] },
+    {
+      "title" : "alpha",
+      "tasks" : [
+        { "description" : "refactor code" },
+        { "description" : "fix error in tp project" }
+      ]
+    },
+    {
+      "title" : "beta",
+      "tasks" : [
+        { "description" : "refactor code" },
+        { "description" : "fix error in tp project" }
+      ]
+    },
     { "title" : "project x", "tasks" : [] },
     { "title" : "project y", "tasks" : [] },
     { "title" : "project z", "tasks" : [] }

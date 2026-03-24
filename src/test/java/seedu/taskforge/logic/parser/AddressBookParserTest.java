@@ -39,20 +39,20 @@ import seedu.taskforge.logic.commands.task.AssignTaskCommand;
 import seedu.taskforge.logic.commands.task.AssignTaskCommand.AssignTaskDescriptor;
 import seedu.taskforge.logic.commands.task.DeleteTaskCommand;
 import seedu.taskforge.logic.commands.task.DeleteTaskCommand.DeleteTaskDescriptor;
+import seedu.taskforge.logic.commands.task.TaskCommand;
 import seedu.taskforge.logic.commands.task.UnassignTaskCommand;
 import seedu.taskforge.logic.commands.task.UnassignTaskCommand.UnassignTaskDescriptor;
-import seedu.taskforge.logic.commands.task.TaskCommand;
 import seedu.taskforge.logic.parser.exceptions.ParseException;
 import seedu.taskforge.model.person.NameContainsKeywordsPredicate;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
-import seedu.taskforge.testutil.AssignTaskDescriptorBuilder;
 import seedu.taskforge.testutil.AssignProjectDescriptorBuilder;
+import seedu.taskforge.testutil.AssignTaskDescriptorBuilder;
 import seedu.taskforge.testutil.EditPersonDescriptorBuilder;
 import seedu.taskforge.testutil.PersonBuilder;
 import seedu.taskforge.testutil.PersonUtil;
-import seedu.taskforge.testutil.UnassignTaskDescriptorBuilder;
 import seedu.taskforge.testutil.UnassignProjectDescriptorBuilder;
+import seedu.taskforge.testutil.UnassignTaskDescriptorBuilder;
 
 public class AddressBookParserTest {
 

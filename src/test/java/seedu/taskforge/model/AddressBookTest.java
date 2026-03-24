@@ -18,9 +18,9 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.Email;
 import seedu.taskforge.model.person.Name;
+import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.person.exceptions.DuplicatePersonException;
 import seedu.taskforge.model.project.Project;

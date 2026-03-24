@@ -14,8 +14,8 @@ public class Task {
     public static final String VALIDATION_REGEX = "^[a-zA-Z0-9 ]{1,64}$";
 
     public final String description;
-    private final String projectTitle;
     protected boolean isDone;
+    private final String projectTitle;
 
     /**
      * Constructs a {@code Task}.

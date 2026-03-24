@@ -61,7 +61,8 @@ public class AssignTaskCommand extends TaskCommand {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        List<Task> tasksToAssign = assignTaskDescriptor.getTasks().orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED));
+        List<Task> tasksToAssign = assignTaskDescriptor.getTasks()
+            .orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED));
         List<Task> resolvedTasksToAssign = resolveTasksWithProjectTracking(tasksToAssign, personToEdit, model);
         Person editedPerson = createEditedPerson(personToEdit, resolvedTasksToAssign);
 
