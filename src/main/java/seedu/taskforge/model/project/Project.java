@@ -77,13 +77,12 @@ public class Project {
         }
 
         Project otherProject = (Project) other;
-        return title.equals(otherProject.title)
-                && tasks.equals(otherProject.tasks);
+        return title.equals(otherProject.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, tasks);
+        return Objects.hash(title);
     }
 
     /**

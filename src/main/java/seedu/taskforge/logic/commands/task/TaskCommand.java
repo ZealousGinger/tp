@@ -10,6 +10,6 @@ public abstract class TaskCommand extends Command {
 
     public static final String COMMAND_WORD = "task";
 
-    public static final String MESSAGE_USAGE = "task should be followed by assign/unassign/view";
+    public static final String MESSAGE_USAGE = "task should be followed by add/delete/assign/unassign/view";
 
 }
