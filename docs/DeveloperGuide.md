@@ -439,19 +439,20 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​ | I want to …​                           | So that I can…​                                                              |
-|----------|------|----------------------------------------|------------------------------------------------------------------------------|
-| `* * *`  | user | add a contact                          | keep track of project members.                                               |
-| `* * *`  | user | delete a contact                       | remove outdated information or remove a member from the project.             |
-| `* * *`  | user | add a project                          | keep track of projects.                                                      |
-| `* * *`  | user | remove a project                       | remove completed or discarded project.                                       |
-| `* * *`  | user | assign a project to a contact             | assign member to the project                                                 |
-| `* * *`  | user | unassign a project from a contact        | remove members from a project                                                |
-| `* * *`  | user | add tasks to contact                   | clearly know about their responsibilities                                    |
+| Priority | As a …​ | I want to …​                           | So that I can…​                                                             |
+|----------|------|----------------------------------------|-----------------------------------------------------------------------------|
+| `* * *`  | user | add a contact                          | keep track of project members.                                              |
+| `* * *`  | user | delete a contact                       | remove outdated information or remove a member from the project.            |
+| `* * *`  | user | add a project                          | keep track of projects.                                                     |
+| `* * *`  | user | remove a project                       | remove completed or discarded project.                                      |
+| `* * *`  | user | assign a project to a contact          | assign member to the project                                                |
+| `* * *`  | user | unassign a project from a contact      | remove members from a project                                               |
+| `* * *`  | user | add tasks to contact                   | clearly know about their responsibilities                                   |
 | `* * *`  | user | delete tasks from a contact            | easily remove tasks that is falsely assigned to the contact or has been done |
-| `* * *`  | user | view all contacts                      | see all the project members contacts                                         |
-| `* * *`  | user | view all projects                      | easily have an overview of all projects                                      |
-| `* * *`  | user | view all tasks assigned to the contact | see all the tasks assigned to a contact                                      |
+| `* * *`  | user | view all contacts                      | see all the project members contacts                                        |
+| `* * *`  | user | view all projects                      | easily have an overview of all projects                                     |
+| `* * *`  | user | view all tasks assigned to the contact | see all the tasks assigned to a contact                                     |
+| `* * *`  | user | find contacts by any parameters        | quickly find someone                                                        |
 
 *{More to be added}*
 
