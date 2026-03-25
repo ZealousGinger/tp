@@ -5,8 +5,6 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandSucces
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
 
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +18,8 @@ import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
 import seedu.taskforge.model.UserPrefs;
-import seedu.taskforge.model.person.NameContainsKeywordsPredicate;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonContainsKeywordsPredicate;
 import seedu.taskforge.testutil.PersonBuilder;
 
 public class UndoCommandTest {
@@ -61,7 +59,7 @@ public class UndoCommandTest {
     public void execute_nonModifyingCommand_noCommit() throws CommandException {
         UndoCommand undoCommand = new UndoCommand();
 
-        FindCommand findCommand = new FindCommand(new NameContainsKeywordsPredicate(new ArrayList<>()));
+        FindCommand findCommand = new FindCommand(new PersonContainsKeywordsPredicate());
         ListCommand listCommand = new ListCommand();
         ListProjectCommand listProjectCommand = new ListProjectCommand();
         ViewTasksCommand viewTasksCommand = new ViewTasksCommand(INDEX_FIRST_PERSON);
