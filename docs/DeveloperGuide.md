@@ -665,16 +665,16 @@ testers are expected to do more *exploratory* testing.
 
     1. Prerequisites: There are existing projects in the project list, e.g. `Alpha`, `Alpha Backend`, `Beta`.
 
-    1. Test case: `project find alpha`  
+    1. Test case: `project find alpha`
        Expected: All projects whose titles contain `alpha` are shown in the result display.
 
-    1. Test case: `project find beta`  
+    1. Test case: `project find beta`
        Expected: The matching project is shown in the result display.
 
-    1. Test case: `project find gamma`  
+    1. Test case: `project find gamma`
        Expected: A message is shown indicating that no matching projects were found.
 
-    1. Test case: `project find`  
+    1. Test case: `project find`
        Expected: Invalid command format message is shown.
 
 1. _{ more test cases …​ }_

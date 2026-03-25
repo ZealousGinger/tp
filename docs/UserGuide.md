@@ -325,7 +325,7 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Add Person** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
 **Add Project** | `project add PROJECT_NAME`<br> e.g., `project add WebApp`
 **Add Task** | `task add INDEX -n TASK_NAME`<br> e.g., `task add 1 -n Draft proposal`
 **Assign Project** | `project assign INDEX -n PROJECT_NAME`<br> e.g., `project assign 1 -n WebApp`
@@ -333,10 +333,11 @@ Action | Format, Examples
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Delete Project** | `project delete INDEX`<br> e.g., `project delete 1`
 **Delete Task** | `task delete INDEX -i TASK_INDEX`<br> e.g., `task delete 2 -i 1`
+**Find Project** | `project find KEYWORD [MORE_KEYWORDS]`<br> e.g., `project find Alpha Web`
 **View Tasks** | `task view INDEX`<br> e.g.,`task view 1`
-**Edit** | `edit Index [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit Index -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List** | `list`
+**Edit Person** | `edit Index [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit Index -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Find Person** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**List Person** | `list`
 **Unassign Project** | `project unassign INDEX -i PROJECT_INDEX`<br> e.g., `project unassgin 2 -i 1`
 **View Projects** | `project list`
 **Help** | `help`
