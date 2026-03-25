@@ -5,6 +5,11 @@ import java.util.List;
 
 /**
  * Represents an address book with undo/redo capabilities.
+ *
+ * <p>The undo/redo history is maintained only for the current session.
+ * History is not persisted between application restarts. When the
+ * application closes, all saved states are discarded.</p>
+ *
  * Maintains a history of address book states and the commands that created them.
  */
 public class VersionedAddressBook extends AddressBook {
@@ -69,10 +74,20 @@ public class VersionedAddressBook extends AddressBook {
         return storedInputs.get(currentInputPointer);
     }
 
+    /**
+     * Checks whether it is possible to perform undo.
+     * Undo is possible if there is a previous state to restore.
+     * @return true if there is a previous state available, false otherwise
+     */
     public boolean canUndo() {
         return currentStatePointer > 0;
     }
 
+    /**
+     * Checks whether it is possible to perform redo.
+     * Redo is possible if there is a next state to restore.
+     * @return true if there is a next state available, false otherwise
+     */
     public boolean canRedo() {
         return currentStatePointer < addressBookStateList.size() - 1;
     }
