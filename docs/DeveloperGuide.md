@@ -85,7 +85,7 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2526S2-CS2103T-W09-4/tp/blob/master/src/main/java/seedu/taskforge/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
@@ -280,12 +280,13 @@ When a user adds or edits a person including changing project, each value must b
 
 This ensures a person can only be assigned to valid existing projects.
 
-### Task management feature (`task add`, `task delete`)
+### Task management feature (`task add`, `task delete`,`task view`)
 
 TaskForge supports task management through the parent command `task` with two subcommands:
 
 - `task add INDEX -n TASK_NAME`
 - `task delete INDEX -i TASK_INDEX`
+- `task view INDEX`
 
 #### Implementation overview
 
@@ -293,27 +294,31 @@ TaskForge supports task management through the parent command `task` with two su
    - `TaskCommand` is the abstract base for task-related commands and defines the top-level command word `task`.
    - `AddTaskCommand` handles adding one or more tasks to a person.
    - `DeleteTaskCommand` handles deleting one or more tasks from a person by local task index.
-
+   - `ViewTasksCommand` handles viewing all tasks assigned to a person.
 2. **Parser flow**
    - `AddressBookParser#parseCommand` routes top-level `task` input to `AddressBookParser#handleTask`.
    - `handleTask` extracts the task subcommand and dispatches as follows:
       - `add` -> `AddTaskCommandParser`
       - `delete` -> `DeleteTaskCommandParser`
+      - `view` -> `ViewTasksCommandParser`
    - Unknown or missing task subcommands throw a `ParseException` with `TaskCommand.MESSAGE_USAGE`.
 
 3. **Input parsing details**
    - `AddTaskCommandParser` parses the preamble as the target person `INDEX` and parses task names from repeated `-n` prefixes.
    - `DeleteTaskCommandParser` parses the preamble as the target person `INDEX` and parses task indexes from repeated `-i` prefixes.
+   - `ViewTasksCommandParser` parses the preamble as the target person `INDEX`.
    - If no task payload is provided (e.g., `task add 1` or `task delete 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
    - Similarly, if an empty task name or task index is provided (e.g., `task add 1 -n` or `task delete 1 -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
 
 4. **Execution behavior and validation**
-   - Both task commands resolve the target person from `model.getFilteredPersonList()` using the supplied person `INDEX`.
-   - If the person index is invalid, execution fails with `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX`.
-   - `AddTaskCommand` appends tasks to the person's current task list and rejects duplicates via `MESSAGE_DUPLICATE_TASK`.
-   - `DeleteTaskCommand` resolves each local task index from the selected person's task list and throws
-     `MESSAGE_INDEX_OUT_OF_BOUND` if any task index is invalid.
-   - On success, both commands update the person in the model and refresh the filtered person list.
+    - All task commands resolve the target person from `model.getFilteredPersonList()` using the supplied person `INDEX`.
+    - If the person index is invalid, execution fails with `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX` or the command-specific invalid index message.
+    - `AddTaskCommand` appends tasks to the person's current task list and rejects duplicates via `MESSAGE_DUPLICATE_TASK`.
+    - `DeleteTaskCommand` resolves each local task index from the selected person's task list and throws
+      `MESSAGE_INDEX_OUT_OF_BOUND` if any task index is invalid.
+    - `ViewTasksCommand` retrieves the selected person's task list and displays all tasks assigned to that person in the result box.
+    - If the selected person has no assigned tasks, `ViewTasksCommand` returns a message indicating that the person has no tasks.
+    - On success, `AddTaskCommand` and `DeleteTaskCommand` update the person in the model and refresh the filtered person list, while `ViewTasksCommand` only returns the viewing result without modifying model data.
 
 ### \[Proposed\] Data archiving
 
@@ -350,15 +355,15 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​ | I want to …​                           | So that I can…​                                                            |
-|----------|------|----------------------------------------|----------------------------------------------------------------------------|
-| `* * *`  | user | add a contact                          | keep track of project members                                              |
-| `* * *`  | user | delete a contact                       | remove outdated information or remove a member from the project            |
-| `* * *`  | user | add a project                          | keep track of projects                                                     |
-| `* * *`  | user | remove a project                       | remove completed or discarded project                                      |
-| `* * *`  | user | assign a project to a contact          | assign member to the project                                               |
-| `* * *`  | user | unassign a project from a contact      | remove members from a project                                              |
-| `* * *`  | user | add tasks to contact                   | clearly know about their responsibilities                                  |
+| Priority | As a …​ | I want to …​                           | So that I can…​                                                              |
+|----------|------|----------------------------------------|------------------------------------------------------------------------------|
+| `* * *`  | user | add a contact                          | keep track of project members.                                               |
+| `* * *`  | user | delete a contact                       | remove outdated information or remove a member from the project.             |
+| `* * *`  | user | add a project                          | keep track of projects.                                                      |
+| `* * *`  | user | remove a project                       | remove completed or discarded project.                                       |
+| `* * *`  | user | assign a project to a contact             | assign member to the project                                                 |
+| `* * *`  | user | unassign a project from a contact        | remove members from a project                                                |
+| `* * *`  | user | add tasks to contact                   | clearly know about their responsibilities                                    |
 | `* * *`  | user | delete tasks from a contact            | easily remove tasks that is falsely assigned to the contact or has been done |
 | `* * *`  | user | view all contacts                      | see all the project members contacts                                       |
 | `* * *`  | user | view all projects                      | easily have an overview of all projects                                    |
@@ -493,10 +498,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. TaskForge searches the global project list.
 3. TaskForge displays the matching project titles as text.
 
-   Use case ends.
-
 **Extensions**
-
 * 1a. User enters an invalid command format.
     * 1a1. TaskForge shows an error message.
     * 1a2. User enters the command again.
@@ -508,6 +510,36 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2a1. TaskForge displays a message that no matching projects were found.
 
   Use case ends.
+
+**Use case: UC06 View all tasks assigned to a contact**
+
+**Guarantees**
+
+1. The tasks assigned to the selected contact are displayed if the input is valid.
+2. No data is modified during this operation.
+
+**MSS**
+
+1. User requests to view all contacts.
+2. TaskForge displays the list of contacts.
+3. User requests to view all tasks assigned to a contact.
+4. TaskForge displays all tasks assigned to the selected contact.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. The specified contact index is invalid.
+    * 3a1. TaskForge displays an error message.
+    * 3a2. User enters a valid command again.
+
+      Use case resumes at step 4.
+
+* 1b. The selected contact has no assigned tasks.
+    * 3b1. TaskForge displays a message indicating that the contact has no tasks.
+
+      Use case ends.
+
 
 *{More to be added}*
 
@@ -646,6 +678,7 @@ testers are expected to do more *exploratory* testing.
        Expected: Invalid command format message is shown.
 
 1. _{ more test cases …​ }_
+
 
 ### Saving data
 
