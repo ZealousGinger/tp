@@ -216,6 +216,38 @@ Examples:
 
 ### Managing tasks
 
+#### Adding a task to a project : `task add`
+
+Adds a new task to a project in the project list.
+
+Format: `task add PROJECT_INDEX -n TASK_NAME`
+
+* Adds a new task with the specified `TASK_NAME` to the project at the specified `PROJECT_INDEX`.
+* The project index refers to the index number shown by `project list`.
+* The project index **must be a positive integer** `1, 2, 3, ...`
+* Task name must be alphanumeric (only letters, numbers and spaces), between 1 to 64 characters.
+* Duplicate tasks within the same project are not allowed.
+* To add multiple tasks in one command, repeat the `-n` prefix.
+
+Examples:
+* `task add 1 -n Write documentation`
+* `task add 2 -n Design UI -n Implement backend`
+
+#### Deleting a task from a project : `task delete`
+
+Deletes a task from a project in the project list.
+
+Format: `task delete PROJECT_INDEX -i TASK_INDEX`
+
+* Deletes task(s) from the project at the specified `PROJECT_INDEX`.
+* `TASK_INDEX` refers to the task numbering shown for that project in the app.
+* Both `PROJECT_INDEX` and `TASK_INDEX` **must be positive integers** `1, 2, 3, ...`
+* To delete multiple tasks from the same project in one command, repeat the `-i` prefix.
+
+Examples:
+* `task delete 1 -i 2` deletes the 2nd task from the 1st project
+* `task delete 2 -i 1 -i 3` deletes the 1st and 3rd tasks from the 2nd project
+
 #### Assigning a task : `task assign`
 
 Assigns one or more tasks to a person.
@@ -312,11 +344,13 @@ Action | Format, Examples
 --------|------------------
 **Add** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
 **Add Project** | `project add PROJECT_NAME`<br> e.g., `project add WebApp`
+**Add Task** | `task add PROJECT_INDEX -n TASK_NAME`<br> e.g., `task add 1 -n Write report`
 **Assign Task** | `task assign INDEX -n TASK_NAME`<br> e.g., `task assign 1 -n Draft proposal`
 **Assign Project** | `project assign INDEX -n PROJECT_NAME`<br> e.g., `project assign 1 -n WebApp`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Delete Project** | `project delete INDEX`<br> e.g., `project delete 1`
+**Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX`<br> e.g., `task delete 1 -i 2`
 **Unassign Task** | `task unassign INDEX -i TASK_INDEX`<br> e.g., `task unassign 2 -i 1`
 **View Tasks** | `task view INDEX`<br> e.g.,`task view 1`
 **Edit** | `edit Index [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit Index -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
