@@ -25,4 +25,10 @@ public class FindProjectCommandParserTest {
         assertParseFailure(parser, "   ",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindProjectCommand.MESSAGE_USAGE));
     }
+
+    @Test
+    public void parse_multipleSpaces_returnsFindProjectCommand() {
+        assertParseSuccess(parser, " alpha   beta   gamma ",
+                new FindProjectCommand(Arrays.asList("alpha", "beta", "gamma")));
+    }
 }
