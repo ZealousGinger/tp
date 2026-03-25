@@ -239,14 +239,16 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 _{more aspects and alternatives to be added}_
 
-### Project management feature (`project add`, `project delete`, `project list`, `project assign`, `project unassign`)
+### Project management feature (`project add`, `project delete`, `project list`, `project assign`, `project unassign`, `project find`)
 
-TaskForge supports project management using five commands:
+TaskForge supports project management through the parent command `project` with the following subcommands:
 - `project add PROJECT_NAME`
 - `project delete PROJECT_INDEX`
 - `project list`
 - `project assign INDEX -pn PROJECT_NAME`
 - `project unassign INDEX -pn PROJECT_NAME`
+- `project find [KEYWORD]`
+
 
 #### Implementation overview
 
@@ -259,9 +261,10 @@ TaskForge supports project management using five commands:
     - `AddProjectCommand` adds a new project entry to the global UniqueProjectList.
     - `DeleteProjectCommand` removes project(s) entry from the list by the index and cascades deletion from all persons.
     - `ListProjectCommand` shows all project entries in the list.
-    - `AssignProjectCommand` assigns project(s) from the global UniqueProjectList to a person.
-    - `UnassignProjectCommand` unassigns project(s) from a person.
-    - `AddressBookParser` routes `project add`, `project delete`, `project list`, `project assign`, and `project unassign` to their
+    - `AssignProjectCommand` assigns project from the global UniqueProjectList to a person
+    - `UnassignProjectCommand` unassigns project from a person
+    - `FindProjectCommand` searches the global project list and displays projects whose titles contain the given keyword(s).
+    - `AddressBookParser` routes `project add`, `project delete`, `project list`, `project assign`, `project unassign` and `project find` to their
        corresponding command parsers/commands.
 
 3. **Parser flow**
@@ -272,6 +275,7 @@ TaskForge supports project management using five commands:
       - `list` -> `ListProjectCommandParser`
       - `assign` -> `AssignProjectCommandParser`
       - `unassign` -> `UnassignProjectCommandParser`
+      - `find` -> `FindProjectCommandParser`
    - Unknown or missing project subcommands throw a `ParseException` with `ProjectCommand.MESSAGE_USAGE`.
 
 4. **Storage layer**
@@ -285,21 +289,28 @@ TaskForge supports project management using five commands:
 - Projects must be globally unique; attempting to add a duplicate project fails with `MESSAGE_DUPLICATE_PROJECT`.
 
 **Project deletion (`project delete`)**:
-- `DeleteProjectCommand` removes project(s) from the global UniqueProjectList.
-- `AddressBook#cascadeRemoveProjectFromPersons()` automatically removes the all projects assignment that has been assigned to the contact
-- All tasks within that project is also removed through the `cascadeRemoveDeletedProjectTasksFromPersons()` function.
+- `DeleteProjectCommand` removes project(s) from the global `UniqueProjectList`.
+- `AddressBook#cascadeRemoveProjectFromPersons()` automatically removes all assignments of that project from contacts.
+- All tasks within that project are also removed through the `cascadeRemoveDeletedProjectTasksFromPersons()` function.
 
 **Project listing (`project list`)**:
 - `ListProjectCommand` retrieves and displays all projects in the global project list.
 - No validation is required; the command succeeds regardless of project count.
 
+**Project finding (`project find`)**:
+- `FindProjectCommand` validates that at least one keyword is provided.
+- `FindProjectCommandParser` throws a parse error if the user does not provide any keyword.
+- The command performs a case-insensitive search on project titles in the global project list.
+- A project is included in the result if its title contains at least one of the given keywords.
+- No data is modified during this operation; the command only returns a text-based result.
+
 **Project assignment to person (`project assign`)**:
-- `AssignProjectCommand` validates whether or not project(s) exists in the project list first.
+- `AssignProjectCommand` validates whether project(s) exist in the global project list first.
 - Uses `model.hasProject(project)` to verify project existence.
 - Rejects duplicate assignments via `MESSAGE_DUPLICATE_PROJECT`.
 
 **Project unassignment from person (`project unassign`)**:
-- `UnassignProjectCommand` validates whether or not project(s) exists in the person's assigned projects before unassignment.
+- `UnassignProjectCommand` validates whether project(s) exist in the person's assigned projects before unassignment.
 - If a person is unassigned from a project, all tasks assigned to that person that belong to that project are automatically removed.
 
 #### Input parsing details
@@ -309,6 +320,7 @@ TaskForge supports project management using five commands:
 - `ListProjectCommandParser` takes no arguments; the entire input after `list` is discarded.
 - `AssignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project names from repeated `-pn` prefixes.
 - `UnassignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project names from repeated `-pn` prefixes.
+- `FindProjectCommandParser` parses the input into one or more keywords.
 - If no project payload is provided (e.g., `project assign 1` or `project unassign 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
 - Similarly, if an empty project name is provided (e.g., `project assign 1 -pn` or `project unassign 1 -pn`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
 
@@ -449,10 +461,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user | unassign a project from a contact      | remove members from a project                                               |
 | `* * *`  | user | add tasks to contact                   | clearly know about their responsibilities                                   |
 | `* * *`  | user | delete tasks from a contact            | easily remove tasks that is falsely assigned to the contact or has been done |
-| `* * *`  | user | view all contacts                      | see all the project members contacts                                        |
-| `* * *`  | user | view all projects                      | easily have an overview of all projects                                     |
-| `* * *`  | user | view all tasks assigned to the contact | see all the tasks assigned to a contact                                     |
+
+| `* * *`  | user | view all contacts                      | see all the project members contacts                                       |
+| `* * *`  | user | view all projects                      | easily have an overview of all projects                                    |
+| `* * *`  | user | view all tasks assigned to the contact | see all the tasks assigned to a contact                                    |
+| `* * *`  | user | find projects by name                  | quickly locate relevant projects from the global project list              |
 | `* * *`  | user | find contacts by any parameters        | quickly find someone                                                        |
+
 
 *{More to be added}*
 
@@ -569,7 +584,33 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
    Use case ends.
 
-**Use case: UC05 View all tasks assigned to a contact**
+**Use case: UC05 Find projects by name**
+
+**Guarantees**
+
+1. Matching projects are displayed if at least one project title contains the given keyword.
+2. No project is modified during this operation.
+
+**MSS**
+
+1. User enters a command to find a project by keyword.
+2. TaskForge searches the global project list.
+3. TaskForge displays the matching project titles as text.
+
+**Extensions**
+* 1a. User enters an invalid command format.
+    * 1a1. TaskForge shows an error message.
+    * 1a2. User enters the command again.
+    * Steps 1a1-1a2 are repeated until the input is valid.
+
+  Use case ends.
+
+* 2a. No project matches the keyword.
+    * 2a1. TaskForge displays a message that no matching projects were found.
+
+  Use case ends.
+
+**Use case: UC06 View all tasks assigned to a contact**
 
 **Guarantees**
 
@@ -587,16 +628,17 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 3a. The specified contact index is invalid.
+* 1a. The specified contact index is invalid.
     * 3a1. TaskForge displays an error message.
     * 3a2. User enters a valid command again.
 
       Use case resumes at step 4.
 
-* 3b. The selected contact has no assigned tasks.
+* 1b. The selected contact has no assigned tasks.
     * 3b1. TaskForge displays a message indicating that the contact has no tasks.
 
       Use case ends.
+
 
 *{More to be added}*
 
@@ -715,6 +757,24 @@ testers are expected to do more *exploratory* testing.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
+
+### Finding a project
+
+1. Finding projects by name
+
+    1. Prerequisites: There are existing projects in the project list, e.g. `Alpha`, `Alpha Backend`, `Beta`.
+
+    1. Test case: `project find alpha`
+       Expected: All projects whose titles contain `alpha` are shown in the result display.
+
+    1. Test case: `project find beta`
+       Expected: The matching project is shown in the result display.
+
+    1. Test case: `project find gamma`
+       Expected: A message is shown indicating that no matching projects were found.
+
+    1. Test case: `project find`
+       Expected: Invalid command format message is shown.
 
 1. _{ more test cases …​ }_
 

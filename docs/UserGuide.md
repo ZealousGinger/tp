@@ -181,6 +181,21 @@ Format: `project delete INDEX`
 Example:
 * `project list` followed by `project delete 2` deletes the 2nd project in the list.
 
+#### Finding projects by name : `project find`
+
+Finds projects whose names contain any of the given keywords.
+
+Format: `project find KEYWORD [MORE_KEYWORDS]`
+
+* The search is case-insensitive. e.g. `alpha` will match `Alpha`
+* The search is performed on project names only.
+* Projects matching at least one keyword will be shown (i.e. `OR` search).
+* The result is shown as plain text in the result display. It does not filter or change the person list.
+
+Examples:
+* `project find alpha`
+* `project find web mobile`
+
 #### Assigning a project : `project assign`
 
 Assigns a project to a person
@@ -343,20 +358,21 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Add Person** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
 **Add Project** | `project add PROJECT_NAME`<br> e.g., `project add WebApp`
 **Add Task** | `task add PROJECT_INDEX -n TASK_NAME`<br> e.g., `task add 1 -n Write report`
+**Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX`<br> e.g., `task delete 1 -i 2`
 **Assign Task** | `task assign INDEX -n TASK_NAME`<br> e.g., `task assign 1 -n Draft proposal`
 **Assign Project** | `project assign INDEX -n PROJECT_NAME`<br> e.g., `project assign 1 -n WebApp`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Delete Project** | `project delete INDEX`<br> e.g., `project delete 1`
-**Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX`<br> e.g., `task delete 1 -i 2`
-**Unassign Task** | `task unassign INDEX -i TASK_INDEX`<br> e.g., `task unassign 2 -i 1`
+**Find Project** | `project find KEYWORD [MORE_KEYWORDS]`<br> e.g., `project find Alpha Web`
 **View Tasks** | `task view INDEX`<br> e.g.,`task view 1`
-**Edit** | `edit Index [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit Index -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
-**Find** | `find [-n NAME_KEYWORDS] [-p PHONE_KEYWORDS] [-e EMAIL_KEYWORDS] [-d TASK_KEYWORDS] [-l PROJECT_KEYWORDS]`<br> e.g., `find -n James Jake -p 91234567`
-**List** | `list`
+**Edit Person** | `edit Index [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit Index -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Find Person** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**List Person** | `list`
+**Unassign Task** | `task unassign INDEX -i TASK_INDEX`<br> e.g., `task unassign 2 -i 1`
 **Unassign Project** | `project unassign INDEX -i PROJECT_INDEX`<br> e.g., `project unassgin 2 -i 1`
 **View Projects** | `project list`
 **Help** | `help`
