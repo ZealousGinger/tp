@@ -245,8 +245,8 @@ TaskForge supports project management through the parent command `project` with 
 - `project add PROJECT_NAME`
 - `project delete PROJECT_INDEX`
 - `project list`
-- `project assign INDEX -pn PROJECT_NAME`
-- `project unassign INDEX -pn PROJECT_NAME`
+- `project assign INDEX -n PROJECT_NAME`
+- `project unassign INDEX -i PROJECT_INDEX`
 - `project find [KEYWORD]`
 
 
@@ -318,11 +318,11 @@ TaskForge supports project management through the parent command `project` with 
 - `AddProjectCommandParser` parses the preamble as the new project `NAME`.
 - `DeleteProjectCommandParser` parses the preamble as the target project `INDEX`.
 - `ListProjectCommandParser` takes no arguments; the entire input after `list` is discarded.
-- `AssignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project names from repeated `-pn` prefixes.
-- `UnassignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project names from repeated `-pn` prefixes.
+- `AssignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project names from repeated `-n` prefixes.
+- `UnassignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project indexes from repeated `-i` prefixes.
 - `FindProjectCommandParser` parses the input into one or more keywords.
 - If no project payload is provided (e.g., `project assign 1` or `project unassign 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
-- Similarly, if an empty project name is provided (e.g., `project assign 1 -pn` or `project unassign 1 -pn`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
+- Similarly, if an empty project name is provided (e.g., `project assign 1 -n` or `project unassign 1 -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
 
 #### Execution behavior and validation in person-related commands
 
@@ -467,6 +467,13 @@ TaskForge supports task management using 10 commands:
 - On success, `AddTaskCommand`, `DeleteTaskCommand`, `EditTaskCommand`, `AssignTaskCommand`, and `UnassignTaskCommand` update the model.
 - `ListTaskCommand`, `FindTaskCommand`, and `ViewTasksCommand` only retrieve and display information without modifying model data.
 
+#### Availability feature
+
+The `Person` model includes `getWorkload()` and `getAvailability()` methods to compute a person's availability based on their assigned tasks.
+
+`getWorkload()` returns the number of incomplete tasks, while `getAvailability()` returns an `Availability` enum (FREE, AVAILABLE, BUSY, OVERLOADED) based on predefined thresholds.
+The availability status is displayed in the `PersonCard` UI as a colored circle next to the number of workload.
+
 ### \[Proposed\] Data archiving
 
 _{Explain here how the data archiving feature will be implemented}_
@@ -502,22 +509,23 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​ | I want to …​                           | So that I can…​                                                             |
-|----------|------|----------------------------------------|-----------------------------------------------------------------------------|
-| `* * *`  | user | add a contact                          | keep track of project members.                                              |
-| `* * *`  | user | delete a contact                       | remove outdated information or remove a member from the project.            |
-| `* * *`  | user | add a project                          | keep track of projects.                                                     |
-| `* * *`  | user | remove a project                       | remove completed or discarded project.                                      |
-| `* * *`  | user | assign a project to a contact          | assign member to the project                                                |
-| `* * *`  | user | unassign a project from a contact      | remove members from a project                                               |
-| `* * *`  | user | add tasks to contact                   | clearly know about their responsibilities                                   |
+| Priority | As a …​ | I want to …​                           | So that I can…​                                                              |
+|----------|------|----------------------------------------|------------------------------------------------------------------------------|
+| `* * *`  | user | add a contact                          | keep track of project members.                                               |
+| `* * *`  | user | delete a contact                       | remove outdated information or remove a member from the project.             |
+| `* * *`  | user | add a project                          | keep track of projects.                                                      |
+| `* * *`  | user | remove a project                       | remove completed or discarded project.                                       |
+| `* * *`  | user | assign a project to a contact          | assign member to the project                                                 |
+| `* * *`  | user | unassign a project from a contact      | remove members from a project                                                |
+| `* * *`  | user | add tasks to contact                   | clearly know about their responsibilities                                    |
 | `* * *`  | user | delete tasks from a contact            | easily remove tasks that is falsely assigned to the contact or has been done |
+| `* * *`  | user | view all contacts                      | see all the project members contacts                                         |
+| `* * *`  | user | view all projects                      | easily have an overview of all projects                                      |
+| `* * *`  | user | view all tasks assigned to the contact | see all the tasks assigned to a contact                                      |
+| `* * *`  | user | find projects by name                  | quickly locate relevant projects from the global project list                |
+| `* * *`  | user | find contacts by any parameters        | quickly find someone                                                         |
+| `*`      | user | view team member's availability        | who is free to take on work                                                  |
 
-| `* * *`  | user | view all contacts                      | see all the project members contacts                                       |
-| `* * *`  | user | view all projects                      | easily have an overview of all projects                                    |
-| `* * *`  | user | view all tasks assigned to the contact | see all the tasks assigned to a contact                                    |
-| `* * *`  | user | find projects by name                  | quickly locate relevant projects from the global project list              |
-| `* * *`  | user | find contacts by any parameters        | quickly find someone                                                        |
 
 
 *{More to be added}*
