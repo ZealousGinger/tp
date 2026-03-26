@@ -264,6 +264,20 @@ Examples:
 * `task delete 1 -i 2` deletes the 2nd task from the 1st project
 * `task delete 2 -i 1 -i 3` deletes the 1st and 3rd tasks from the 2nd project
 
+#### Listing all tasks in a project : `task list`
+
+Lists all tasks that belong to the specified project.
+
+Format: `task list -n PROJECT_NAME`
+
+* Lists task(s) from the project named `PROJECT_NAME`.
+* `PROJECT_NAME` must match an existing project in TaskForge.
+* Project name matching is case-insensitive.
+
+Examples:
+* `task list -n Alpha`
+* `task list -n Project X`
+
 #### Assigning a task : `task assign`
 
 Assigns one or more tasks to a person.
@@ -362,6 +376,7 @@ Action | Format, Examples
 **Add Project** | `project add PROJECT_NAME`<br> e.g., `project add WebApp`
 **Add Task** | `task add PROJECT_INDEX -n TASK_NAME`<br> e.g., `task add 1 -n Write report`
 **Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX`<br> e.g., `task delete 1 -i 2`
+**List Tasks by Project** | `task list -n PROJECT_NAME`<br> e.g., `task list -n Alpha`
 **Assign Task** | `task assign INDEX -n TASK_NAME`<br> e.g., `task assign 1 -n Draft proposal`
 **Assign Project** | `project assign INDEX -n PROJECT_NAME`<br> e.g., `project assign 1 -n WebApp`
 **Clear** | `clear`
