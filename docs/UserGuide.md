@@ -278,6 +278,21 @@ Examples:
 * `task list -n Alpha`
 * `task list -n Project X`
 
+#### Finding tasks by keyword : `task find`
+
+Finds tasks whose names contain any of the given keywords across all projects.
+
+Format: `task find KEYWORD [MORE_KEYWORDS]`
+
+* The search is case-insensitive. e.g. `report` will match `Write report`.
+* The search checks all task lists from every project.
+* A matching result is shown as `taskName - projectName`.
+* Tasks matching at least one keyword will be shown (i.e. `OR` search).
+
+Examples:
+* `task find report`
+* `task find bug ui`
+
 #### Assigning a task : `task assign`
 
 Assigns one or more tasks to a person.
@@ -377,6 +392,7 @@ Action | Format, Examples
 **Add Task** | `task add PROJECT_INDEX -n TASK_NAME`<br> e.g., `task add 1 -n Write report`
 **Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX`<br> e.g., `task delete 1 -i 2`
 **List Tasks by Project** | `task list -n PROJECT_NAME`<br> e.g., `task list -n Alpha`
+**Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]`<br> e.g., `task find report bug`
 **Assign Task** | `task assign INDEX -n TASK_NAME`<br> e.g., `task assign 1 -n Draft proposal`
 **Assign Project** | `project assign INDEX -n PROJECT_NAME`<br> e.g., `project assign 1 -n WebApp`
 **Clear** | `clear`

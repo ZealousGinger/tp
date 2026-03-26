@@ -40,6 +40,7 @@ import seedu.taskforge.logic.commands.task.AssignTaskCommand;
 import seedu.taskforge.logic.commands.task.AssignTaskCommand.AssignTaskDescriptor;
 import seedu.taskforge.logic.commands.task.DeleteTaskCommand;
 import seedu.taskforge.logic.commands.task.DeleteTaskCommand.DeleteTaskDescriptor;
+import seedu.taskforge.logic.commands.task.FindTaskCommand;
 import seedu.taskforge.logic.commands.task.ListTaskCommand;
 import seedu.taskforge.logic.commands.task.TaskCommand;
 import seedu.taskforge.logic.commands.task.UnassignTaskCommand;
@@ -209,6 +210,13 @@ public class AddressBookParserTest {
         ListTaskCommand command = (ListTaskCommand) parser.parseCommand(TaskCommand.COMMAND_WORD
                 + " " + ListTaskCommand.SUBCOMMAND_WORD + " -n alpha");
         assertEquals(new ListTaskCommand(new Project("alpha")), command);
+    }
+
+    @Test
+    public void parseCommand_findTask() throws Exception {
+        FindTaskCommand command = (FindTaskCommand) parser.parseCommand(TaskCommand.COMMAND_WORD
+                + " " + FindTaskCommand.SUBCOMMAND_WORD + " report bug");
+        assertEquals(new FindTaskCommand(Arrays.asList("report", "bug")), command);
     }
 
     @Test
