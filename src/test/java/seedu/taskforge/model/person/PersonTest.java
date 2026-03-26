@@ -129,6 +129,7 @@ public class PersonTest {
         // when total tasks = 0
         Person freePerson = personBuilder.build();
         assertEquals(Availability.FREE, freePerson.getAvailability());
+        assertEquals("Free", freePerson.getAvailability().toString());
 
         // when total tasks = Person.AVAILABLE
         while (taskCount <= Person.AVAILABLE) {
@@ -137,6 +138,7 @@ public class PersonTest {
         }
         Person availablePerson = personBuilder.build();
         assertEquals(Availability.AVAILABLE, availablePerson.getAvailability());
+        assertEquals("Available", availablePerson.getAvailability().toString());
 
         // when total tasks = Person.BUSY
         while (taskCount <= Person.BUSY) {
@@ -145,10 +147,13 @@ public class PersonTest {
         }
         Person busyPerson = personBuilder.build();
         assertEquals(Availability.BUSY, busyPerson.getAvailability());
+        assertEquals("Busy", busyPerson.getAvailability().toString());
+
 
         // when total tasks > Person.BUSY
         personBuilder.appendTasks(VALID_TASK_REFACTOR + taskCount + 1);
         Person overloadedPerson = personBuilder.build();
         assertEquals(Availability.OVERLOADED, overloadedPerson.getAvailability());
+        assertEquals("Overloaded", overloadedPerson.getAvailability().toString());
     }
 }
