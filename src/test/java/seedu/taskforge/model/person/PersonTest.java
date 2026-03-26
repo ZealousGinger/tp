@@ -104,4 +104,51 @@ public class PersonTest {
                 + ALICE.getProjects() + ", tasks=" + ALICE.getTasks() + "}";
         assertEquals(expected, ALICE.toString());
     }
+
+    @Test
+    public void getWorkloadTest() {
+        // No task = no workload
+        Person person = new PersonBuilder().build();
+        assertEquals(0, person.getWorkload());
+
+        // 2 tasks = 2 workloads
+        Person personWithTask = new PersonBuilder().withTasks(VALID_TASK_REFACTOR, VALID_TASK_FIX_ERROR).build();
+        assertEquals(2, personWithTask.getWorkload());
+
+        // 2 tasks with 1 done = 1 workload
+        Person personDoneTask = new PersonBuilder().withTasks(VALID_TASK_REFACTOR)
+                .appendDoneTasks(VALID_TASK_FIX_ERROR).build();
+        assertEquals(1, personDoneTask.getWorkload());
+    }
+
+    @Test
+    public void getAvailabilityTest() {
+        PersonBuilder personBuilder = new PersonBuilder();
+        int taskCount = 1;
+
+        // when total tasks = 0
+        Person freePerson = personBuilder.build();
+        assertEquals(Availability.FREE, freePerson.getAvailability());
+
+        // when total tasks = Person.AVAILABLE
+        while (taskCount <= Person.AVAILABLE) {
+            personBuilder.appendTasks(VALID_TASK_REFACTOR + taskCount);
+            taskCount++;
+        }
+        Person availablePerson = personBuilder.build();
+        assertEquals(Availability.AVAILABLE, availablePerson.getAvailability());
+
+        // when total tasks = Person.BUSY
+        while (taskCount <= Person.BUSY) {
+            personBuilder.appendTasks(VALID_TASK_REFACTOR + taskCount);
+            taskCount++;
+        }
+        Person busyPerson = personBuilder.build();
+        assertEquals(Availability.BUSY, busyPerson.getAvailability());
+
+        // when total tasks > Person.BUSY
+        personBuilder.appendTasks(VALID_TASK_REFACTOR + taskCount + 1);
+        Person overloadedPerson = personBuilder.build();
+        assertEquals(Availability.OVERLOADED, overloadedPerson.getAvailability());
+    }
 }
