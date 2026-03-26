@@ -357,7 +357,7 @@ TaskForge supports task management using eight commands:
 2. **Logic layer**
     - `AddTaskCommand` adds new task(s) to a project in the global project list.
     - `DeleteTaskCommand` removes task(s) from a project by project index and task index.
-   - `ListTaskCommand` lists all task(s) from a specified project by project name.
+    - `ListTaskCommand` lists all task(s) from a specified project by project name.
     - `AssignTaskCommand` assigns existing task(s) to a person.
     - `UnassignTaskCommand` unassigns task(s) from a person.
     - `ViewTasksCommand` displays all tasks assigned to a person.
@@ -444,6 +444,13 @@ TaskForge supports task management using eight commands:
 - `ListTaskCommand` resolves the target project by project name and fails if the project does not exist.
 - On success, `AddTaskCommand`, `DeleteTaskCommand`, `AssignTaskCommand`, and `UnassignTaskCommand` update the model and refresh the filtered person list.
 - `ListTaskCommand` and `ViewTasksCommand` only retrieve and display information without modifying model data.
+
+#### Availability feature
+
+The `Person` model includes `getWorkload()` and `getAvailability()` methods to compute a person's availability based on their assigned tasks. 
+
+`getWorkload()` returns the number of incomplete tasks, while `getAvailability()` returns an `Availability` enum (FREE, AVAILABLE, BUSY, OVERLOADED) based on predefined thresholds. 
+The availability status is displayed in the `PersonCard` UI as a colored circle next to the number of workload.
 
 ### \[Proposed\] Data archiving
 
