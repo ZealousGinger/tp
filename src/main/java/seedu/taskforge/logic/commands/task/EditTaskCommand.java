@@ -71,6 +71,7 @@ public class EditTaskCommand extends TaskCommand {
         model.setProject(projectToEdit, editedProject);
         reassignPersonsToEditedTask(model, assignedPersons, editedProject, renamedTaskWithProject);
 
+        model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_SUCCESS, editedProject));
     }
 
