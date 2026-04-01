@@ -26,6 +26,7 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.person.Email;
 import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonProject;
 import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
@@ -79,14 +80,10 @@ public class EditCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+        Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor, model);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-        }
-
-        if (editPersonDescriptor.getProjects().isPresent()) {
-            validateProjectsExist(editPersonDescriptor.getProjects().get(), model);
         }
 
         model.setPerson(personToEdit, editedPerson);
@@ -98,17 +95,34 @@ public class EditCommand extends Command {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor,
+            Model model) throws CommandException {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        List<Project> updatedProjects = editPersonDescriptor.getProjects().orElse(personToEdit.getProjects());
         List<Task> updatedTasks = editPersonDescriptor.getTasks().orElse(personToEdit.getTasks());
+        List<PersonProject> updatedPersonProjects;
+
+        if (editPersonDescriptor.getProjects().isPresent()) {
+            List<Project> projectsToAssign = editPersonDescriptor.getProjects().get();
+            updatedPersonProjects = new ArrayList<>();
+            List<Project> globalProjectList = new ArrayList<>(model.getProjectList());
+            
+            for (Project project : projectsToAssign) {
+                int projectIndex = globalProjectList.indexOf(project);
+                if (projectIndex == -1) {
+                    throw new CommandException("The project to assign does not exist in the address book");
+                }
+                updatedPersonProjects.add(new PersonProject(projectIndex));
+            }
+        } else {
+            updatedPersonProjects = personToEdit.getProjects();
+        }
 
         return new Person(updatedName, updatedPhone, updatedEmail,
-                updatedProjects, updatedTasks);
+                updatedPersonProjects, updatedTasks);
     }
 
     @Override

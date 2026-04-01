@@ -11,8 +11,8 @@ import seedu.taskforge.commons.exceptions.IllegalValueException;
 import seedu.taskforge.model.person.Email;
 import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonProject;
 import seedu.taskforge.model.person.Phone;
-import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
 /**
@@ -25,7 +25,7 @@ class JsonAdaptedPerson {
     private final String name;
     private final String phone;
     private final String email;
-    private final List<JsonAdaptedProject> projects = new ArrayList<>();
+    private final List<JsonAdaptedPersonProject> projects = new ArrayList<>();
     private final List<JsonAdaptedTask> tasks = new ArrayList<>();
 
     /**
@@ -34,7 +34,7 @@ class JsonAdaptedPerson {
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
                              @JsonProperty("email") String email,
-                             @JsonProperty("projects") List<JsonAdaptedProject> projects,
+                             @JsonProperty("projects") List<JsonAdaptedPersonProject> projects,
                              @JsonProperty("tasks") List<JsonAdaptedTask> tasks) {
         this.name = name;
         this.phone = phone;
@@ -56,7 +56,7 @@ class JsonAdaptedPerson {
         phone = source.getPhone().value;
         email = source.getEmail().value;
         projects.addAll(source.getProjects().stream()
-                .map(JsonAdaptedProject::new)
+                .map(JsonAdaptedPersonProject::new)
                 .collect(Collectors.toList()));
         tasks.addAll(source.getTasks().stream()
                 .map(JsonAdaptedTask::new)
@@ -69,10 +69,10 @@ class JsonAdaptedPerson {
      * @throws IllegalValueException if there were any data constraints violated in the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
-        final List<Project> personProjects = new ArrayList<>();
+        final List<PersonProject> personProjects = new ArrayList<>();
         final List<Task> personTasks = new ArrayList<>();
-        for (JsonAdaptedProject project : projects) {
-            personProjects.add(project.toModelType());
+        for (JsonAdaptedPersonProject personProject : projects) {
+            personProjects.add(personProject.toModelType());
         }
         for (JsonAdaptedTask task : tasks) {
             personTasks.add(task.toModelType());
@@ -102,9 +102,9 @@ class JsonAdaptedPerson {
         final Email modelEmail = new Email(email);
 
 
-        final List<Project> modelProjects = new ArrayList<>(personProjects);
+        final List<PersonProject> modelPersonProjects = new ArrayList<>(personProjects);
         final List<Task> modelTasks = new ArrayList<>(personTasks);
-        return new Person(modelName, modelPhone, modelEmail, modelProjects, modelTasks);
+        return new Person(modelName, modelPhone, modelEmail, modelPersonProjects, modelTasks);
     }
 
 }

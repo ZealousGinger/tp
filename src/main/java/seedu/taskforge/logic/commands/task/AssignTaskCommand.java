@@ -19,6 +19,7 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.person.Email;
 import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonProject;
 import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
@@ -83,30 +84,31 @@ public class AssignTaskCommand extends TaskCommand {
         Name name = personToEdit.getName();
         Phone phone = personToEdit.getPhone();
         Email email = personToEdit.getEmail();
-        List<Project> projectList = personToEdit.getProjects();
+        List<PersonProject> personProjectList = personToEdit.getProjects();
 
         List<Task> newTasks = new ArrayList<>(personToEdit.getTasks());
         newTasks.addAll(tasksToAssign);
         checkUniqueTasks(newTasks);
 
-        return new Person(name, phone, email, projectList, newTasks);
+        return new Person(name, phone, email, personProjectList, newTasks);
     }
 
     private static List<Task> resolveTasksWithProjectTracking(List<Task> tasks, Person person, Model model)
             throws CommandException {
-        List<Project> assignedProjects = person.getProjects();
-        List<Project> allProjects = model.getProjectList();
+        List<PersonProject> assignedPersonProjects = person.getProjects();
+        List<Project> allProjects = new ArrayList<>(model.getProjectList());
 
         List<Task> resolvedTasks = new ArrayList<>();
         for (Task task : tasks) {
             Project matchedProject = null;
-            for (Project assignedProject : assignedProjects) {
-                matchedProject = allProjects.stream()
-                        .filter(project -> project.equals(assignedProject) && project.getTasks().contains(task))
-                        .findFirst()
-                        .orElse(null);
-                if (matchedProject != null) {
-                    break;
+            for (PersonProject personProject : assignedPersonProjects) {
+                int projectIndex = personProject.getProjectIndex();
+                if (projectIndex >= 0 && projectIndex < allProjects.size()) {
+                    Project project = allProjects.get(projectIndex);
+                    if (project.getTasks().contains(task)) {
+                        matchedProject = project;
+                        break;
+                    }
                 }
             }
 

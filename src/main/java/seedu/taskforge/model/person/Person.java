@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 
 import seedu.taskforge.commons.util.ToStringBuilder;
-import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 /**
  * Represents a Person in the address book.
@@ -26,14 +25,14 @@ public class Person {
     private final Email email;
 
     // Data fields
-    private final List<Project> projects;
+    private final List<PersonProject> projects;
     private final List<Task> tasks;
 
     /**
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email,
-                  List<Project> projects, List<Task> tasks) {
+                  List<PersonProject> projects, List<Task> tasks) {
         requireAllNonNull(name, phone, email, projects, tasks);
         this.name = name;
         this.phone = phone;
@@ -56,10 +55,10 @@ public class Person {
 
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * Returns an immutable person project list, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public List<Project> getProjects() {
+    public List<PersonProject> getProjects() {
         return projects;
     }
 

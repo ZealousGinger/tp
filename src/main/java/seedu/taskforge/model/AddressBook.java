@@ -8,6 +8,7 @@ import java.util.List;
 import javafx.collections.ObservableList;
 import seedu.taskforge.commons.util.ToStringBuilder;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonProject;
 import seedu.taskforge.model.person.UniquePersonList;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.project.UniqueProjectList;
@@ -151,22 +152,38 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void removeProject(Project key) {
         requireNonNull(key);
+        int removedProjectIndex = projects.asUnmodifiableObservableList().indexOf(key);
         projects.remove(key);
-        cascadeRemoveProjectFromPersons(key);
+        cascadeRemoveProjectFromPersons(removedProjectIndex, key);
     }
 
     /**
      * Removes the given project from all contacts that have it in their project list.
      */
-    private void cascadeRemoveProjectFromPersons(Project projectToRemove) {
+    private void cascadeRemoveProjectFromPersons(int removedProjectIndex, Project projectToRemove) {
         List<Person> allPersons = new ArrayList<>(persons.asUnmodifiableObservableList());
         for (Person person : allPersons) {
-            if (!person.getProjects().contains(projectToRemove)) {
+            List<PersonProject> updatedProjects = new ArrayList<>();
+            boolean changed = false;
+
+            for (PersonProject personProject : person.getProjects()) {
+                int projectIndex = personProject.getProjectIndex();
+                if (projectIndex == removedProjectIndex) {
+                    changed = true;
+                    continue;
+                }
+                if (projectIndex > removedProjectIndex) {
+                    updatedProjects.add(new PersonProject(projectIndex - 1));
+                    changed = true;
+                } else {
+                    updatedProjects.add(personProject);
+                }
+            }
+
+            if (!changed) {
                 continue;
             }
 
-            List<Project> updatedProjects = new ArrayList<>(person.getProjects());
-            updatedProjects.removeIf(projectToRemove::equals);
             List<Task> updatedTasks = new ArrayList<>(person.getTasks());
             updatedTasks.removeIf(task -> task.belongsToProject(projectToRemove.title));
 
@@ -178,8 +195,9 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     private void cascadeRemoveDeletedProjectTasksFromPersons(Project project, List<Task> deletedProjectTasks) {
         List<Person> allPersons = new ArrayList<>(persons.asUnmodifiableObservableList());
+        int projectIndex = projects.asUnmodifiableObservableList().indexOf(project);
         for (Person person : allPersons) {
-            if (!person.getProjects().contains(project)) {
+            if (projectIndex < 0 || person.getProjects().stream().noneMatch(pp -> pp.getProjectIndex() == projectIndex)) {
                 continue;
             }
 

@@ -7,6 +7,7 @@ import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT_TITLE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_TASK;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -51,9 +52,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         List<Project> projectList = ParserUtil.parseProjects(argMultimap.getAllValues(PREFIX_PROJECT_TITLE));
         List<Task> taskList = ParserUtil.parseTasks(argMultimap.getAllValues(PREFIX_TASK));
 
-        Person person = new Person(name, phone, email, projectList, taskList);
+        Person person = new Person(name, phone, email, new ArrayList<>(), taskList);
 
-        return new AddCommand(person);
+        return new AddCommand(person, projectList);
     }
 
     /**

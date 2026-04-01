@@ -1,12 +1,14 @@
 package seedu.taskforge.logic.commands.person;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.taskforge.logic.commands.project.AssignProjectCommand.validateProjectsExist;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT_TITLE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_TASK;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import seedu.taskforge.commons.util.ToStringBuilder;
 import seedu.taskforge.logic.Messages;
@@ -15,6 +17,8 @@ import seedu.taskforge.logic.commands.CommandResult;
 import seedu.taskforge.logic.commands.exceptions.CommandException;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonProject;
+import seedu.taskforge.model.project.Project;
 
 /**
  * Adds a person to the address book.
@@ -41,13 +45,16 @@ public class AddCommand extends Command {
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in taskforge";
 
     private final Person toAdd;
+    private final List<Project> projectsToAssign;
 
     /**
-     * Creates an AddCommand to add the specified {@code Person}
+     * Creates an AddCommand to add the specified {@code Person}.
      */
-    public AddCommand(Person person) {
+    public AddCommand(Person person, List<Project> projectsToAssign) {
         requireNonNull(person);
+        requireNonNull(projectsToAssign);
         toAdd = person;
+        this.projectsToAssign = new ArrayList<>(projectsToAssign);
     }
 
     @Override
@@ -58,10 +65,29 @@ public class AddCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        validateProjectsExist(toAdd.getProjects(), model);
+        // Convert Projects to PersonProjects before assigning to a person
+        List<PersonProject> personProjectsToAssign = new ArrayList<>();
+        if (!projectsToAssign.isEmpty()) {
+            List<Project> globalProjectList = new ArrayList<>(model.getProjectList());
+            for (Project project : projectsToAssign) {
+                int projectIndex = globalProjectList.indexOf(project);
+                if (projectIndex == -1) {
+                    throw new CommandException("The project to assign does not exist in the address book.");
+                }
+                personProjectsToAssign.add(new PersonProject(projectIndex));
+            }
+        }
 
-        model.addPerson(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+        Person personWithProjects = new Person(
+                toAdd.getName(),
+                toAdd.getPhone(),
+                toAdd.getEmail(),
+                personProjectsToAssign,
+                toAdd.getTasks()
+        );
+
+        model.addPerson(personWithProjects);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(personWithProjects)));
     }
 
     @Override

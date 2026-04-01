@@ -14,8 +14,8 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.person.Email;
 import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonProject;
 import seedu.taskforge.model.person.Phone;
-import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
 /**
@@ -81,7 +81,7 @@ public class UnmarkTaskCommand extends TaskCommand {
         Name name = personToEdit.getName();
         Phone phone = personToEdit.getPhone();
         Email email = personToEdit.getEmail();
-        List<Project> projectList = personToEdit.getProjects();
+        List<PersonProject> personProjectList = personToEdit.getProjects();
         List<Task> currentTasks = personToEdit.getTasks();
 
         List<Task> updatedTasks = new ArrayList<>();
@@ -96,7 +96,7 @@ public class UnmarkTaskCommand extends TaskCommand {
             }
         }
 
-        return new Person(name, phone, email, projectList, updatedTasks);
+        return new Person(name, phone, email, personProjectList, updatedTasks);
     }
 
     @Override

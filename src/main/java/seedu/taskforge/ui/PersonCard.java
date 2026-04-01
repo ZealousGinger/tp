@@ -1,5 +1,6 @@
 package seedu.taskforge.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -9,7 +10,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Circle;
+import seedu.taskforge.model.ReadOnlyAddressBook;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonProject;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
@@ -50,9 +53,9 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane tasks;
 
     /**
-     * Creates a {@code PersonCode} with the given {@code Person} and index to display.
+     * Creates a {@code PersonCard} with the given {@code Person}, index, and {@code ReadOnlyAddressBook} to display.
      */
-    public PersonCard(Person person, int displayedIndex) {
+    public PersonCard(Person person, int displayedIndex, ReadOnlyAddressBook addressBook) {
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + ". ");
@@ -64,12 +67,22 @@ public class PersonCard extends UiPart<Region> {
         availability.setText(availabilityString + ".  Workload:  " + person.getWorkload());
         availabilityIndicator.getStyleClass().add(availabilityString);
 
-        List<Project> projectList = person.getProjects();
+        List<PersonProject> personProjectList = person.getProjects();
         List<Task> taskList = person.getTasks();
-        IntStream.range(0, projectList.size())
-                .forEach(i -> projects.getChildren().add(
-                        new Label((i + 1) + ". " + projectList.get(i).title)
-                ));
+        List<Project> globalProjectList = new ArrayList<>(addressBook.getProjectList());
+        
+        IntStream.range(0, personProjectList.size())
+                .forEach(i -> {
+                    PersonProject personProject = personProjectList.get(i);
+                    int projectIndex = personProject.getProjectIndex();
+                    String projectTitle = "";
+                    if (projectIndex >= 0 && projectIndex < globalProjectList.size()) {
+                        projectTitle = globalProjectList.get(projectIndex).title;
+                    }
+                    projects.getChildren().add(
+                            new Label((i + 1) + ". " + projectTitle)
+                    );
+                });
         IntStream.range(0, taskList.size())
                 .forEach(i -> tasks.getChildren().add(
                         new Label((i + 1) + ". " + (taskList.get(i).getStatus() ? "[X] " : "[ ] ")
