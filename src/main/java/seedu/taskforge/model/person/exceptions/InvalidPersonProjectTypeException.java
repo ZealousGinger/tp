@@ -6,6 +6,6 @@ package seedu.taskforge.model.person.exceptions;
  */
 public class InvalidPersonProjectTypeException extends RuntimeException {
     public InvalidPersonProjectTypeException() {
-        super("Only PersonProject objects are allowed in person project list, not Project objects");
+        super("Only PersonProject objects are allowed in person project list!");
     }
 }

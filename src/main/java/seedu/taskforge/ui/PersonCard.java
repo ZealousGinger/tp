@@ -11,8 +11,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Circle;
 import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.person.Availability;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonProject;
+import seedu.taskforge.model.person.PersonTask;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
@@ -63,13 +65,14 @@ public class PersonCard extends UiPart<Region> {
         phone.setText(person.getPhone().value);
         email.setText(person.getEmail().value);
 
-        String availabilityString = person.getAvailability().toString();
-        availability.setText(availabilityString + ".  Workload:  " + person.getWorkload());
-        availabilityIndicator.getStyleClass().add(availabilityString);
-
         List<PersonProject> personProjectList = person.getProjects();
-        List<Task> taskList = person.getTasks();
+        List<PersonTask> taskList = person.getTasks();
         List<Project> globalProjectList = new ArrayList<>(addressBook.getProjectList());
+
+        int workload = calculateWorkload(taskList, globalProjectList);
+        String availabilityString = calculateAvailability(workload).toString();
+        availability.setText(availabilityString + ".  Workload:  " + workload);
+        availabilityIndicator.getStyleClass().add(availabilityString);
         
         IntStream.range(0, personProjectList.size())
                 .forEach(i -> {
@@ -84,9 +87,52 @@ public class PersonCard extends UiPart<Region> {
                     );
                 });
         IntStream.range(0, taskList.size())
-                .forEach(i -> tasks.getChildren().add(
-                        new Label((i + 1) + ". " + (taskList.get(i).getStatus() ? "[X] " : "[ ] ")
-                                + taskList.get(i).description)
-                ));
+                .forEach(i -> {
+                    PersonTask personTask = taskList.get(i);
+                    String taskLabel = "[invalid-task-reference]";
+                    String status = "[ ] ";
+                    int projectIndex = personTask.getProjectIndex();
+                    int taskIndex = personTask.getTaskIndex();
+                    if (projectIndex >= 0 && projectIndex < globalProjectList.size()) {
+                        List<Task> projectTasks = globalProjectList.get(projectIndex).getTasks();
+                        if (taskIndex >= 0 && taskIndex < projectTasks.size()) {
+                            Task task = projectTasks.get(taskIndex);
+                            taskLabel = task.description;
+                            status = task.getStatus() ? "[X] " : "[ ] ";
+                        }
+                    }
+                    tasks.getChildren().add(
+                            new Label((i + 1) + ". " + status + taskLabel)
+                    );
+                });
+    }
+
+    private static int calculateWorkload(List<PersonTask> personTasks, List<Project> globalProjects) {
+        int workload = 0;
+        for (PersonTask personTask : personTasks) {
+            int projectIndex = personTask.getProjectIndex();
+            int taskIndex = personTask.getTaskIndex();
+            if (projectIndex < 0 || projectIndex >= globalProjects.size()) {
+                continue;
+            }
+            List<Task> projectTasks = globalProjects.get(projectIndex).getTasks();
+            if (taskIndex < 0 || taskIndex >= projectTasks.size()) {
+                continue;
+            }
+            if (!projectTasks.get(taskIndex).getStatus()) {
+                workload++;
+            }
+        }
+        return workload;
+    }
+
+    private static Availability calculateAvailability(int workload) {
+        return workload == Person.FREE
+                ? Availability.FREE
+                : workload <= Person.AVAILABLE
+                ? Availability.AVAILABLE
+                : workload <= Person.BUSY
+                ? Availability.BUSY
+                : Availability.OVERLOADED;
     }
 }

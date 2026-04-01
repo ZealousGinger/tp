@@ -10,6 +10,7 @@ import seedu.taskforge.model.person.Email;
 import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonProject;
+import seedu.taskforge.model.person.PersonTask;
 import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
@@ -26,19 +27,24 @@ public class SampleDataUtil {
         List<Project> sampleProjectList = Arrays.asList(sampleProjects);
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
-                getPersonProjectList(sampleProjectList, "Interior"), List.of(new Task("add new feature", "Interior"))),
+                getPersonProjectList(sampleProjectList, "Interior"),
+                getPersonTaskList(sampleProjectList, "Interior:add new feature")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
                 getPersonProjectList(sampleProjectList, "Manufacture", "Mobile app"), List.of(
-                            new Task("read notes", "Manufacture"),
-                            new Task("add new feature", "Mobile App"))),
+                    new PersonTask(1, 0),
+                    new PersonTask(2, 0))),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
-                getPersonProjectList(sampleProjectList, "Infrastructure"), List.of(new Task("meeting", "Infrastructure"))),
+                getPersonProjectList(sampleProjectList, "Infrastructure"),
+                getPersonTaskList(sampleProjectList, "Infrastructure:meeting")),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
-                getPersonProjectList(sampleProjectList, "Manufacture"), List.of(new Task("research on project", "Manufacture"))),
+                getPersonProjectList(sampleProjectList, "Manufacture"),
+                getPersonTaskList(sampleProjectList, "Manufacture:research on project")),
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
-                getPersonProjectList(sampleProjectList, "Web app"), List.of(new Task("add new feature", "Web App"))),
+                getPersonProjectList(sampleProjectList, "Web app"),
+                getPersonTaskList(sampleProjectList, "Web app:add new feature")),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
-                getPersonProjectList(sampleProjectList, "Future Gen"), List.of(new Task("read notes", "Future Gen")))
+                getPersonProjectList(sampleProjectList, "Future Gen"),
+                getPersonTaskList(sampleProjectList, "Future Gen:read notes"))
         };
     }
 
@@ -92,6 +98,27 @@ public class SampleDataUtil {
                         throw new IllegalArgumentException("Sample project not found: " + project);
                     }
                     return new PersonProject(projectIndex);
+                })
+                .collect(Collectors.toList());
+    }
+
+    private static List<PersonTask> getPersonTaskList(List<Project> sampleProjects, String... taskRefs) {
+        return Arrays.stream(taskRefs)
+                .map(ref -> {
+                    String[] tokens = ref.split(":", 2);
+                    if (tokens.length != 2) {
+                        throw new IllegalArgumentException("Invalid task reference: " + ref);
+                    }
+                    Project project = new Project(tokens[0]);
+                    int projectIndex = sampleProjects.indexOf(project);
+                    if (projectIndex < 0) {
+                        throw new IllegalArgumentException("Sample project not found for task reference: " + ref);
+                    }
+                    int taskIndex = sampleProjects.get(projectIndex).getTasks().indexOf(new Task(tokens[1]));
+                    if (taskIndex < 0) {
+                        throw new IllegalArgumentException("Sample task not found for task reference: " + ref);
+                    }
+                    return new PersonTask(projectIndex, taskIndex);
                 })
                 .collect(Collectors.toList());
     }

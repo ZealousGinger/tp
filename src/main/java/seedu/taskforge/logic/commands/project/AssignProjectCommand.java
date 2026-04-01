@@ -20,9 +20,9 @@ import seedu.taskforge.model.person.Email;
 import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonProject;
+import seedu.taskforge.model.person.PersonTask;
 import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
-import seedu.taskforge.model.task.Task;
 
 /**
  * Assigns a project to an existing person in the address book.
@@ -117,7 +117,7 @@ public class AssignProjectCommand extends ProjectCommand {
         Name name = personToEdit.getName();
         Phone phone = personToEdit.getPhone();
         Email email = personToEdit.getEmail();
-        List<Task> taskList = personToEdit.getTasks();
+        List<PersonTask> taskList = personToEdit.getTasks();
 
         List<PersonProject> newPersonProjects = new ArrayList<>(personToEdit.getProjects());
         List<Project> projectsToAssign = assignProjectDescriptor.getProjects().orElseThrow(() ->
