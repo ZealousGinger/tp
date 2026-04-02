@@ -1,14 +1,14 @@
 package seedu.taskforge.model.project;
 
-import seedu.taskforge.commons.util.StringUtil;
-import seedu.taskforge.commons.util.ToStringBuilder;
-import seedu.taskforge.model.person.Person;
-import seedu.taskforge.model.person.PersonContainsKeywordsPredicate;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import seedu.taskforge.commons.util.ToStringBuilder;
+
+/**
+ * Tests that a {@code Person}'s fields match any of the keywords given.
+ */
 public class ProjectContainsKeywordsPredicate implements Predicate<Project> {
     private List<String> projectKeywords;
     private List<String> taskKeywords;

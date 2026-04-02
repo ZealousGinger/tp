@@ -1,20 +1,20 @@
 package seedu.taskforge.ui;
 
+import java.util.List;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Circle;
 import seedu.taskforge.model.project.Project;
-import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
+/**
+ * An UI component that displays information of a {@code Project}.
+ */
 public class ProjectCard extends UiPart<Region> {
     private static final String FXML = "ProjectListCard.fxml";
 
@@ -47,7 +47,7 @@ public class ProjectCard extends UiPart<Region> {
         projectTitle.setText(project.toString());
         List<Task> taskList = project.getTasks();
 
-        for(int i = 0; i < taskList.size(); i++) {
+        for (int i = 0; i < taskList.size(); i++) {
             Task task = taskList.get(i);
             Circle circle = new Circle(4);
             circle.getStyleClass().add("task-not-done");

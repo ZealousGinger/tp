@@ -1,5 +1,7 @@
 package seedu.taskforge.ui;
 
+import java.util.logging.Logger;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
@@ -8,8 +10,9 @@ import javafx.scene.layout.Region;
 import seedu.taskforge.commons.core.LogsCenter;
 import seedu.taskforge.model.project.Project;
 
-import java.util.logging.Logger;
-
+/**
+ * Panel containing the list of projects.
+ */
 public class ProjectListPanel extends UiPart<Region> {
     private static final String FXML = "ProjectListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(ProjectListPanel.class);

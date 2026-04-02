@@ -307,6 +307,12 @@
     -fx-padding: 8 1 8 1;
 }
 
+.section_title {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
 #cardPane {
     -fx-background-color: transparent;
     -fx-border-width: 0;

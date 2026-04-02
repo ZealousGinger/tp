@@ -5,7 +5,6 @@ import java.util.stream.IntStream;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -74,7 +73,7 @@ public class PersonCard extends UiPart<Region> {
                         new Label((i + 1) + ". " + projectList.get(i).title)
                 ));
 
-        for(int i = 0; i < taskList.size(); i++) {
+        for (int i = 0; i < taskList.size(); i++) {
             Task task = taskList.get(i);
             Circle circle = new Circle(4);
             circle.getStyleClass().add("task-not-done");
