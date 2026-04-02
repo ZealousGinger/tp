@@ -200,18 +200,20 @@ Examples:
 
 Assigns a project to a person
 
-Format: `project assign PERSON_INDEX -n PROJECT_NAME`
+Format: `project assign PERSON_INDEX (-n PROJECT_NAME | -i PROJECT_INDEX)`
 
-* Assigns project(s) from `project list` to a person.
+* Assigns project(s) to a person by project name (`-n`) or project index (`-i`).
 * Project should exist in `project list` before being assigned to a person.
 * `PERSON_INDEX` refers to the person index that's displayed on `list`
 * `PERSON_INDEX` **must be a positive integer** `1, 2, 3, ...`
+* If using `-i`, `PROJECT_INDEX` refers to the index shown by `project list`.
+* You must provide exactly one selector type: either `-n` or `-i` (not both).
 * The same project cannot be assigned twice to the same person (no duplicates)
-* To assign multiple projects in one command, repeat the `-n` prefix.
+* To assign multiple projects in one command, repeat the chosen prefix (`-n` or `-i`).
 
 Example:
 * `project assign 1 -n WebApp` checks whether the project named WebApp exists, then assigns the project to the 1st person in the `list`
-* `project assign 2 -n WebApp -n MobileApp` assigns multiple projects to the 2nd person in the `list`
+* `project assign 2 -i 1 -i 3` assigns the 1st and 3rd projects from `project list` to the 2nd person in the `list`
 
 #### Unassigning a project : `project unassign`
 
@@ -227,8 +229,8 @@ Format: `project unassign PERSON_INDEX -i PROJECT_INDEX`
 * To unassign multiple projects in one command, repeat the `-i` prefix.
 
 Examples:
-* `project delete 1 -i 2` deletes 2nd project from the 1st person in the `list`
-* `project delete 3 -i 1 -i 4` deletes 1st and 4th project from the 3rd person in the `list`
+* `project unassign 1 -i 2` unassigns the 2nd project from the 1st person in the `list`
+* `project unassign 3 -i 1 -i 4` unassigns the 1st and 4th projects from the 3rd person in the `list`
 
 ### Managing tasks
 
@@ -314,16 +316,18 @@ Examples:
 
 Assigns one or more tasks to a person.
 
-Format: `task assign INDEX -n TASK_NAME`
+Format: `task assign PERSON_INDEX (-n TASK_NAME | -i TASK_INDEX)`
 
-* Adds task(s) to the person at the specified `INDEX`.
-* The person index refers to the index number shown in the displayed person list.
-* The person index **must be a positive integer** `1, 2, 3, ...`
-* To assign multiple tasks in one command, repeat the `-n` prefix.
+* Adds task(s) to the person at the specified `PERSON_INDEX`.
+* `PERSON_INDEX` refers to the index number shown in the displayed person list.
+* `PERSON_INDEX` **must be a positive integer** `1, 2, 3, ...`
+* If using `-i`, `TASK_INDEX` refers to the task numbering shown in the app for assignable tasks.
+* You must provide exactly one selector type: either `-n` or `-i` (not both).
+* To assign multiple tasks in one command, repeat the chosen prefix (`-n` or `-i`).
 
 Examples:
 * `task assign 1 -n Write report`
-* `task assign 2 -n Prepare slides -n Rehearse demo`
+* `task assign 2 -i 1 -i 3`
 
 #### Unassigning a task : `task unassign`
 
@@ -439,8 +443,8 @@ Action | Format, Examples
 **Edit Task** | `task edit PROJECT_NAME -i TASK_INDEX_FROM_PROJECT -n NEW_TASK_NAME`<br> e.g., `task edit Alpha -i 1 -n Prepare sprint report`
 **List Tasks by Project** | `task list -n PROJECT_NAME`<br> e.g., `task list -n Alpha`
 **Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]`<br> e.g., `task find report bug`
-**Assign Task** | `task assign INDEX -n TASK_NAME`<br> e.g., `task assign 1 -n Draft proposal`
-**Assign Project** | `project assign INDEX -n PROJECT_NAME`<br> e.g., `project assign 1 -n WebApp`
+**Assign Task** | `task assign PERSON_INDEX (-n TASK_NAME | -i TASK_INDEX)`<br> e.g., `task assign 1 -n Draft proposal` or `task assign 1 -i 2`
+**Assign Project** | `project assign PERSON_INDEX (-n PROJECT_NAME | -i PROJECT_INDEX)`<br> e.g., `project assign 1 -n WebApp` or `project assign 1 -i 2`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Delete Project** | `project delete INDEX`<br> e.g., `project delete 1`
@@ -452,6 +456,6 @@ Action | Format, Examples
 **Find Person** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List Person** | `list`
 **Unassign Task** | `task unassign INDEX -i TASK_INDEX`<br> e.g., `task unassign 2 -i 1`
-**Unassign Project** | `project unassign INDEX -i PROJECT_INDEX`<br> e.g., `project unassgin 2 -i 1`
+**Unassign Project** | `project unassign INDEX -i PROJECT_INDEX`<br> e.g., `project unassign 2 -i 1`
 **View Projects** | `project list`
 **Help** | `help`

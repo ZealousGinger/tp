@@ -92,6 +92,26 @@ public class AssignTaskCommandTest {
     }
 
     @Test
+    public void execute_addOneTaskByIndex_success() {
+        Index indexFirstPerson = Index.fromOneBased(1);
+        Person firstPerson = model.getFilteredPersonList().get(indexFirstPerson.getZeroBased());
+
+        PersonBuilder personInList = new PersonBuilder(firstPerson);
+        Person editedPerson = personInList.withTasks(VALID_TASK_REFACTOR, VALID_TASK_FIX_ERROR).build();
+
+        AssignTaskDescriptor descriptor = new AssignTaskDescriptorBuilder()
+                .withTaskIndexes("2").build();
+        AssignTaskCommand assignTaskCommand = new AssignTaskCommand(indexFirstPerson, descriptor);
+
+        String expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(firstPerson, editedPerson);
+
+        assertCommandSuccess(assignTaskCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_addOneTaskDuplicateUnfilteredList_exceptionThrown() {
         Index indexFirstPerson = Index.fromOneBased(1);
         AssignTaskDescriptor descriptor = new AssignTaskDescriptorBuilder()
@@ -222,6 +242,15 @@ public class AssignTaskCommandTest {
         AssignTaskCommand assignTaskCommand = new AssignTaskCommand(INDEX_FIRST_PERSON, descriptor);
 
         assertCommandFailure(assignTaskCommand, model, TaskCommand.MESSAGE_TASK_NOT_IN_ASSIGNED_PROJECTS);
+    }
+
+    @Test
+    public void execute_taskIndexOutOfBound_failure() {
+        AssignTaskDescriptor descriptor = new AssignTaskDescriptorBuilder()
+                .withTaskIndexes("99").build();
+        AssignTaskCommand assignTaskCommand = new AssignTaskCommand(INDEX_FIRST_PERSON, descriptor);
+
+        assertCommandFailure(assignTaskCommand, model, AssignTaskCommand.MESSAGE_INDEX_OUT_OF_BOUND);
     }
 
     @Test

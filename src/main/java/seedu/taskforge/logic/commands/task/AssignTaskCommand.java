@@ -1,6 +1,7 @@
 package seedu.taskforge.logic.commands.task;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -32,8 +33,10 @@ public class AssignTaskCommand extends TaskCommand {
     public static final String MESSAGE_SUCCESS = "Task assigned: %1$s";
     public static final String MESSAGE_USAGE = COMMAND_WORD + " "
             + SUBCOMMAND_WORD + " INDEX "
-            + PREFIX_NAME + " TASK_NAME";
+            + PREFIX_NAME + " TASK_NAME | " + PREFIX_INDEX + " TASK_INDEX";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists for this person!";
+    public static final String MESSAGE_INDEX_OUT_OF_BOUND = "Task index is out of bound";
+    public static final String MESSAGE_TASK_NOT_FOUND = "The task to assign does not exist in the address book";
     public static final String MESSAGE_NOT_EDITED = "At least one task to assign must be provided";
 
     private final Index index;
@@ -61,9 +64,7 @@ public class AssignTaskCommand extends TaskCommand {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        List<Task> tasksToAssign = assignTaskDescriptor.getTasks()
-            .orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED));
-        List<Task> resolvedTasksToAssign = resolveTasksWithProjectTracking(tasksToAssign, personToEdit, model);
+        List<Task> resolvedTasksToAssign = resolveTasksToAssign(assignTaskDescriptor, personToEdit, model);
         Person editedPerson = createEditedPerson(personToEdit, resolvedTasksToAssign);
 
         model.setPerson(personToEdit, editedPerson);
@@ -92,6 +93,17 @@ public class AssignTaskCommand extends TaskCommand {
         return new Person(name, phone, email, projectList, newTasks);
     }
 
+    private static List<Task> resolveTasksToAssign(AssignTaskDescriptor descriptor, Person person, Model model)
+            throws CommandException {
+        if (descriptor.getTasks().isPresent()) {
+            return resolveTasksWithProjectTracking(descriptor.getTasks().orElseThrow(), person, model);
+        }
+        if (descriptor.getTaskIndexes().isPresent()) {
+            return resolveTasksByIndex(descriptor.getTaskIndexes().orElseThrow(), person, model);
+        }
+        throw new CommandException(MESSAGE_NOT_EDITED);
+    }
+
     private static List<Task> resolveTasksWithProjectTracking(List<Task> tasks, Person person, Model model)
             throws CommandException {
         List<Project> assignedProjects = person.getProjects();
@@ -117,6 +129,36 @@ public class AssignTaskCommand extends TaskCommand {
         }
 
         return resolvedTasks;
+    }
+
+    private static List<Task> resolveTasksByIndex(List<Index> taskIndexes, Person person, Model model)
+            throws CommandException {
+        List<Task> assignableTasks = getAssignableTasks(person, model);
+        List<Task> resolvedTasks = new ArrayList<>();
+
+        for (Index taskIndex : taskIndexes) {
+            try {
+                resolvedTasks.add(assignableTasks.get(taskIndex.getZeroBased()));
+            } catch (IndexOutOfBoundsException e) {
+                throw new CommandException(MESSAGE_INDEX_OUT_OF_BOUND);
+            }
+        }
+        return resolvedTasks;
+    }
+
+    private static List<Task> getAssignableTasks(Person person, Model model) {
+        List<Project> assignedProjects = person.getProjects();
+        List<Project> allProjects = model.getProjectList();
+
+        List<Task> assignableTasks = new ArrayList<>();
+        for (Project assignedProject : assignedProjects) {
+            allProjects.stream()
+                    .filter(project -> project.equals(assignedProject))
+                    .findFirst()
+                    .ifPresent(project -> project.getTasks().forEach(task ->
+                            assignableTasks.add(new Task(task.description, project.title))));
+        }
+        return assignableTasks;
     }
 
     /**
@@ -153,6 +195,7 @@ public class AssignTaskCommand extends TaskCommand {
      */
     public static class AssignTaskDescriptor {
         private List<Task> tasks;
+        private List<Index> indexes;
 
         public AssignTaskDescriptor() {}
 
@@ -162,6 +205,7 @@ public class AssignTaskCommand extends TaskCommand {
          */
         public AssignTaskDescriptor(AssignTaskDescriptor toCopy) {
             setTasks(toCopy.tasks);
+            setTaskIndexes(toCopy.indexes);
         }
 
         /**
@@ -170,6 +214,20 @@ public class AssignTaskCommand extends TaskCommand {
          */
         public void setTasks(List<Task> tasks) {
             this.tasks = (tasks != null) ? new ArrayList<>(tasks) : null;
+            if (tasks != null) {
+                this.indexes = null;
+            }
+        }
+
+        /**
+         * Sets {@code indexes} to this object's {@code indexes}.
+         * A defensive copy of {@code indexes} is used internally.
+         */
+        public void setTaskIndexes(List<Index> indexes) {
+            this.indexes = (indexes != null) ? new ArrayList<>(indexes) : null;
+            if (indexes != null) {
+                this.tasks = null;
+            }
         }
 
         /**
@@ -182,10 +240,20 @@ public class AssignTaskCommand extends TaskCommand {
         }
 
         /**
+         * Returns an unmodifiable task index set, which throws {@code UnsupportedOperationException}
+         * if modification is attempted.
+         * Returns {@code Optional#empty()} if {@code indexes} is null.
+         */
+        public Optional<List<Index>> getTaskIndexes() {
+            return (indexes != null) ? Optional.of(Collections.unmodifiableList(indexes)) : Optional.empty();
+        }
+
+        /**
          * Returns true if at least one field is edited.
          */
         public boolean isTaskFieldEdited() {
-            return CollectionUtil.isAnyNonNull(tasks) && !tasks.isEmpty();
+            return (CollectionUtil.isAnyNonNull(tasks) && !tasks.isEmpty())
+                    || (CollectionUtil.isAnyNonNull(indexes) && !indexes.isEmpty());
         }
 
         @Override
@@ -199,8 +267,11 @@ public class AssignTaskCommand extends TaskCommand {
                 return false;
             }
 
-            AssignTaskDescriptor assignTaskDescriptor = (AssignTaskDescriptor) other;
-            return Objects.equals(tasks, assignTaskDescriptor.tasks);
+            if (!(other instanceof AssignTaskDescriptor assignTaskDescriptor)) {
+                return false;
+            }
+            return Objects.equals(tasks, assignTaskDescriptor.tasks)
+                    && Objects.equals(indexes, assignTaskDescriptor.indexes);
         }
     }
 }

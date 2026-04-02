@@ -77,6 +77,27 @@ public class AssignProjectCommandTest {
     }
 
     @Test
+    public void execute_assignOneProjectByIndex_success() {
+        Index indexFirstPerson = Index.fromOneBased(1);
+        Person firstPerson = model.getFilteredPersonList().get(indexFirstPerson.getZeroBased());
+
+        PersonBuilder personInList = new PersonBuilder(firstPerson);
+        Person editedPerson = personInList.withProjects(VALID_PROJECT_ALPHA, VALID_PROJECT_BETA).build();
+
+        AssignProjectDescriptor descriptor = new AssignProjectDescriptorBuilder()
+                .withProjectIndexes("2").build();
+        AssignProjectCommand assignProjectCommand = new AssignProjectCommand(indexFirstPerson, descriptor);
+
+        String expectedMessage = String.format(AssignProjectCommand.MESSAGE_ASSIGN_PROJECT_SUCCESS,
+                Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(firstPerson, editedPerson);
+
+        assertCommandSuccess(assignProjectCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_assignOneProjectDuplicateUnfilteredList_exceptionThrown() {
         Index indexFirstPerson = Index.fromOneBased(1);
         AssignProjectDescriptor descriptor = new AssignProjectDescriptorBuilder()
@@ -177,6 +198,15 @@ public class AssignProjectCommandTest {
                 INDEX_FIRST_PERSON, new AssignProjectDescriptor()
         );
         assertCommandFailure(assignProjectCommand, model, AssignProjectCommand.MESSAGE_NOT_EDITED);
+    }
+
+    @Test
+    public void execute_projectIndexOutOfBound_failure() {
+        AssignProjectDescriptor descriptor = new AssignProjectDescriptorBuilder()
+                .withProjectIndexes("99").build();
+        AssignProjectCommand assignProjectCommand = new AssignProjectCommand(INDEX_FIRST_PERSON, descriptor);
+
+        assertCommandFailure(assignProjectCommand, model, AssignProjectCommand.MESSAGE_INDEX_OUT_OF_BOUND);
     }
 
     @Test

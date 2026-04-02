@@ -1,6 +1,7 @@
 package seedu.taskforge.logic.commands.project;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -33,9 +34,10 @@ public class AssignProjectCommand extends ProjectCommand {
     public static final String MESSAGE_ASSIGN_PROJECT_SUCCESS = "Project assigned: %1$s";
     public static final String MESSAGE_USAGE = COMMAND_WORD + " "
             + SUBCOMMAND_WORD + " INDEX "
-            + PREFIX_NAME + " PROJECT_NAME";
+            + PREFIX_NAME + " PROJECT_NAME | " + PREFIX_INDEX + " PROJECT_INDEX";
     public static final String MESSAGE_DUPLICATE_PROJECT = "This project already exists for this person!";
     public static final String MESSAGE_PROJECT_NOT_FOUND = "The project to assign does not exist in the address book";
+    public static final String MESSAGE_INDEX_OUT_OF_BOUND = "The project index provided is invalid";
     public static final String MESSAGE_NOT_EDITED = "At least one project to assign must be provided";
 
     private final Index index;
@@ -73,15 +75,9 @@ public class AssignProjectCommand extends ProjectCommand {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        if (!assignProjectDescriptor.isProjectFieldEdited()) {
-            throw new CommandException(MESSAGE_NOT_EDITED);
-        }
-
-        validateProjectsExist(assignProjectDescriptor.getProjects().orElseThrow(() ->
-            new CommandException(MESSAGE_PROJECT_NOT_FOUND)), model);
-
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, assignProjectDescriptor);
+        List<Project> projectsToAssign = resolveProjectsToAssign(assignProjectDescriptor, model);
+        Person editedPerson = createEditedPerson(personToEdit, projectsToAssign);
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -103,13 +99,40 @@ public class AssignProjectCommand extends ProjectCommand {
         }
     }
 
+    private static List<Project> resolveProjectsToAssign(AssignProjectDescriptor descriptor, Model model)
+            throws CommandException {
+        if (descriptor.getProjects().isPresent()) {
+            List<Project> projects = descriptor.getProjects().orElseThrow();
+            validateProjectsExist(projects, model);
+            return projects;
+        }
+        if (descriptor.getProjectIndexes().isPresent()) {
+            return resolveProjectsByIndex(descriptor.getProjectIndexes().orElseThrow(), model);
+        }
+        throw new CommandException(MESSAGE_NOT_EDITED);
+    }
+
+    private static List<Project> resolveProjectsByIndex(List<Index> projectIndexes, Model model)
+            throws CommandException {
+        List<Project> allProjects = model.getProjectList();
+        List<Project> projectsToAssign = new ArrayList<>();
+        for (Index projectIndex : projectIndexes) {
+            try {
+                projectsToAssign.add(allProjects.get(projectIndex.getZeroBased()));
+            } catch (IndexOutOfBoundsException e) {
+                throw new CommandException(MESSAGE_INDEX_OUT_OF_BOUND);
+            }
+        }
+        return projectsToAssign;
+    }
+
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
     private static Person createEditedPerson(
             Person personToEdit,
-            AssignProjectDescriptor assignProjectDescriptor) throws CommandException {
+            List<Project> projectsToAssign) throws CommandException {
         assert personToEdit != null;
 
         Name name = personToEdit.getName();
@@ -118,8 +141,7 @@ public class AssignProjectCommand extends ProjectCommand {
         List<Task> taskList = personToEdit.getTasks();
 
         List<Project> newProjects = new ArrayList<>(personToEdit.getProjects());
-        newProjects.addAll(assignProjectDescriptor.getProjects().orElseThrow(() ->
-                new CommandException(MESSAGE_PROJECT_NOT_FOUND)));
+        newProjects.addAll(projectsToAssign);
         checkUniqueProjects(newProjects);
 
         return new Person(name, phone, email, newProjects, taskList);
@@ -159,6 +181,7 @@ public class AssignProjectCommand extends ProjectCommand {
      */
     public static class AssignProjectDescriptor {
         private List<Project> projects;
+        private List<Index> indexes;
 
         public AssignProjectDescriptor() {}
 
@@ -168,6 +191,7 @@ public class AssignProjectCommand extends ProjectCommand {
          */
         public AssignProjectDescriptor(AssignProjectDescriptor toCopy) {
             setProjects(toCopy.projects);
+            setProjectIndexes(toCopy.indexes);
         }
 
         /**
@@ -176,6 +200,20 @@ public class AssignProjectCommand extends ProjectCommand {
          */
         public void setProjects(List<Project> projects) {
             this.projects = (projects != null) ? new ArrayList<>(projects) : null;
+            if (projects != null) {
+                this.indexes = null;
+            }
+        }
+
+        /**
+         * Sets {@code indexes} to this object's {@code indexes}.
+         * A defensive copy of {@code indexes} is used internally.
+         */
+        public void setProjectIndexes(List<Index> indexes) {
+            this.indexes = (indexes != null) ? new ArrayList<>(indexes) : null;
+            if (indexes != null) {
+                this.projects = null;
+            }
         }
 
         /**
@@ -188,10 +226,20 @@ public class AssignProjectCommand extends ProjectCommand {
         }
 
         /**
+         * Returns an unmodifiable project index set, which throws {@code UnsupportedOperationException}
+         * if modification is attempted.
+         * Returns {@code Optional#empty()} if {@code indexes} is null.
+         */
+        public Optional<List<Index>> getProjectIndexes() {
+            return (indexes != null) ? Optional.of(Collections.unmodifiableList(indexes)) : Optional.empty();
+        }
+
+        /**
          * Returns true if at least one field is edited.
          */
         public boolean isProjectFieldEdited() {
-            return CollectionUtil.isAnyNonNull(projects) && !projects.isEmpty();
+            return (CollectionUtil.isAnyNonNull(projects) && !projects.isEmpty())
+                    || (CollectionUtil.isAnyNonNull(indexes) && !indexes.isEmpty());
         }
 
         @Override
@@ -205,8 +253,11 @@ public class AssignProjectCommand extends ProjectCommand {
                 return false;
             }
 
-            AssignProjectDescriptor addProjectDescriptor = (AssignProjectDescriptor) other;
-            return Objects.equals(projects, addProjectDescriptor.projects);
+            if (!(other instanceof AssignProjectDescriptor addProjectDescriptor)) {
+                return false;
+            }
+            return Objects.equals(projects, addProjectDescriptor.projects)
+                    && Objects.equals(indexes, addProjectDescriptor.indexes);
         }
     }
 }

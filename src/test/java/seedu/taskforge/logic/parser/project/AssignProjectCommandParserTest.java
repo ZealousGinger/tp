@@ -8,6 +8,7 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.PROJECT_DESC_Z;
 import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_PROJECT_X;
 import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_PROJECT_Y;
 import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_PROJECT_Z;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.taskforge.logic.parser.CommandParserTestUtil.assertParseSuccess;
@@ -17,11 +18,15 @@ import org.junit.jupiter.api.Test;
 
 import seedu.taskforge.commons.core.index.Index;
 import seedu.taskforge.logic.commands.project.AssignProjectCommand;
+import seedu.taskforge.logic.parser.ParserUtil;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.testutil.AssignProjectDescriptorBuilder;
 
 public class AssignProjectCommandParserTest {
     private static final String PROJECT_EMPTY = " " + PREFIX_NAME;
+    private static final String PROJECT_INDEX_1 = " " + PREFIX_INDEX + "1";
+    private static final String PROJECT_INDEX_2 = " " + PREFIX_INDEX + "2";
+    private static final String PROJECT_INDEX_3 = " " + PREFIX_INDEX + "3";
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignProjectCommand.MESSAGE_USAGE);
@@ -31,13 +36,16 @@ public class AssignProjectCommandParserTest {
     @Test
     public void parse_missingProject_failure() {
         // no index specified
-        assertParseFailure(parser, PROJECT_DESC_X, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "1", MESSAGE_INVALID_FORMAT);
 
         // no field specified
-        assertParseFailure(parser, "1", AssignProjectCommand.MESSAGE_NOT_EDITED);
+        assertParseFailure(parser, "1", MESSAGE_INVALID_FORMAT);
 
         // empty field after prefix
-        assertParseFailure(parser, "1" + PROJECT_EMPTY, AssignProjectCommand.MESSAGE_NOT_EDITED);
+        assertParseFailure(parser, "1" + PROJECT_EMPTY, MESSAGE_INVALID_FORMAT);
+
+        // empty index field after prefix
+        assertParseFailure(parser, "1" + PROJECT_INDEX_1 + " " + PREFIX_INDEX, MESSAGE_INVALID_FORMAT);
 
         // no index and no field specified
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
@@ -62,9 +70,17 @@ public class AssignProjectCommandParserTest {
     public void parse_invalidValue_failure() {
         assertParseFailure(parser, "1" + INVALID_PROJECT_NAME, Project.MESSAGE_CONSTRAINTS); // invalid project
 
+        // invalid index mode
+        assertParseFailure(parser, "1" + PROJECT_INDEX_1 + " " + PREFIX_INDEX + "0", ParserUtil.MESSAGE_INVALID_INDEX);
+
         // multiple invalid values, but only the first invalid value is captured
         assertParseFailure(parser, "1" + PROJECT_DESC_X
                 + INVALID_PROJECT_NAME, Project.MESSAGE_CONSTRAINTS);
+    }
+
+    @Test
+    public void parse_bothModes_failure() {
+        assertParseFailure(parser, "1" + PROJECT_DESC_X + PROJECT_INDEX_1, MESSAGE_INVALID_FORMAT);
     }
 
     @Test
@@ -80,6 +96,18 @@ public class AssignProjectCommandParserTest {
     }
 
     @Test
+    public void parse_oneProjectIndex_success() {
+        Index targetIndex = INDEX_SECOND_PERSON;
+        String userInput = targetIndex.getOneBased() + PROJECT_INDEX_1;
+
+        AssignProjectCommand.AssignProjectDescriptor descriptor = new AssignProjectDescriptorBuilder()
+                .withProjectIndexes("1").build();
+        AssignProjectCommand expectedCommand = new AssignProjectCommand(targetIndex, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
     public void parse_multipleProjects_success() {
         Index targetIndex = INDEX_SECOND_PERSON;
         String userInput = targetIndex.getOneBased()
@@ -87,6 +115,19 @@ public class AssignProjectCommandParserTest {
 
         AssignProjectCommand.AssignProjectDescriptor descriptor = new AssignProjectDescriptorBuilder()
                 .withProjects(VALID_PROJECT_X, VALID_PROJECT_Y, VALID_PROJECT_Z)
+                .build();
+        AssignProjectCommand expectedCommand = new AssignProjectCommand(targetIndex, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_multipleProjectIndexes_success() {
+        Index targetIndex = INDEX_SECOND_PERSON;
+        String userInput = targetIndex.getOneBased() + PROJECT_INDEX_1 + PROJECT_INDEX_2 + PROJECT_INDEX_3;
+
+        AssignProjectCommand.AssignProjectDescriptor descriptor = new AssignProjectDescriptorBuilder()
+                .withProjectIndexes("1", "2", "3")
                 .build();
         AssignProjectCommand expectedCommand = new AssignProjectCommand(targetIndex, descriptor);
 
