@@ -151,6 +151,42 @@ public class AddressBookTest {
     }
 
     @Test
+    public void removeProject_withMixedTaskReferences_reindexesAndRetainsExpectedTasks() {
+        Project alpha = new Project("alpha", List.of(new Task("plan release")));
+        Project beta = new Project("beta", List.of(new Task("fix bug")));
+        Project gamma = new Project("gamma", List.of(new Task("write docs")));
+
+        Person unchangedPerson = new Person(
+                new Name("Unchanged Person"),
+                new Phone("84444444"),
+                new Email("unchanged@example.com"),
+                List.of(new PersonProject(0)),
+                List.of(new PersonTask(0, 0)));
+        Person mixedPerson = new Person(
+                new Name("Mixed Person"),
+                new Phone("85555555"),
+                new Email("mixed@example.com"),
+                List.of(new PersonProject(0), new PersonProject(1), new PersonProject(2)),
+                List.of(new PersonTask(1, 0), new PersonTask(2, 0), new PersonTask(0, 0)));
+
+        addressBook.addProject(alpha);
+        addressBook.addProject(beta);
+        addressBook.addProject(gamma);
+        addressBook.addPerson(unchangedPerson);
+        addressBook.addPerson(mixedPerson);
+
+        addressBook.removeProject(beta);
+
+        Person updatedUnchangedPerson = addressBook.getPersonList().get(0);
+        assertEquals(List.of(new PersonProject(0)), updatedUnchangedPerson.getProjects());
+        assertEquals(List.of(new PersonTask(0, 0)), updatedUnchangedPerson.getTasks());
+
+        Person updatedMixedPerson = addressBook.getPersonList().get(1);
+        assertEquals(List.of(new PersonProject(0), new PersonProject(1)), updatedMixedPerson.getProjects());
+        assertEquals(List.of(new PersonTask(1, 0), new PersonTask(0, 0)), updatedMixedPerson.getTasks());
+    }
+
+    @Test
     public void setProject_taskDeletedFromProject_cascadesAssignedTasks() {
         Project alpha = new Project("alpha", Arrays.asList(
             new Task("refactor code"),
@@ -176,6 +212,28 @@ public class AddressBookTest {
         List<PersonTask> updatedTasks = addressBook.getPersonList().get(0).getTasks();
         assertEquals(1, updatedTasks.size());
         assertEquals(new PersonTask(0, 0), updatedTasks.get(0));
+    }
+
+    @Test
+    public void setProject_taskDeleted_keepsTasksFromOtherProjects() {
+        Project alpha = new Project("alpha", List.of(new Task("remove me")));
+        Project beta = new Project("beta", List.of(new Task("keep me")));
+        Person person = new Person(
+                new Name("Cross Project Owner"),
+                new Phone("96666666"),
+                new Email("cross@example.com"),
+                List.of(new PersonProject(0), new PersonProject(1)),
+                List.of(new PersonTask(0, 0), new PersonTask(1, 0)));
+
+        addressBook.addProject(alpha);
+        addressBook.addProject(beta);
+        addressBook.addPerson(person);
+
+        Project editedAlpha = new Project("alpha", Collections.emptyList());
+        addressBook.setProject(alpha, editedAlpha);
+
+        List<PersonTask> updatedTasks = addressBook.getPersonList().get(0).getTasks();
+        assertEquals(List.of(new PersonTask(1, 0)), updatedTasks);
     }
 
     @Test
