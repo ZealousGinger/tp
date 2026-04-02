@@ -39,7 +39,8 @@ public class HelpWindow extends UiPart<Stage> {
                     + "    Example: project find Alpha Web\n\n"
                     + "12. View Tasks: task view INDEX\n"
                     + "    Example: task view 1\n\n"
-                    + "13. Edit Person: edit INDEX [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]\n"
+                    + "13. Edit Person: edit INDEX [-n NAME] [-p PHONE_NUMBER]" +
+                    " [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]\n"
                     + "    Example: edit 1 -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY\n\n"
                     + "14. Find Person: find KEYWORD [MORE_KEYWORDS]\n"
                     + "    Example: find James Jake\n\n"

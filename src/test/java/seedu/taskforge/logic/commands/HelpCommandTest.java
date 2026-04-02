@@ -1,20 +1,21 @@
 package seedu.taskforge.logic.commands;
 
-import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.taskforge.logic.commands.HelpCommand.SHOWING_HELP_MESSAGE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.taskforge.model.Model;
-import seedu.taskforge.model.ModelManager;
-
-public class HelpCommandTest {
-    private Model model = new ModelManager();
-    private Model expectedModel = new ModelManager();
+class HelpCommandTest {
 
     @Test
-    public void execute_help_success() {
-        CommandResult expectedCommandResult = new CommandResult(SHOWING_HELP_MESSAGE, true, false);
-        assertCommandSuccess(new HelpCommand(), model, expectedCommandResult, expectedModel);
+    void execute_showsHelp() {
+        HelpCommand helpCommand = new HelpCommand();
+
+        CommandResult commandResult = helpCommand.execute(null);
+
+        assertEquals(HelpCommand.SHOWING_HELP_MESSAGE, commandResult.getFeedbackToUser());
+        assertTrue(commandResult.isShowHelp());
+        assertFalse(commandResult.isExit());
     }
 }
