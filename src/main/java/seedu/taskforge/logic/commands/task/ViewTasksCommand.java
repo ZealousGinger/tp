@@ -3,6 +3,7 @@ package seedu.taskforge.logic.commands.task;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import seedu.taskforge.commons.core.index.Index;
@@ -20,7 +21,7 @@ public class ViewTasksCommand extends TaskCommand {
 
     public static final String SUBCOMMAND_WORD = "view";
 
-    public static final String MESSAGE_USAGE = TaskCommand.COMMAND_WORD + " " + SUBCOMMAND_WORD
+    public static final String MESSAGE_USAGE_VIEW = TaskCommand.COMMAND_WORD + " " + SUBCOMMAND_WORD
             + ": Views all tasks of the person identified by the index number used in the displayed person list.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + TaskCommand.COMMAND_WORD + " " + SUBCOMMAND_WORD + " 2";
@@ -78,5 +79,10 @@ public class ViewTasksCommand extends TaskCommand {
         return other == this
                 || (other instanceof ViewTasksCommand
                 && targetIndex.equals(((ViewTasksCommand) other).targetIndex));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(targetIndex);
     }
 }

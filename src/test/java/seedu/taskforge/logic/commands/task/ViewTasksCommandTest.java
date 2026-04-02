@@ -1,5 +1,6 @@
 package seedu.taskforge.logic.commands.task;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -16,6 +17,7 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonTask;
 
 public class ViewTasksCommandTest {
 
@@ -34,6 +36,21 @@ public class ViewTasksCommandTest {
     }
 
     @Test
+    public void execute_validIndexWithDoneTask_success() {
+        Model mutatedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        mutatedModel.getProjectList().get(0).getUniqueTaskList().iterator().next().setDone();
+
+        Person firstPerson = mutatedModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        ViewTasksCommand command = new ViewTasksCommand(INDEX_FIRST_PERSON);
+
+        String expectedMessage = String.format(ViewTasksCommand.MESSAGE_TASKS_HEADER,
+                firstPerson.getName().fullName, "[X] refactor code");
+
+        Model expectedModel = new ModelManager(new AddressBook(mutatedModel.getAddressBook()), new UserPrefs());
+        assertCommandSuccess(command, mutatedModel, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_validIndexWithNoTasks_success() {
         int carlIndex = findFilteredPersonIndex(CARL);
         Index target = Index.fromZeroBased(carlIndex);
@@ -43,6 +60,23 @@ public class ViewTasksCommandTest {
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_invalidTaskReference_success() {
+        Model mutatedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Person originalPerson = mutatedModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person invalidReferencedPerson = new Person(originalPerson.getName(), originalPerson.getPhone(),
+                originalPerson.getEmail(), originalPerson.getProjects(),
+                java.util.List.of(new PersonTask(9, 9)));
+        mutatedModel.setPerson(originalPerson, invalidReferencedPerson);
+
+        ViewTasksCommand command = new ViewTasksCommand(INDEX_FIRST_PERSON);
+        String expectedMessage = String.format(ViewTasksCommand.MESSAGE_TASKS_HEADER,
+                invalidReferencedPerson.getName().fullName, "[invalid-task-reference]");
+
+        Model expectedModel = new ModelManager(new AddressBook(mutatedModel.getAddressBook()), new UserPrefs());
+        assertCommandSuccess(command, mutatedModel, expectedMessage, expectedModel);
     }
 
     @Test
@@ -60,6 +94,7 @@ public class ViewTasksCommandTest {
 
         assertTrue(firstCommand.equals(firstCommand));
         assertTrue(firstCommand.equals(sameValuesCommand));
+        assertEquals(firstCommand.hashCode(), sameValuesCommand.hashCode());
         assertFalse(firstCommand.equals(differentCommand));
         assertFalse(firstCommand.equals(1));
     }
