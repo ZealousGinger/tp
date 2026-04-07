@@ -7,9 +7,11 @@ import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import seedu.taskforge.commons.core.index.Index;
 import seedu.taskforge.commons.util.CollectionUtil;
@@ -20,6 +22,8 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.person.Email;
 import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonProject;
+import seedu.taskforge.model.person.PersonTask;
 import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
@@ -64,7 +68,7 @@ public class AssignTaskCommand extends TaskCommand {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        List<Task> resolvedTasksToAssign = resolveTasksToAssign(assignTaskDescriptor, personToEdit, model);
+        List<PersonTask> resolvedTasksToAssign = resolveTasksToAssign(assignTaskDescriptor, personToEdit, model);
         Person editedPerson = createEditedPerson(personToEdit, resolvedTasksToAssign);
 
         model.setPerson(personToEdit, editedPerson);
@@ -78,54 +82,60 @@ public class AssignTaskCommand extends TaskCommand {
      */
     private static Person createEditedPerson(
             Person personToEdit,
-            List<Task> tasksToAssign) throws CommandException {
+            List<PersonTask> tasksToAssign) throws CommandException {
         assert personToEdit != null;
 
         Name name = personToEdit.getName();
         Phone phone = personToEdit.getPhone();
         Email email = personToEdit.getEmail();
-        List<Project> projectList = personToEdit.getProjects();
+        List<PersonProject> personProjectList = personToEdit.getProjects();
 
-        List<Task> newTasks = new ArrayList<>(personToEdit.getTasks());
+        List<PersonTask> newTasks = new ArrayList<>(personToEdit.getTasks());
         newTasks.addAll(tasksToAssign);
         checkUniqueTasks(newTasks);
 
-        return new Person(name, phone, email, projectList, newTasks);
+        return new Person(name, phone, email, personProjectList, newTasks);
     }
 
-    private static List<Task> resolveTasksToAssign(AssignTaskDescriptor descriptor, Person person, Model model)
+    private static List<PersonTask> resolveTasksToAssign(AssignTaskDescriptor descriptor, Person person, Model model)
             throws CommandException {
         if (descriptor.getTasks().isPresent()) {
             return resolveTasksWithProjectTracking(descriptor.getTasks().orElseThrow(), person, model);
         }
         if (descriptor.getTaskIndexes().isPresent()) {
-            return resolveTasksByIndex(descriptor.getTaskIndexes().orElseThrow(), person, model);
+            List<Task> indexedTasks = resolveTasksByIndex(descriptor.getTaskIndexes().orElseThrow(), person, model);
+            return resolveTasksWithProjectTracking(indexedTasks, person, model);
         }
         throw new CommandException(MESSAGE_NOT_EDITED);
     }
 
-    private static List<Task> resolveTasksWithProjectTracking(List<Task> tasks, Person person, Model model)
+    private static List<PersonTask> resolveTasksWithProjectTracking(List<Task> tasks, Person person, Model model)
             throws CommandException {
-        List<Project> assignedProjects = person.getProjects();
-        List<Project> allProjects = model.getProjectList();
+        List<PersonProject> assignedPersonProjects = person.getProjects();
+        List<Project> allProjects = new ArrayList<>(model.getProjectList());
 
-        List<Task> resolvedTasks = new ArrayList<>();
+        List<PersonTask> resolvedTasks = new ArrayList<>();
         for (Task task : tasks) {
-            Project matchedProject = null;
-            for (Project assignedProject : assignedProjects) {
-                matchedProject = allProjects.stream()
-                        .filter(project -> project.equals(assignedProject) && project.getTasks().contains(task))
-                        .findFirst()
-                        .orElse(null);
-                if (matchedProject != null) {
-                    break;
+            PersonTask matchedTask = null;
+            for (PersonProject personProject : assignedPersonProjects) {
+                int projectIndex = personProject.getProjectIndex();
+                if (projectIndex >= 0 && projectIndex < allProjects.size()) {
+                    Project project = allProjects.get(projectIndex);
+                    if (task.getProjectTitle() != null && !project.title.equals(task.getProjectTitle())) {
+                        continue;
+                    }
+                    int taskIndex = project.getTasks().indexOf(task);
+                    if (taskIndex >= 0) {
+                        matchedTask = new PersonTask(projectIndex, taskIndex);
+                        break;
+                    }
                 }
             }
 
-            if (matchedProject == null) {
+            if (matchedTask == null) {
                 throw new CommandException(MESSAGE_TASK_NOT_IN_ASSIGNED_PROJECTS);
             }
-            resolvedTasks.add(new Task(task.description, matchedProject.title));
+            resolvedTasks.add(matchedTask);
         }
 
         return resolvedTasks;
@@ -147,16 +157,16 @@ public class AssignTaskCommand extends TaskCommand {
     }
 
     private static List<Task> getAssignableTasks(Person person, Model model) {
-        List<Project> assignedProjects = person.getProjects();
+        List<PersonProject> assignedProjects = person.getProjects();
         List<Project> allProjects = model.getProjectList();
 
         List<Task> assignableTasks = new ArrayList<>();
-        for (Project assignedProject : assignedProjects) {
-            allProjects.stream()
-                    .filter(project -> project.equals(assignedProject))
-                    .findFirst()
-                    .ifPresent(project -> project.getTasks().forEach(task ->
-                            assignableTasks.add(new Task(task.description, project.title))));
+        for (PersonProject assignedProject : assignedProjects) {
+            int projectIndex = assignedProject.getProjectIndex();
+            if (projectIndex >= 0 && projectIndex < allProjects.size()) {
+                Project project = allProjects.get(projectIndex);
+                project.getTasks().forEach(task -> assignableTasks.add(new Task(task.description, project.title)));
+            }
         }
         return assignableTasks;
     }
@@ -166,9 +176,12 @@ public class AssignTaskCommand extends TaskCommand {
      * A {@code CommandException} is thrown if there are duplicates.
      *
      */
-    public static List<Task> checkUniqueTasks(List<Task> tasks) throws CommandException {
-        long distinctCount = tasks.stream().distinct().count();
-        if (distinctCount != tasks.size()) {
+    public static List<PersonTask> checkUniqueTasks(List<PersonTask> tasks) throws CommandException {
+        Set<String> uniqueTaskRefs = new HashSet<>();
+        boolean hasDuplicates = tasks.stream()
+                .map(task -> task.getProjectIndex() + ":" + task.getTaskIndex())
+                .anyMatch(key -> !uniqueTaskRefs.add(key));
+        if (hasDuplicates) {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
         }
         return tasks;

@@ -452,7 +452,7 @@ Action | Format, Examples
 **View Tasks** | `task view INDEX`<br> e.g.,`task view 1`
 **Mark Task** | `task mark PERSON_INDEX TASK_INDEX`<br> e.g., `task mark 1 1`
 **Unmark Task** | `task unmark PERSON_INDEX TASK_INDEX`<br> e.g., `task unmark 1 1`
-**Edit Person** | `edit Index [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit Index -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Edit Person** | `edit INDEX [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit INDEX -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
 **Find Person** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List Person** | `list`
 **Unassign Task** | `task unassign INDEX -i TASK_INDEX`<br> e.g., `task unassign 2 -i 1`
