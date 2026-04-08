@@ -12,7 +12,7 @@ import seedu.taskforge.model.project.Project;
  * A utility class to help with building AssignProjectDescriptor objects.
  */
 public class AssignProjectDescriptorBuilder {
-    private AssignProjectDescriptor descriptor;
+    private final AssignProjectDescriptor descriptor;
 
     public AssignProjectDescriptorBuilder() {
         descriptor = new AssignProjectDescriptor();

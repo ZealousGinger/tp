@@ -7,7 +7,7 @@ import seedu.taskforge.model.project.Project;
 /**
  * Unmodifiable view of an address book
  */
-public interface ReadOnlyAddressBook {
+public interface ReadOnlyTaskForge {
 
     /**
      * Returns an unmodifiable view of the persons list.

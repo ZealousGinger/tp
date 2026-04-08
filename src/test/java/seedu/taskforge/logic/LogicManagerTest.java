@@ -24,10 +24,10 @@ import seedu.taskforge.logic.commands.person.ListCommand;
 import seedu.taskforge.logic.parser.exceptions.ParseException;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
-import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.ReadOnlyTaskForge;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
-import seedu.taskforge.storage.JsonAddressBookStorage;
+import seedu.taskforge.storage.JsonTaskForgeStorage;
 import seedu.taskforge.storage.JsonUserPrefsStorage;
 import seedu.taskforge.storage.StorageManager;
 import seedu.taskforge.testutil.PersonBuilder;
@@ -44,10 +44,10 @@ public class LogicManagerTest {
 
     @BeforeEach
     public void setUp() {
-        JsonAddressBookStorage addressBookStorage =
-                new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
+        JsonTaskForgeStorage taskForgeStorage =
+                new JsonTaskForgeStorage(temporaryFolder.resolve("TaskForge.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(taskForgeStorage, userPrefsStorage);
         logic = new LogicManager(model, storage);
     }
 
@@ -122,7 +122,7 @@ public class LogicManagerTest {
      */
     private void assertCommandFailure(String inputCommand, Class<? extends Throwable> expectedException,
             String expectedMessage) {
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getTaskForge(), new UserPrefs());
         assertCommandFailure(inputCommand, expectedException, expectedMessage, expectedModel);
     }
 
@@ -148,10 +148,10 @@ public class LogicManagerTest {
     private void assertCommandFailureForExceptionFromStorage(IOException e, String expectedMessage) {
         Path prefPath = temporaryFolder.resolve("ExceptionUserPrefs.json");
 
-        // Inject LogicManager with an AddressBookStorage that throws the IOException e when saving
-        JsonAddressBookStorage addressBookStorage = new JsonAddressBookStorage(prefPath) {
+        // Inject LogicManager with an TaskForgeStorage that throws the IOException e when saving
+        JsonTaskForgeStorage taskForgeStorage = new JsonTaskForgeStorage(prefPath) {
             @Override
-            public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath)
+            public void saveTaskForge(ReadOnlyTaskForge taskForge, Path filePath)
                     throws IOException {
                 throw e;
             }
@@ -159,11 +159,11 @@ public class LogicManagerTest {
 
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ExceptionUserPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(taskForgeStorage, userPrefsStorage);
 
         logic = new LogicManager(model, storage);
 
-        // Triggers the saveAddressBook method by executing an add command
+        // Triggers the saveTaskForge method by executing an add command
         String addCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
                 + EMAIL_DESC_AMY;
         Person expectedPerson = new PersonBuilder(AMY).withProjects().withTasks().build();

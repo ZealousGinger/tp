@@ -1,0 +1,34 @@
+package seedu.taskforge.testutil;
+
+import seedu.taskforge.model.TaskForge;
+import seedu.taskforge.model.person.Person;
+
+/**
+ * A utility class to help with building TaskForge objects.
+ * Example usage: <br>
+ *     {@code TaskForge ab = new TaskForgeBuilder().withPerson("John", "Doe").build();}
+ */
+public class TaskForgeBuilder {
+
+    private TaskForge taskForge;
+
+    public TaskForgeBuilder() {
+        taskForge = new TaskForge();
+    }
+
+    public TaskForgeBuilder(TaskForge taskForge) {
+        this.taskForge = taskForge;
+    }
+
+    /**
+     * Adds a new {@code Person} to the {@code TaskForge} that we are building.
+     */
+    public TaskForgeBuilder withPerson(Person person) {
+        taskForge.addPerson(person);
+        return this;
+    }
+
+    public TaskForge build() {
+        return taskForge;
+    }
+}

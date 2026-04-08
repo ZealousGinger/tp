@@ -10,7 +10,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Circle;
-import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.ReadOnlyTaskForge;
 import seedu.taskforge.model.person.Availability;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonProject;
@@ -29,8 +29,6 @@ public class PersonCard extends UiPart<Region> {
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
      * or an exception will be thrown by JavaFX during runtime.
-     *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
 
     public final Person person;
@@ -55,9 +53,9 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane tasks;
 
     /**
-     * Creates a {@code PersonCard} with the given {@code Person}, index, and {@code ReadOnlyAddressBook} to display.
+     * Creates a {@code PersonCard} with the given {@code Person}, index, and {@code ReadOnlyTaskForge} to display.
      */
-    public PersonCard(Person person, int displayedIndex, ReadOnlyAddressBook addressBook) {
+    public PersonCard(Person person, int displayedIndex, ReadOnlyTaskForge taskForge) {
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + ". ");
@@ -67,7 +65,7 @@ public class PersonCard extends UiPart<Region> {
 
         List<PersonProject> personProjectList = person.getProjects();
         List<PersonTask> taskList = person.getTasks();
-        List<Project> globalProjectList = new ArrayList<>(addressBook.getProjectList());
+        List<Project> globalProjectList = new ArrayList<>(taskForge.getProjectList());
 
         int workload = calculateWorkload(taskList, globalProjectList);
         String availabilityString = calculateAvailability(workload).toString();

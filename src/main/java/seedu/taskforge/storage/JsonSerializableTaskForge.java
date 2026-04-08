@@ -9,18 +9,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import seedu.taskforge.commons.exceptions.IllegalValueException;
-import seedu.taskforge.model.AddressBook;
-import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.ReadOnlyTaskForge;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonProject;
 import seedu.taskforge.model.person.PersonTask;
 import seedu.taskforge.model.project.Project;
 
 /**
- * An Immutable AddressBook that is serializable to JSON format.
+ * An Immutable TaskForge that is serializable to JSON format.
  */
-@JsonRootName(value = "addressbook")
-class JsonSerializableAddressBook {
+@JsonRootName(value = "TaskForge")
+class JsonSerializableTaskForge {
 
     public static final String MESSAGE_DUPLICATE_PERSON = "Persons list contains duplicate person(s).";
     public static final String MESSAGE_DUPLICATE_PROJECT = "Projects list contains duplicate project(s).";
@@ -33,10 +33,10 @@ class JsonSerializableAddressBook {
     private final List<JsonAdaptedProject> projects = new ArrayList<>();
 
     /**
-     * Constructs a {@code JsonSerializableAddressBook} with the given persons and projects.
+     * Constructs a {@code JsonSerializableTaskForge} with the given persons and projects.
      */
     @JsonCreator
-    public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons,
+    public JsonSerializableTaskForge(@JsonProperty("persons") List<JsonAdaptedPerson> persons,
                                        @JsonProperty("projects") List<JsonAdaptedProject> projects) {
         this.persons.addAll(persons);
         if (projects != null) {
@@ -45,39 +45,39 @@ class JsonSerializableAddressBook {
     }
 
     /**
-     * Converts a given {@code ReadOnlyAddressBook} into this class for Jackson use.
+     * Converts a given {@code ReadOnlyTaskForge} into this class for Jackson use.
      *
-     * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
+     * @param source future changes to this will not affect the created {@code JsonSerializableTaskForge}.
      */
-    public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
+    public JsonSerializableTaskForge(ReadOnlyTaskForge source) {
         persons.addAll(source.getPersonList().stream().map(JsonAdaptedPerson::new).collect(Collectors.toList()));
         projects.addAll(source.getProjectList().stream().map(JsonAdaptedProject::new).collect(Collectors.toList()));
     }
 
     /**
-     * Converts this address book into the model's {@code AddressBook} object.
+     * Converts this address book into the model's {@code TaskForge} object.
      *
      * @throws IllegalValueException if there were any data constraints violated.
      */
-    public AddressBook toModelType() throws IllegalValueException {
-        AddressBook addressBook = new AddressBook();
+    public TaskForge toModelType() throws IllegalValueException {
+        TaskForge taskForge = new TaskForge();
         for (JsonAdaptedProject jsonAdaptedProject : projects) {
             Project project = jsonAdaptedProject.toModelType();
-            if (addressBook.hasProject(project)) {
+            if (taskForge.hasProject(project)) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_PROJECT);
             }
-            addressBook.addProject(project);
+            taskForge.addProject(project);
         }
 
         for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
             Person person = jsonAdaptedPerson.toModelType();
-            if (addressBook.hasPerson(person)) {
+            if (taskForge.hasPerson(person)) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
             }
 
             for (PersonProject personProject : person.getProjects()) {
                 int projectIndex = personProject.getProjectIndex();
-                if (projectIndex < 0 || projectIndex >= addressBook.getProjectList().size()) {
+                if (projectIndex < 0 || projectIndex >= taskForge.getProjectList().size()) {
                     throw new IllegalValueException(String.format(
                             MESSAGE_PERSON_PROJECT_NOT_IN_PROJECT_LIST,
                             person.getName(), projectIndex));
@@ -88,13 +88,13 @@ class JsonSerializableAddressBook {
                 int taskProjectIndex = personTask.getProjectIndex();
                 int taskIndex = personTask.getTaskIndex();
 
-                if (taskProjectIndex < 0 || taskProjectIndex >= addressBook.getProjectList().size()) {
+                if (taskProjectIndex < 0 || taskProjectIndex >= taskForge.getProjectList().size()) {
                     throw new IllegalValueException(String.format(
                         MESSAGE_PERSON_TASK_NOT_IN_ASSIGNED_PROJECTS,
                         person.getName(), "[invalid-project-index]"));
                 }
 
-                Project project = addressBook.getProjectList().get(taskProjectIndex);
+                Project project = taskForge.getProjectList().get(taskProjectIndex);
                 if (taskIndex < 0 || taskIndex >= project.getTasks().size()) {
                     throw new IllegalValueException(String.format(
                         MESSAGE_PERSON_TASK_NOT_IN_ASSIGNED_PROJECTS,
@@ -110,9 +110,9 @@ class JsonSerializableAddressBook {
                 }
             }
 
-            addressBook.addPerson(person);
+            taskForge.addPerson(person);
         }
-        return addressBook;
+        return taskForge;
     }
 
 }

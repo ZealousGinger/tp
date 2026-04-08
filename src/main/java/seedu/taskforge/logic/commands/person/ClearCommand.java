@@ -4,8 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.taskforge.logic.commands.Command;
 import seedu.taskforge.logic.commands.CommandResult;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
+import seedu.taskforge.model.TaskForge;
 
 /**
  * Clears the address book.
@@ -19,7 +19,7 @@ public class ClearCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.setAddressBook(new AddressBook());
+        model.setTaskForge(new TaskForge());
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

@@ -8,7 +8,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.taskforge.commons.core.LogsCenter;
-import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.ReadOnlyTaskForge;
 import seedu.taskforge.model.person.Person;
 
 /**
@@ -17,17 +17,17 @@ import seedu.taskforge.model.person.Person;
 public class PersonListPanel extends UiPart<Region> {
     private static final String FXML = "PersonListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
-    private final ReadOnlyAddressBook addressBook;
+    private final ReadOnlyTaskForge taskForge;
 
     @FXML
     private ListView<Person> personListView;
 
     /**
-     * Creates a {@code PersonListPanel} with the given {@code ObservableList} and {@code ReadOnlyAddressBook}.
+     * Creates a {@code PersonListPanel} with the given {@code ObservableList} and {@code ReadOnlyTaskForge}.
      */
-    public PersonListPanel(ObservableList<Person> personList, ReadOnlyAddressBook addressBook) {
+    public PersonListPanel(ObservableList<Person> personList, ReadOnlyTaskForge taskForge) {
         super(FXML);
-        this.addressBook = addressBook;
+        this.taskForge = taskForge;
         personListView.setItems(personList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
     }
@@ -44,7 +44,7 @@ public class PersonListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new PersonCard(person, getIndex() + 1, addressBook).getRoot());
+                setGraphic(new PersonCard(person, getIndex() + 1, taskForge).getRoot());
             }
         }
     }

@@ -38,20 +38,20 @@ public interface Model {
     /**
      * Returns the user prefs' address book file path.
      */
-    Path getAddressBookFilePath();
+    Path getTaskForgeFilePath();
 
     /**
      * Sets the user prefs' address book file path.
      */
-    void setAddressBookFilePath(Path addressBookFilePath);
+    void setTaskForgeFilePath(Path taskForgeFilePath);
 
     /**
-     * Replaces address book data with the data in {@code addressBook}.
+     * Replaces address book data with the data in {@code taskForge}.
      */
-    void setAddressBook(ReadOnlyAddressBook addressBook);
+    void setTaskForge(ReadOnlyTaskForge taskForge);
 
-    /** Returns the AddressBook */
-    ReadOnlyAddressBook getAddressBook();
+    /** Returns the TaskForge */
+    ReadOnlyTaskForge getTaskForge();
 
     /**
      * Returns true if a project with the same identity as {@code project} exists in the address book.

@@ -20,8 +20,8 @@ import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonContainsKeywordsPredicate;
 import seedu.taskforge.model.person.PersonProject;
 import seedu.taskforge.model.project.Project;
-import seedu.taskforge.testutil.AddressBookBuilder;
 import seedu.taskforge.testutil.PersonBuilder;
+import seedu.taskforge.testutil.TaskForgeBuilder;
 
 public class ModelManagerTest {
 
@@ -31,17 +31,17 @@ public class ModelManagerTest {
     public void constructor() {
         assertEquals(new UserPrefs(), modelManager.getUserPrefs());
         assertEquals(new GuiSettings(), modelManager.getGuiSettings());
-        assertEquals(new AddressBook(), new AddressBook(modelManager.getAddressBook()));
+        assertEquals(new TaskForge(), new TaskForge(modelManager.getTaskForge()));
     }
 
     @Test
-    public void constructor_nullAddressBook_throwsNullPointerException() {
+    public void constructor_nullTaskForge_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new ModelManager(null, new UserPrefs()));
     }
 
     @Test
     public void constructor_nullUserPrefs_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new ModelManager(new AddressBook(), null));
+        assertThrows(NullPointerException.class, () -> new ModelManager(new TaskForge(), null));
     }
 
     @Test
@@ -52,14 +52,14 @@ public class ModelManagerTest {
     @Test
     public void setUserPrefs_validUserPrefs_copiesUserPrefs() {
         UserPrefs userPrefs = new UserPrefs();
-        userPrefs.setAddressBookFilePath(Paths.get("address/book/file/path"));
+        userPrefs.setTaskForgeFilePath(Paths.get("address/book/file/path"));
         userPrefs.setGuiSettings(new GuiSettings(1, 2, 3, 4));
         modelManager.setUserPrefs(userPrefs);
         assertEquals(userPrefs, modelManager.getUserPrefs());
 
         // Modifying userPrefs should not modify modelManager's userPrefs
         UserPrefs oldUserPrefs = new UserPrefs(userPrefs);
-        userPrefs.setAddressBookFilePath(Paths.get("new/address/book/file/path"));
+        userPrefs.setTaskForgeFilePath(Paths.get("new/address/book/file/path"));
         assertEquals(oldUserPrefs, modelManager.getUserPrefs());
     }
 
@@ -76,15 +76,15 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void setAddressBookFilePath_nullPath_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> modelManager.setAddressBookFilePath(null));
+    public void setTaskForgeFilePath_nullPath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.setTaskForgeFilePath(null));
     }
 
     @Test
-    public void setAddressBookFilePath_validPath_setsAddressBookFilePath() {
+    public void setTaskForgeFilePath_validPath_setsTaskForgeFilePath() {
         Path path = Paths.get("address/book/file/path");
-        modelManager.setAddressBookFilePath(path);
-        assertEquals(path, modelManager.getAddressBookFilePath());
+        modelManager.setTaskForgeFilePath(path);
+        assertEquals(path, modelManager.getTaskForgeFilePath());
     }
 
     @Test
@@ -93,12 +93,12 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void hasPerson_personNotInAddressBook_returnsFalse() {
+    public void hasPerson_personNotInTaskForge_returnsFalse() {
         assertFalse(modelManager.hasPerson(ALICE));
     }
 
     @Test
-    public void hasPerson_personInAddressBook_returnsTrue() {
+    public void hasPerson_personInTaskForge_returnsTrue() {
         modelManager.addPerson(ALICE);
         assertTrue(modelManager.hasPerson(ALICE));
     }
@@ -109,22 +109,22 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void hasProject_projectNotInAddressBook_returnsFalse() {
+    public void hasProject_projectNotInTaskForge_returnsFalse() {
         assertFalse(modelManager.hasProject(new Project("alpha")));
     }
 
     @Test
-    public void hasProject_projectInAddressBook_returnsTrue() {
+    public void hasProject_projectInTaskForge_returnsTrue() {
         Project alpha = new Project("alpha");
         modelManager.addProject(alpha);
         assertTrue(modelManager.hasProject(alpha));
     }
 
     @Test
-    public void setAddressBook_replacesData() {
-        AddressBook source = new AddressBookBuilder().withPerson(ALICE).build();
-        modelManager.setAddressBook(source);
-        assertEquals(source, new AddressBook(modelManager.getAddressBook()));
+    public void setTaskForge_replacesData() {
+        TaskForge source = new TaskForgeBuilder().withPerson(ALICE).build();
+        modelManager.setTaskForge(source);
+        assertEquals(source, new TaskForge(modelManager.getTaskForge()));
     }
 
     @Test
@@ -219,40 +219,40 @@ public class ModelManagerTest {
 
     @Test
     public void equals() {
-        AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
-        AddressBook differentAddressBook = new AddressBook();
+        TaskForge taskForge = new TaskForgeBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        TaskForge differentTaskForge = new TaskForge();
         UserPrefs userPrefs = new UserPrefs();
 
         // same values -> returns true
-        modelManager = new ModelManager(addressBook, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(addressBook, userPrefs);
+        modelManager = new ModelManager(taskForge, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(taskForge, userPrefs);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
         assertTrue(modelManager.equals(modelManager));
 
         // null -> returns false
-        assertFalse(modelManager.equals(null));
+        assertFalse(modelManager.equals((Object) null));
 
         // different types -> returns false
         assertFalse(modelManager.equals(5));
 
-        // different addressBook -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentAddressBook, userPrefs)));
+        // different TaskForge -> returns false
+        assertFalse(modelManager.equals(new ModelManager(differentTaskForge, userPrefs)));
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate()
                 .setNameKeywords(Arrays.asList(keywords));
         modelManager.updateFilteredPersonList(predicate);
-        assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(taskForge, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
-        differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));
+        differentUserPrefs.setTaskForgeFilePath(Paths.get("differentFilePath"));
+        assertFalse(modelManager.equals(new ModelManager(taskForge, differentUserPrefs)));
     }
 }

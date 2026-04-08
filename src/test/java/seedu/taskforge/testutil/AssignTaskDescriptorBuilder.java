@@ -13,7 +13,7 @@ import seedu.taskforge.model.task.Task;
  */
 public class AssignTaskDescriptorBuilder {
 
-    private AssignTaskDescriptor descriptor;
+    private final AssignTaskDescriptor descriptor;
 
     public AssignTaskDescriptorBuilder() {
         descriptor = new AssignTaskDescriptor();

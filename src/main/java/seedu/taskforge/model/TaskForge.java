@@ -19,7 +19,7 @@ import seedu.taskforge.model.task.Task;
  * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSamePerson comparison)
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class TaskForge implements ReadOnlyTaskForge {
 
     private final UniquePersonList persons;
     private final UniqueProjectList projects;
@@ -36,12 +36,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         projects = new UniqueProjectList();
     }
 
-    public AddressBook() {}
+    public TaskForge() {}
 
     /**
-     * Creates an AddressBook using the Persons in the {@code toBeCopied}
+     * Creates an TaskForge using the Persons in the {@code toBeCopied}
      */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
+    public TaskForge(ReadOnlyTaskForge toBeCopied) {
         this();
         resetData(toBeCopied);
     }
@@ -65,9 +65,9 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Resets the existing data of this {@code AddressBook} with {@code newData}.
+     * Resets the existing data of this {@code TaskForge} with {@code newData}.
      */
-    public void resetData(ReadOnlyAddressBook newData) {
+    public void resetData(ReadOnlyTaskForge newData) {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
@@ -104,7 +104,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Removes {@code key} from this {@code AddressBook}.
+     * Removes {@code key} from this {@code TaskForge}.
      * {@code key} must exist in the address book.
      */
     public void removePerson(Person key) {
@@ -149,7 +149,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Removes {@code key} from this {@code AddressBook}.
+     * Removes {@code key} from this {@code TaskForge}.
      * {@code key} must exist in the address book.
      */
     public void removeProject(Project key) {
@@ -288,12 +288,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof AddressBook)) {
+        if (!(other instanceof TaskForge)) {
             return false;
         }
 
-        AddressBook otherAddressBook = (AddressBook) other;
-        return persons.equals(otherAddressBook.persons) && projects.equals(otherAddressBook.projects);
+        TaskForge otherTaskForge = (TaskForge) other;
+        return persons.equals(otherTaskForge.persons) && projects.equals(otherTaskForge.projects);
     }
 
     @Override

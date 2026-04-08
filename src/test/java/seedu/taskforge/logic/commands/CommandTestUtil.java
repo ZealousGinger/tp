@@ -18,8 +18,8 @@ import seedu.taskforge.commons.core.index.Index;
 import seedu.taskforge.logic.commands.exceptions.CommandException;
 import seedu.taskforge.logic.commands.person.EditCommand.EditPersonDescriptor;
 import seedu.taskforge.logic.parser.CliSyntax;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonContainsKeywordsPredicate;
 import seedu.taskforge.testutil.EditPersonDescriptorBuilder;
@@ -141,11 +141,11 @@ public class CommandTestUtil {
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
-        AddressBook expectedAddressBook = new AddressBook(actualModel.getAddressBook());
+        TaskForge expectedTaskForge = new TaskForge(actualModel.getTaskForge());
         List<Person> expectedFilteredList = new ArrayList<>(actualModel.getFilteredPersonList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
-        assertEquals(expectedAddressBook, actualModel.getAddressBook());
+        assertEquals(expectedTaskForge, actualModel.getTaskForge());
         assertEquals(expectedFilteredList, actualModel.getFilteredPersonList());
     }
     /**

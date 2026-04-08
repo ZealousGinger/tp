@@ -7,7 +7,7 @@ import seedu.taskforge.commons.core.GuiSettings;
 import seedu.taskforge.logic.commands.CommandResult;
 import seedu.taskforge.logic.commands.exceptions.CommandException;
 import seedu.taskforge.logic.parser.exceptions.ParseException;
-import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.ReadOnlyTaskForge;
 import seedu.taskforge.model.person.Person;
 
 /**
@@ -24,11 +24,11 @@ public interface Logic {
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
     /**
-     * Returns the AddressBook.
+     * Returns the TaskForge.
      *
-     * @see seedu.taskforge.model.Model#getAddressBook()
+     * @see seedu.taskforge.model.Model#getTaskForge()
      */
-    ReadOnlyAddressBook getAddressBook();
+    ReadOnlyTaskForge getTaskForge();
 
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<Person> getFilteredPersonList();
@@ -36,7 +36,7 @@ public interface Logic {
     /**
      * Returns the user prefs' address book file path.
      */
-    Path getAddressBookFilePath();
+    Path getTaskForgeFilePath();
 
     /**
      * Returns the user prefs' GUI settings.

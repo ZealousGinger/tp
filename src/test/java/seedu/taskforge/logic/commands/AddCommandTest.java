@@ -20,10 +20,10 @@ import seedu.taskforge.commons.core.GuiSettings;
 import seedu.taskforge.logic.Messages;
 import seedu.taskforge.logic.commands.exceptions.CommandException;
 import seedu.taskforge.logic.commands.person.AddCommand;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
-import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.ReadOnlyTaskForge;
 import seedu.taskforge.model.ReadOnlyUserPrefs;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.testutil.PersonBuilder;
@@ -75,7 +75,7 @@ public class AddCommandTest {
         assertFalse(addAliceCommand.equals(1));
 
         // null -> returns false
-        assertFalse(addAliceCommand.equals(null));
+        assertFalse(addAliceCommand.equals((Object) null));
 
         // different person -> returns false
         assertFalse(addAliceCommand.equals(addBobCommand));
@@ -113,12 +113,12 @@ public class AddCommandTest {
         }
 
         @Override
-        public Path getAddressBookFilePath() {
+        public Path getTaskForgeFilePath() {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void setAddressBookFilePath(Path addressBookFilePath) {
+        public void setTaskForgeFilePath(Path taskForgeFilePath) {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -128,12 +128,12 @@ public class AddCommandTest {
         }
 
         @Override
-        public void setAddressBook(ReadOnlyAddressBook newData) {
+        public void setTaskForge(ReadOnlyTaskForge newData) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public ReadOnlyAddressBook getAddressBook() {
+        public ReadOnlyTaskForge getTaskForge() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -225,8 +225,8 @@ public class AddCommandTest {
         }
 
         @Override
-        public ReadOnlyAddressBook getAddressBook() {
-            return new AddressBook();
+        public ReadOnlyTaskForge getTaskForge() {
+            return new TaskForge();
         }
     }
 

@@ -60,9 +60,9 @@ import seedu.taskforge.testutil.PersonUtil;
 import seedu.taskforge.testutil.UnassignProjectDescriptorBuilder;
 import seedu.taskforge.testutil.UnassignTaskDescriptorBuilder;
 
-public class AddressBookParserTest {
+public class TaskForgeParserTest {
 
-    private final AddressBookParser parser = new AddressBookParser();
+    private final TaskForgeParser parser = new TaskForgeParser();
 
     @Test
     public void parseCommand_add() throws Exception {

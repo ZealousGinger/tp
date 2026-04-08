@@ -7,21 +7,21 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandFailur
 import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.taskforge.testutil.TypicalPersons.CARL;
-import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalTaskForge;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.taskforge.commons.core.index.Index;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonTask;
 
 public class ViewTasksCommandTest {
 
-    private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalTaskForge(), new UserPrefs());
 
     @Test
     public void execute_validIndexWithTasks_success() {
@@ -31,13 +31,13 @@ public class ViewTasksCommandTest {
         String expectedMessage = String.format(ViewTasksCommand.MESSAGE_TASKS_HEADER,
                 firstPerson.getName().fullName, "[ ] refactor code");
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_validIndexWithDoneTask_success() {
-        Model mutatedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model mutatedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         mutatedModel.getProjectList().get(0).getUniqueTaskList().iterator().next().setDone();
 
         Person firstPerson = mutatedModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
@@ -46,7 +46,7 @@ public class ViewTasksCommandTest {
         String expectedMessage = String.format(ViewTasksCommand.MESSAGE_TASKS_HEADER,
                 firstPerson.getName().fullName, "[X] refactor code");
 
-        Model expectedModel = new ModelManager(new AddressBook(mutatedModel.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(mutatedModel.getTaskForge()), new UserPrefs());
         assertCommandSuccess(command, mutatedModel, expectedMessage, expectedModel);
     }
 
@@ -58,13 +58,13 @@ public class ViewTasksCommandTest {
 
         String expectedMessage = String.format(ViewTasksCommand.MESSAGE_NO_TASKS, CARL.getName().fullName);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidTaskReference_success() {
-        Model mutatedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model mutatedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         Person originalPerson = mutatedModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person invalidReferencedPerson = new Person(originalPerson.getName(), originalPerson.getPhone(),
                 originalPerson.getEmail(), originalPerson.getProjects(),
@@ -75,7 +75,7 @@ public class ViewTasksCommandTest {
         String expectedMessage = String.format(ViewTasksCommand.MESSAGE_TASKS_HEADER,
                 invalidReferencedPerson.getName().fullName, "[invalid-task-reference]");
 
-        Model expectedModel = new ModelManager(new AddressBook(mutatedModel.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(mutatedModel.getTaskForge()), new UserPrefs());
         assertCommandSuccess(command, mutatedModel, expectedMessage, expectedModel);
     }
 

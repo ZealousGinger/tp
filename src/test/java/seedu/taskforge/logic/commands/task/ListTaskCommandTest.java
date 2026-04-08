@@ -7,7 +7,7 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_PROJECT_ALPHA
 import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_PROJECT_X;
 import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalTaskForge;
 
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ import seedu.taskforge.model.project.Project;
 
 public class ListTaskCommandTest {
 
-    private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalTaskForge(), new UserPrefs());
 
     @Test
     public void execute_projectHasTasks_success() {

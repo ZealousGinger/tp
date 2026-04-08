@@ -8,7 +8,7 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandSucces
 import static seedu.taskforge.testutil.TypicalPersons.CARL;
 import static seedu.taskforge.testutil.TypicalPersons.ELLE;
 import static seedu.taskforge.testutil.TypicalPersons.FIONA;
-import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalTaskForge;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,8 +25,8 @@ import seedu.taskforge.model.person.PersonContainsKeywordsPredicate;
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
  */
 public class FindCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-    private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalTaskForge(), new UserPrefs());
+    private Model expectedModel = new ModelManager(getTypicalTaskForge(), new UserPrefs());
 
     @Test
     public void equals() {

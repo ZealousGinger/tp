@@ -2,6 +2,7 @@ package seedu.taskforge.model.project;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.taskforge.testutil.Assert.assertThrows;
 
@@ -164,7 +165,7 @@ public class UniqueProjectListTest {
 
         assertTrue(first.equals(second));
         assertEquals(first.hashCode(), second.hashCode());
-        assertFalse(first.equals(null));
+        assertNotEquals(first, null);
         assertFalse(first.equals(1));
     }
 
