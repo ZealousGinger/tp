@@ -204,6 +204,17 @@ public class AssignProjectCommandTest {
     }
 
     @Test
+    public void execute_invalidProjectIndex_failure() {
+        String outOfBoundProjectIndex = String.valueOf(model.getProjectList().size() + 1);
+        AssignProjectDescriptor descriptor = new AssignProjectDescriptorBuilder()
+                .withProjectIndexes(outOfBoundProjectIndex).build();
+        AssignProjectCommand assignProjectCommand = new AssignProjectCommand(INDEX_FIRST_PERSON, descriptor);
+
+        assertCommandFailure(assignProjectCommand, model,
+                AssignProjectCommand.MESSAGE_INVALID_PROJECT_DISPLAYED_INDEX);
+    }
+
+    @Test
     public void equals() {
         AssignProjectDescriptor descriptor = new AssignProjectDescriptor();
         AssignProjectCommand command = new AssignProjectCommand(INDEX_FIRST_PROJECT, descriptor);
