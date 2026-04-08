@@ -30,6 +30,13 @@ public class AssignTaskDescriptorBuilder {
         descriptor = new AssignTaskDescriptor();
     }
 
+    /**
+     * Sets the task indexes to the {@code AssignTaskDescriptor} being built.
+     * The provided indexes are parsed as one-based integers and converted to {@code Index} objects.
+     *
+     * @param indexes One-based string representations of task indexes to be assigned.
+     * @return The {@code AssignTaskDescriptorBuilder} instance with the updated task indexes.
+     */
     public AssignTaskDescriptorBuilder withTaskIndexes(String... indexes) {
         List<Index> taskIndexSet = Stream.of(indexes)
                 .map(s -> Index.fromOneBased(Integer.parseInt(s)))

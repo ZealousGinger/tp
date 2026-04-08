@@ -8,8 +8,8 @@ import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.taskforge.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.taskforge.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_TASK;
-import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_TASK;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_TASK;
 
 import org.junit.jupiter.api.Test;
 
