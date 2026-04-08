@@ -23,6 +23,7 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonTask;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
@@ -33,13 +34,12 @@ public class EditTaskCommandTest {
     @Test
     public void execute_editTask_successAndReassignsPeople() {
         Index projectIndex = INDEX_FIRST_PROJECT;
-        Project projectInModel = model.getProjectList().get(projectIndex.getZeroBased());
         Person aliceInModel = model.getAddressBook().getPersonList().stream()
                 .filter(person -> person.isSamePerson(ALICE))
                 .findFirst()
                 .orElseThrow();
         Person trackedAlice = new Person(aliceInModel.getName(), aliceInModel.getPhone(), aliceInModel.getEmail(),
-                aliceInModel.getProjects(), Arrays.asList(new Task(VALID_TASK_REFACTOR, projectInModel.title)));
+                aliceInModel.getProjects(), Arrays.asList(new PersonTask(projectIndex.getZeroBased(), 0)));
         model.setPerson(aliceInModel, trackedAlice);
 
         Task newTask = new Task(VALID_TASK_IMPLEMENT_X);
@@ -48,7 +48,7 @@ public class EditTaskCommandTest {
         Project expectedEditedProject = new Project(VALID_PROJECT_ALPHA,
                 Arrays.asList(new Task(VALID_TASK_IMPLEMENT_X), new Task(VALID_TASK_FIX_ERROR)));
         Person expectedAlice = new Person(trackedAlice.getName(), trackedAlice.getPhone(), trackedAlice.getEmail(),
-                trackedAlice.getProjects(), Arrays.asList(new Task(VALID_TASK_IMPLEMENT_X, projectInModel.title)));
+                trackedAlice.getProjects(), Arrays.asList(new PersonTask(projectIndex.getZeroBased(), 0)));
 
         String expectedMessage = String.format(EditTaskCommand.MESSAGE_SUCCESS, expectedEditedProject);
 
@@ -108,5 +108,4 @@ public class EditTaskCommandTest {
         assertFalse(firstCommand.equals((Object) null));
     }
 }
-
 
