@@ -82,12 +82,12 @@ public class PersonUtil {
      */
     public static String getAssignProjectDescriptorDetails(AssignProjectDescriptor descriptor) {
         StringBuilder sb = new StringBuilder();
-        if (descriptor.getProjects().isPresent()) {
-            List<Project> projects = descriptor.getProjects().get();
-            if (projects.isEmpty()) {
-                sb.append(PREFIX_NAME).append(" ");
+        if (descriptor.getProjectIndexes().isPresent()) {
+            List<Index> indexes = descriptor.getProjectIndexes().get();
+            if (indexes.isEmpty()) {
+                sb.append(PREFIX_INDEX).append(" ");
             } else {
-                projects.forEach(s -> sb.append(PREFIX_NAME).append(s.title).append(" "));
+                indexes.forEach(s -> sb.append(PREFIX_INDEX).append(s.getOneBased()).append(" "));
             }
         }
         return sb.toString();

@@ -200,18 +200,19 @@ Examples:
 
 Assigns a project to a person
 
-Format: `project assign PERSON_INDEX -n PROJECT_NAME`
+Format: `project assign PERSON_INDEX -i PROJECT_INDEX`
 
 * Assigns project(s) from `project list` to a person.
-* Project should exist in `project list` before being assigned to a person.
 * `PERSON_INDEX` refers to the person index that's displayed on `list`
+* `PROJECT_INDEX` refers to the project index that's displayed on `project list`
 * `PERSON_INDEX` **must be a positive integer** `1, 2, 3, ...`
+* `PROJECT_INDEX` **must be a positive integer** `1, 2, 3, ...`
 * The same project cannot be assigned twice to the same person (no duplicates)
-* To assign multiple projects in one command, repeat the `-n` prefix.
+* To assign multiple projects in one command, repeat the `-i` prefix.
 
 Example:
-* `project assign 1 -n WebApp` checks whether the project named WebApp exists, then assigns the project to the 1st person in the `list`
-* `project assign 2 -n WebApp -n MobileApp` assigns multiple projects to the 2nd person in the `list`
+* `project assign 1 -i 2` assigns the 2nd project in `project list` to the 1st person in the `list`
+* `project assign 2 -i 1 -i 3` assigns multiple projects to the 2nd person in the `list`
 
 #### Unassigning a project : `project unassign`
 
@@ -440,7 +441,7 @@ Action | Format, Examples
 **List Tasks by Project** | `task list -n PROJECT_NAME`<br> e.g., `task list -n Alpha`
 **Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]`<br> e.g., `task find report bug`
 **Assign Task** | `task assign INDEX -n TASK_NAME`<br> e.g., `task assign 1 -n Draft proposal`
-**Assign Project** | `project assign INDEX -n PROJECT_NAME`<br> e.g., `project assign 1 -n WebApp`
+**Assign Project** | `project assign INDEX -i PROJECT_INDEX`<br> e.g., `project assign 1 -i 2`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Delete Project** | `project delete INDEX`<br> e.g., `project delete 1`

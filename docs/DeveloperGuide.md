@@ -238,7 +238,7 @@ TaskForge supports project management through the parent command `project` with 
 - `project add PROJECT_NAME`
 - `project delete PROJECT_INDEX`
 - `project list`
-- `project assign INDEX -n PROJECT_NAME`
+- `project assign INDEX -i PROJECT_INDEX`
 - `project unassign INDEX -i PROJECT_INDEX`
 - `project find [KEYWORD]`
 
@@ -304,8 +304,8 @@ TaskForge supports project management through the parent command `project` with 
 - No data is modified during this operation; the command only returns a text-based result.
 
 **Project assignment to person (`project assign`)**:
-- `AssignProjectCommand` validates whether project(s) exist in the global project list first.
-- Uses `model.hasProject(project)` to verify project existence.
+- `AssignProjectCommand` resolves each `PROJECT_INDEX` against the global project list.
+- Invalid `PROJECT_INDEX` values are rejected.
 - Rejects duplicate assignments via `MESSAGE_DUPLICATE_PROJECT`.
 
 **Project unassignment from person (`project unassign`)**:
@@ -317,11 +317,11 @@ TaskForge supports project management through the parent command `project` with 
 - `AddProjectCommandParser` parses the preamble as the new project `NAME`.
 - `DeleteProjectCommandParser` parses the preamble as the target project `INDEX`.
 - `ListProjectCommandParser` takes no arguments; the entire input after `list` is discarded.
-- `AssignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project names from repeated `-n` prefixes.
+- `AssignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project indexes from repeated `-i` prefixes.
 - `UnassignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project indexes from repeated `-i` prefixes.
 - `FindProjectCommandParser` parses the input into one or more keywords.
 - If no project payload is provided (e.g., `project assign 1` or `project unassign 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
-- Similarly, if an empty project name is provided (e.g., `project assign 1 -n` or `project unassign 1 -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
+- Similarly, if an empty project payload is provided (e.g., `project assign 1 -i` or `project unassign 1 -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
 
 #### Execution behavior and validation in person-related commands
 
