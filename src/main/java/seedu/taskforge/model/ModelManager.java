@@ -115,6 +115,11 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public ObservableList<Person> getPersonList() {
+        return addressBook.getPersonList();
+    }
+
+    @Override
     public boolean hasPerson(Person person) {
         requireNonNull(person);
         return addressBook.hasPerson(person);
