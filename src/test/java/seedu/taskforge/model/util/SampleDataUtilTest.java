@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seedu.taskforge.model.ReadOnlyTaskForge;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonProject;
@@ -21,7 +22,7 @@ public class SampleDataUtilTest {
     public void sampleDataUtil_checkCorrectness() {
         Person[] samplePersons = SampleDataUtil.getSamplePersons();
         ReadOnlyTaskForge taskForge = SampleDataUtil.getSampleTaskForge();
-        javafx.collections.ObservableList<Person> expectedList = FXCollections.observableArrayList(samplePersons);
+        ObservableList<Person> expectedList = FXCollections.observableArrayList(samplePersons);
 
         assertNotNull(samplePersons);
 

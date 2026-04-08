@@ -75,7 +75,7 @@ public class AddCommandTest {
         assertFalse(addAliceCommand.equals(1));
 
         // null -> returns false
-        assertFalse(addAliceCommand.equals((Object) null));
+        assertFalse(addAliceCommand.equals(null));
 
         // different person -> returns false
         assertFalse(addAliceCommand.equals(addBobCommand));

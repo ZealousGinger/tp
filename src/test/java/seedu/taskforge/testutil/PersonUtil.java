@@ -38,11 +38,11 @@ public class PersonUtil {
      */
     public static String getPersonDetails(Person person) {
         StringBuilder sb = new StringBuilder();
-        sb.append(PREFIX_NAME).append(person.getName().fullName).append(" ");
-        sb.append(PREFIX_PHONE).append(person.getPhone().value).append(" ");
-        sb.append(PREFIX_EMAIL).append(person.getEmail().value).append(" ");
-        person.getProjects().forEach(
-            s -> sb.append(PREFIX_PROJECT_TITLE).append("project").append(s.getProjectIndex()).append(" ")
+        sb.append(PREFIX_NAME + person.getName().fullName + " ");
+        sb.append(PREFIX_PHONE + person.getPhone().value + " ");
+        sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
+        person.getProjects().stream().forEach(
+            s -> sb.append(PREFIX_PROJECT_TITLE + "project" + s.getProjectIndex() + " ")
         );
         person.getTasks().forEach(
             s -> sb.append(PREFIX_TASK).append("task").append(s.getProjectIndex()).append("_")
