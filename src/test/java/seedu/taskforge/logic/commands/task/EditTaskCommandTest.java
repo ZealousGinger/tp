@@ -1,8 +1,7 @@
 package seedu.taskforge.logic.commands.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_FIX_ERROR;
 import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_IMPLEMENT_X;
 import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_REFACTOR;
@@ -10,7 +9,11 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandFailur
 import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_TASK;
+import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_TASK;
 import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -96,19 +99,57 @@ public class EditTaskCommandTest {
     }
 
     @Test
+    public void execute_invalidProjectReference_failure() {
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person malformedPerson = new Person(firstPerson.getName(), firstPerson.getPhone(), firstPerson.getEmail(),
+                firstPerson.getProjects(), List.of(new PersonTask(model.getProjectList().size(), 0)));
+
+        AddressBook malformedAddressBook = new AddressBook(model.getAddressBook());
+        malformedAddressBook.setPersons(List.of(malformedPerson));
+        Model malformedModel = new ModelManager(malformedAddressBook, new UserPrefs());
+
+        EditTaskCommand editTaskCommand = new EditTaskCommand(INDEX_FIRST_PERSON, INDEX_FIRST_TASK,
+                new Task(VALID_TASK_IMPLEMENT_X));
+
+        assertCommandFailure(editTaskCommand, malformedModel, EditTaskCommand.MESSAGE_INVALID_TASK_REFERENCE);
+    }
+
+    @Test
+    public void execute_invalidTaskReference_failure() {
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person malformedPerson = new Person(firstPerson.getName(), firstPerson.getPhone(), firstPerson.getEmail(),
+                firstPerson.getProjects(), List.of(new PersonTask(0, model.getProjectList().get(0).getTasks().size())));
+
+        AddressBook malformedAddressBook = new AddressBook(model.getAddressBook());
+        malformedAddressBook.setPersons(List.of(malformedPerson));
+        Model malformedModel = new ModelManager(malformedAddressBook, new UserPrefs());
+
+        EditTaskCommand editTaskCommand = new EditTaskCommand(INDEX_FIRST_PERSON, INDEX_FIRST_TASK,
+                new Task(VALID_TASK_IMPLEMENT_X));
+
+        assertCommandFailure(editTaskCommand, malformedModel, EditTaskCommand.MESSAGE_INVALID_TASK_REFERENCE);
+    }
+
+    @Test
     public void equals() {
         EditTaskCommand firstCommand = new EditTaskCommand(INDEX_FIRST_PERSON, INDEX_FIRST_TASK,
                 new Task(VALID_TASK_IMPLEMENT_X));
         EditTaskCommand sameValuesCommand = new EditTaskCommand(INDEX_FIRST_PERSON, INDEX_FIRST_TASK,
                 new Task(VALID_TASK_IMPLEMENT_X));
+        EditTaskCommand differentPersonIndexCommand = new EditTaskCommand(INDEX_SECOND_PERSON, INDEX_FIRST_TASK,
+                new Task(VALID_TASK_IMPLEMENT_X));
+        EditTaskCommand differentTaskIndexCommand = new EditTaskCommand(INDEX_FIRST_PERSON, INDEX_SECOND_TASK,
+                new Task(VALID_TASK_IMPLEMENT_X));
         EditTaskCommand differentCommand = new EditTaskCommand(INDEX_FIRST_PERSON, INDEX_FIRST_TASK,
                 new Task(VALID_TASK_REFACTOR));
 
-        assertTrue(firstCommand.equals(firstCommand));
-        assertTrue(firstCommand.equals(sameValuesCommand));
-        assertFalse(firstCommand.equals(differentCommand));
-        assertFalse(firstCommand.equals(1));
-        assertFalse(firstCommand.equals((Object) null));
+        assertEquals(firstCommand, sameValuesCommand);
+        assertNotEquals(firstCommand, differentPersonIndexCommand);
+        assertNotEquals(firstCommand, differentTaskIndexCommand);
+        assertNotEquals(firstCommand, differentCommand);
+        assertNotEquals(1, firstCommand);
+        assertNotEquals(null, firstCommand);
+        assertEquals(firstCommand.hashCode(), sameValuesCommand.hashCode());
     }
 }
 
