@@ -245,9 +245,13 @@ public class AssignTaskCommandTest {
         AssignTaskDescriptor descriptor = new AssignTaskDescriptor();
         assertFalse(descriptor.isTaskFieldEdited());
 
-        descriptor.setTasksIndexes(Arrays.asList(Index.fromOneBased(3)));
+        descriptor.setProjectTaskPairs(
+                Arrays.asList(
+                        new AssignTaskCommand.ProjectTaskPair(
+                                Index.fromOneBased(1), Index.fromOneBased(3))));
         assertTrue(descriptor.isTaskFieldEdited());
-        assertThrows(UnsupportedOperationException.class, () -> descriptor.getTasksIndexes().get().clear());
+        assertThrows(UnsupportedOperationException.class, () ->
+                descriptor.getProjectTaskPairs().get().clear());
     }
 
 }

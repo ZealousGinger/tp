@@ -1,7 +1,6 @@
 package seedu.taskforge.logic.commands.task;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
@@ -35,10 +34,11 @@ public class AssignTaskCommand extends TaskCommand {
     public static final String MESSAGE_SUCCESS = "Task assigned: %1$s";
     public static final String MESSAGE_USAGE = COMMAND_WORD + " "
             + SUBCOMMAND_WORD + " PERSON_INDEX "
-            + PREFIX_INDEX + " TASK_INDEX";
+            + "[-pi PROJECT_INDEX -i TASK_INDEX]...";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists for this person!";
     public static final String MESSAGE_NOT_EDITED = "At least one task to assign must be provided";
     public static final String MESSAGE_INVALID_TASK_DISPLAYED_INDEX = "Task index is out of bound";
+    public static final String MESSAGE_INVALID_PROJECT_DISPLAYED_INDEX = "Project index is out of bound";
 
     private final Index index;
     private final AssignTaskDescriptor assignTaskDescriptor;
@@ -65,10 +65,9 @@ public class AssignTaskCommand extends TaskCommand {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        List<Index> taskIndexesToAssign = assignTaskDescriptor.getTasksIndexes()
+        List<ProjectTaskPair> projectTaskPairs = assignTaskDescriptor.getProjectTaskPairs()
             .orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED));
-        List<PersonTask> resolvedTasksToAssign = resolveTasksWithProjectTracking(taskIndexesToAssign, personToEdit,
-                model);
+        List<PersonTask> resolvedTasksToAssign = resolveTasksFromProjectTaskPairs(projectTaskPairs, model);
         Person editedPerson = createEditedPerson(personToEdit, resolvedTasksToAssign);
 
         model.setPerson(personToEdit, editedPerson);
@@ -97,32 +96,27 @@ public class AssignTaskCommand extends TaskCommand {
         return new Person(name, phone, email, personProjectList, newTasks);
     }
 
-    private static List<PersonTask> resolveTasksWithProjectTracking(List<Index> taskIndexes, Person person,
-            Model model)
-            throws CommandException {
-        List<PersonProject> assignedPersonProjects = person.getProjects();
+    private static List<PersonTask> resolveTasksFromProjectTaskPairs(List<ProjectTaskPair> projectTaskPairs,
+            Model model) throws CommandException {
         List<Project> allProjects = new ArrayList<>(model.getProjectList());
-
-        List<PersonTask> assignableTasks = new ArrayList<>();
-        for (PersonProject personProject : assignedPersonProjects) {
-            int projectIndex = personProject.getProjectIndex();
-            if (projectIndex < 0 || projectIndex >= allProjects.size()) {
-                continue;
-            }
-
-            List<seedu.taskforge.model.task.Task> tasksInProject = allProjects.get(projectIndex).getTasks();
-            for (int taskIndex = 0; taskIndex < tasksInProject.size(); taskIndex++) {
-                assignableTasks.add(new PersonTask(projectIndex, taskIndex));
-            }
-        }
-
         List<PersonTask> resolvedTasks = new ArrayList<>();
-        for (Index taskIndex : taskIndexes) {
-            int zeroBasedIndex = taskIndex.getZeroBased();
-            if (zeroBasedIndex < 0 || zeroBasedIndex >= assignableTasks.size()) {
+
+        for (ProjectTaskPair pair : projectTaskPairs) {
+            int projectIndex = pair.getProjectIndex().getZeroBased();
+            int taskIndex = pair.getTaskIndex().getZeroBased();
+
+            // Validate project index
+            if (projectIndex < 0 || projectIndex >= allProjects.size()) {
+                throw new CommandException(MESSAGE_INVALID_PROJECT_DISPLAYED_INDEX);
+            }
+
+            // Validate task index within the project
+            List<seedu.taskforge.model.task.Task> tasksInProject = allProjects.get(projectIndex).getTasks();
+            if (taskIndex < 0 || taskIndex >= tasksInProject.size()) {
                 throw new CommandException(MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
             }
-            resolvedTasks.add(assignableTasks.get(zeroBasedIndex));
+
+            resolvedTasks.add(new PersonTask(projectIndex, taskIndex));
         }
 
         return resolvedTasks;
@@ -133,7 +127,7 @@ public class AssignTaskCommand extends TaskCommand {
      * A {@code CommandException} is thrown if there are duplicates.
      *
      */
-    public static List<PersonTask> checkUniqueTasks(List<PersonTask> tasks) throws CommandException {
+    public static void checkUniqueTasks(List<PersonTask> tasks) throws CommandException {
         Set<String> uniqueTaskRefs = new HashSet<>();
         boolean hasDuplicates = tasks.stream()
                 .map(task -> task.getProjectIndex() + ":" + task.getTaskIndex())
@@ -141,7 +135,6 @@ public class AssignTaskCommand extends TaskCommand {
         if (hasDuplicates) {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
         }
-        return tasks;
     }
 
     @Override
@@ -164,40 +157,42 @@ public class AssignTaskCommand extends TaskCommand {
      * Stores the tasks to add to the person.
      */
     public static class AssignTaskDescriptor {
-        private List<Index> indexes;
+        private List<ProjectTaskPair> projectTaskPairs;
 
         public AssignTaskDescriptor() {}
 
         /**
          * Copy constructor.
-         * A defensive copy of {@code tasks} is used internally.
+         * A defensive copy of {@code projectTaskPairs} is used internally.
          */
         public AssignTaskDescriptor(AssignTaskDescriptor toCopy) {
-            setTasksIndexes(toCopy.indexes);
+            setProjectTaskPairs(toCopy.projectTaskPairs);
         }
 
         /**
-         * Sets {@code tasks} to this object's {@code tasks}.
-         * A defensive copy of {@code tasks} is used internally.
+         * Sets {@code projectTaskPairs} to this object's {@code projectTaskPairs}.
+         * A defensive copy of {@code projectTaskPairs} is used internally.
          */
-        public void setTasksIndexes(List<Index> indexes) {
-            this.indexes = (indexes != null) ? new ArrayList<>(indexes) : null;
+        public void setProjectTaskPairs(List<ProjectTaskPair> projectTaskPairs) {
+            this.projectTaskPairs = (projectTaskPairs != null) ? new ArrayList<>(projectTaskPairs) : null;
         }
 
         /**
-         * Returns an unmodifiable task set, which throws {@code UnsupportedOperationException}
-         * if modification is attempted.
-         * Returns {@code Optional#empty()} if {@code tasks} is null.
+         * Returns an unmodifiable list of project-task pairs, which throws
+         * {@code UnsupportedOperationException} if modification is attempted.
+         * Returns {@code Optional#empty()} if {@code projectTaskPairs} is null.
          */
-        public Optional<List<Index>> getTasksIndexes() {
-            return (indexes != null) ? Optional.of(Collections.unmodifiableList(indexes)) : Optional.empty();
+        public Optional<List<ProjectTaskPair>> getProjectTaskPairs() {
+            return (projectTaskPairs != null)
+                    ? Optional.of(Collections.unmodifiableList(projectTaskPairs))
+                    : Optional.empty();
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isTaskFieldEdited() {
-            return CollectionUtil.isAnyNonNull(indexes) && !indexes.isEmpty();
+            return CollectionUtil.isAnyNonNull(projectTaskPairs) && !projectTaskPairs.isEmpty();
         }
 
         @Override
@@ -212,7 +207,53 @@ public class AssignTaskCommand extends TaskCommand {
             }
 
             AssignTaskDescriptor assignTaskDescriptor = (AssignTaskDescriptor) other;
-            return Objects.equals(indexes, assignTaskDescriptor.indexes);
+            return Objects.equals(projectTaskPairs, assignTaskDescriptor.projectTaskPairs);
+        }
+    }
+
+    /**
+     * Represents a pair of project index and task index.
+     */
+    public static class ProjectTaskPair {
+        private final Index projectIndex;
+        private final Index taskIndex;
+
+        /**
+         * Creates a new ProjectTaskPair with the specified project and task indices.
+         *
+         * @param projectIndex the index of the project (must not be null)
+         * @param taskIndex the index of the task (must not be null)
+         */
+        public ProjectTaskPair(Index projectIndex, Index taskIndex) {
+            this.projectIndex = requireNonNull(projectIndex);
+            this.taskIndex = requireNonNull(taskIndex);
+        }
+
+        public Index getProjectIndex() {
+            return projectIndex;
+        }
+
+        public Index getTaskIndex() {
+            return taskIndex;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (other == this) {
+                return true;
+            }
+
+            if (!(other instanceof ProjectTaskPair)) {
+                return false;
+            }
+
+            ProjectTaskPair otherPair = (ProjectTaskPair) other;
+            return projectIndex.equals(otherPair.projectIndex) && taskIndex.equals(otherPair.taskIndex);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(projectIndex, taskIndex);
         }
     }
 }

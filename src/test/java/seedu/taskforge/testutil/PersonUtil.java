@@ -4,6 +4,7 @@ import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT_TITLE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_TASK;
 
@@ -114,13 +115,11 @@ public class PersonUtil {
      */
     public static String getAssignTaskDescriptorDetails(AssignTaskDescriptor descriptor) {
         StringBuilder sb = new StringBuilder();
-        if (descriptor.getTasksIndexes().isPresent()) {
-            List<Index> indexes = descriptor.getTasksIndexes().get();
-            if (indexes.isEmpty()) {
-                sb.append(PREFIX_INDEX).append(" ");
-            } else {
-                indexes.forEach(s -> sb.append(PREFIX_INDEX).append(s.getOneBased()).append(" "));
-            }
+        if (descriptor.getProjectTaskPairs().isPresent()) {
+            descriptor.getProjectTaskPairs().get().forEach(pair ->
+                sb.append(PREFIX_PROJECT).append(pair.getProjectIndex().getOneBased()).append(" ")
+                  .append(PREFIX_INDEX).append(pair.getTaskIndex().getOneBased()).append(" ")
+            );
         }
         return sb.toString();
     }

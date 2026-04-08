@@ -173,7 +173,10 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_assignTask() throws Exception {
-        AssignTaskDescriptor descriptor = new AssignTaskDescriptorBuilder().withTaskIndexes("1").build();
+        AssignTaskCommand.ProjectTaskPair pair = new AssignTaskCommand.ProjectTaskPair(
+                INDEX_FIRST_PERSON, INDEX_FIRST_PERSON);
+        AssignTaskDescriptor descriptor = new AssignTaskDescriptorBuilder()
+                .withProjectTaskPairs(pair).build();
         AssignTaskCommand command = (AssignTaskCommand) parser.parseCommand(AssignTaskCommand.COMMAND_WORD
                 + " " + AssignTaskCommand.SUBCOMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
                 + " " + PersonUtil.getAssignTaskDescriptorDetails(descriptor));

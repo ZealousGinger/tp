@@ -3,15 +3,15 @@ package seedu.taskforge.logic.parser.task;
 import static java.util.Objects.requireNonNull;
 import static seedu.taskforge.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import seedu.taskforge.commons.core.index.Index;
 import seedu.taskforge.logic.commands.task.AssignTaskCommand;
 import seedu.taskforge.logic.commands.task.AssignTaskCommand.AssignTaskDescriptor;
+import seedu.taskforge.logic.commands.task.AssignTaskCommand.ProjectTaskPair;
 import seedu.taskforge.logic.parser.ArgumentMultimap;
 import seedu.taskforge.logic.parser.ArgumentTokenizer;
 import seedu.taskforge.logic.parser.Parser;
@@ -30,7 +30,7 @@ public class AssignTaskCommandParser implements Parser<AssignTaskCommand> {
      */
     public AssignTaskCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_INDEX);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_PROJECT, PREFIX_INDEX);
 
         Index index;
         try {
@@ -41,8 +41,8 @@ public class AssignTaskCommandParser implements Parser<AssignTaskCommand> {
         }
 
         AssignTaskDescriptor assignTaskDescriptor = new AssignTaskDescriptor();
-        parseTaskIndexesForAssign(argMultimap.getAllValues(PREFIX_INDEX))
-                .ifPresent(assignTaskDescriptor::setTasksIndexes);
+        parseProjectTaskPairs(argMultimap)
+                .ifPresent(assignTaskDescriptor::setProjectTaskPairs);
 
         if (!assignTaskDescriptor.isTaskFieldEdited()) {
             throw new ParseException(AssignTaskCommand.MESSAGE_NOT_EDITED);
@@ -51,14 +51,27 @@ public class AssignTaskCommandParser implements Parser<AssignTaskCommand> {
         return new AssignTaskCommand(index, assignTaskDescriptor);
     }
 
-    private Optional<List<Index>> parseTaskIndexesForAssign(Collection<String> taskIndexes) throws ParseException {
-        assert taskIndexes != null;
+    private java.util.Optional<List<ProjectTaskPair>> parseProjectTaskPairs(ArgumentMultimap argMultimap)
+            throws ParseException {
+        List<String> projectIndexes = argMultimap.getAllValues(PREFIX_PROJECT);
+        List<String> taskIndexes = argMultimap.getAllValues(PREFIX_INDEX);
 
-        if (taskIndexes.isEmpty()) {
-            return Optional.empty();
+        if (projectIndexes.isEmpty() && taskIndexes.isEmpty()) {
+            return java.util.Optional.empty();
         }
-        Collection<String> taskSet = taskIndexes.size() == 1 && taskIndexes.contains("")
-                ? Collections.emptyList() : taskIndexes;
-        return Optional.of(ParserUtil.parseTaskIndexes(taskSet));
+
+        if (projectIndexes.size() != taskIndexes.size()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE));
+        }
+
+        List<ProjectTaskPair> pairs = new ArrayList<>();
+        for (int i = 0; i < projectIndexes.size(); i++) {
+            Index projectIndex = ParserUtil.parseIndex(projectIndexes.get(i));
+            Index taskIndex = ParserUtil.parseIndex(taskIndexes.get(i));
+            pairs.add(new ProjectTaskPair(projectIndex, taskIndex));
+        }
+
+        return pairs.isEmpty() ? java.util.Optional.empty() : java.util.Optional.of(pairs);
     }
 }
