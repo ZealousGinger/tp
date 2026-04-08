@@ -25,6 +25,7 @@ import seedu.taskforge.model.ReadOnlyUserPrefs;
 import seedu.taskforge.model.person.Email;
 import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.PersonProject;
 import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
 
@@ -40,21 +41,21 @@ public class ViewProjectMembersCommandTest {
             new Name("Alex Yeoh"),
             new Phone("87438807"),
             new Email("alexyeoh@example.com"),
-            Arrays.asList(alpha),
+            Arrays.asList(new PersonProject(0)),
             Collections.emptyList());
 
     private final Person bernice = new Person(
             new Name("Bernice Yu"),
             new Phone("99272758"),
             new Email("berniceyu@example.com"),
-            Arrays.asList(alpha, beta),
+            Arrays.asList(new PersonProject(0), new PersonProject(1)),
             Collections.emptyList());
 
     private final Person charlotte = new Person(
             new Name("Charlotte Oliveiro"),
             new Phone("93210283"),
             new Email("charlotte@example.com"),
-            Arrays.asList(beta),
+            Arrays.asList(new PersonProject(1)),
             Collections.emptyList());
 
     @Test
@@ -78,10 +79,10 @@ public class ViewProjectMembersCommandTest {
         Project gamma = new Project("Gamma");
 
         ModelStub modelStub = new ModelStubWithProjectAndPersonList(
-                new Project[] {alpha, gamma},
+                new Project[] {alpha, beta, gamma},
                 new Person[] {alex, bernice, charlotte});
 
-        ViewProjectMembersCommand command = new ViewProjectMembersCommand(Index.fromOneBased(2));
+        ViewProjectMembersCommand command = new ViewProjectMembersCommand(Index.fromOneBased(3));
         CommandResult result = command.execute(modelStub);
 
         assertEquals("There are no members in project: Gamma", result.getFeedbackToUser());

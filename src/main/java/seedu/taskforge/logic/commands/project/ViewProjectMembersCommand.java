@@ -34,7 +34,6 @@ public class ViewProjectMembersCommand extends ProjectCommand {
     public ViewProjectMembersCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
     }
-
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
@@ -48,8 +47,11 @@ public class ViewProjectMembersCommand extends ProjectCommand {
 
         model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
 
+        int projectZeroBasedIndex = targetIndex.getZeroBased();
+
         List<Person> members = model.getFilteredPersonList().stream()
-                .filter(person -> person.getProjects().contains(targetProject))
+                .filter(person -> person.getProjects().stream()
+                        .anyMatch(personProject -> personProject.getProjectIndex() == projectZeroBasedIndex))
                 .collect(Collectors.toList());
 
         if (members.isEmpty()) {
