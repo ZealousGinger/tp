@@ -138,7 +138,8 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_assignProject() throws Exception {
         Person person = new PersonBuilder().build();
-        AssignProjectDescriptor descriptor = new AssignProjectDescriptorBuilder(person).withProjects("alpha").build();
+        AssignProjectDescriptor descriptor = new AssignProjectDescriptorBuilder(person)
+                .withProjectIndexes("1").build();
         AssignProjectCommand command = (AssignProjectCommand) parser.parseCommand(AssignProjectCommand.COMMAND_WORD
                 + " " + AssignProjectCommand.SUBCOMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
                 + " " + PersonUtil.getAssignProjectDescriptorDetails(descriptor));
@@ -186,7 +187,10 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_assignTask() throws Exception {
-        AssignTaskDescriptor descriptor = new AssignTaskDescriptorBuilder().withTasks("Write report").build();
+        AssignTaskCommand.ProjectTaskPair pair = new AssignTaskCommand.ProjectTaskPair(
+                INDEX_FIRST_PERSON, INDEX_FIRST_PERSON);
+        AssignTaskDescriptor descriptor = new AssignTaskDescriptorBuilder()
+                .withProjectTaskPairs(pair).build();
         AssignTaskCommand command = (AssignTaskCommand) parser.parseCommand(AssignTaskCommand.COMMAND_WORD
                 + " " + AssignTaskCommand.SUBCOMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
                 + " " + PersonUtil.getAssignTaskDescriptorDetails(descriptor));

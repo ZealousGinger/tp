@@ -238,7 +238,7 @@ TaskForge supports project management through the parent command `project` with 
 - `project add PROJECT_NAME`
 - `project delete PROJECT_INDEX`
 - `project list`
-- `project assign INDEX -n PROJECT_NAME`
+- `project assign INDEX -i PROJECT_INDEX`
 - `project unassign INDEX -i PROJECT_INDEX`
 - `project find [KEYWORD]`
 
@@ -304,8 +304,8 @@ TaskForge supports project management through the parent command `project` with 
 - No data is modified during this operation; the command only returns a text-based result.
 
 **Project assignment to person (`project assign`)**:
-- `AssignProjectCommand` validates whether project(s) exist in the global project list first.
-- Uses `model.hasProject(project)` to verify project existence.
+- `AssignProjectCommand` resolves each `PROJECT_INDEX` against the global project list.
+- Invalid `PROJECT_INDEX` values are rejected.
 - Rejects duplicate assignments via `MESSAGE_DUPLICATE_PROJECT`.
 
 **Project unassignment from person (`project unassign`)**:
@@ -317,11 +317,11 @@ TaskForge supports project management through the parent command `project` with 
 - `AddProjectCommandParser` parses the preamble as the new project `NAME`.
 - `DeleteProjectCommandParser` parses the preamble as the target project `INDEX`.
 - `ListProjectCommandParser` takes no arguments; the entire input after `list` is discarded.
-- `AssignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project names from repeated `-n` prefixes.
+- `AssignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project indexes from repeated `-i` prefixes.
 - `UnassignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project indexes from repeated `-i` prefixes.
 - `FindProjectCommandParser` parses the input into one or more keywords.
 - If no project payload is provided (e.g., `project assign 1` or `project unassign 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
-- Similarly, if an empty project name is provided (e.g., `project assign 1 -n` or `project unassign 1 -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
+- Similarly, if an empty project payload is provided (e.g., `project assign 1 -i` or `project unassign 1 -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
 
 #### Execution behavior and validation in person-related commands
 
@@ -341,7 +341,7 @@ TaskForge supports task management using 10 commands:
 - `task edit PROJECT_NAME -i TASK_INDEX -n NEW_TASK_NAME`
 - `task list -n PROJECT_NAME`
 - `task find KEYWORD [MORE_KEYWORDS]`
-- `task assign INDEX -n TASK_NAME`
+- `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX`
 - `task unassign INDEX -i TASK_INDEX`
 - `task view INDEX`
 - `task mark PERSON_INDEX TASK_INDEX`
@@ -418,8 +418,9 @@ TaskForge supports task management using 10 commands:
 - Returns output in the format `taskName - projectName`.
 
 **Task assignment to person (`task assign`)**:
-- `AssignTaskCommand` validates whether or not task(s) exists in the person's assigned projects before assignment.
-- Resolves each selected task to a `(projectIndex, taskIndex)` pair before persisting assignment.
+- `AssignTaskCommand` resolves each selected `TASK_INDEX` into a `(projectIndex, taskIndex)` pair based on tasks
+  available from the person's assigned projects.
+- Invalid `TASK_INDEX` values are rejected.
 - Rejects duplicate assignments via `MESSAGE_DUPLICATE_TASK`.
 
 **Task viewing (`task view`)**:
@@ -450,12 +451,12 @@ TaskForge supports task management using 10 commands:
 - `EditTaskCommandParser` parses the preamble as target `PROJECT_NAME`, parses task index from `-i`, and parses the new task name from `-n`.
 - `ListTaskCommandParser` parses project name from `-n PROJECT_NAME`.
 - `FindTaskCommandParser` parses one or more keyword tokens from the argument preamble.
-- `AssignTaskCommandParser` parses the preamble as the target person `INDEX` and parses task names from repeated `-n` prefixes.
+- `AssignTaskCommandParser` parses the preamble as the target person `INDEX` and parses task indexes from repeated `-i` prefixes.
 - `UnassignTaskCommandParser` parses the preamble as the target person `INDEX` and parses task indexes from repeated `-i` prefixes.
 - `ViewTasksCommandParser` parses the preamble as the target person `INDEX`.
 - `MarkTaskCommandParser` and `UnmarkTaskCommandParser` parse the preamble as the target person `INDEX` and target task `INDEX`.
 - If no task payload is provided (e.g., `task assign 1` or `task unassign 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
-- Similarly, if an empty task name or task index is provided (e.g., `task assign 1 -n` or `task unassign 1 -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
+- Similarly, if an empty task payload is provided (e.g., `task assign 1 -i` or `task unassign 1 -pi`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
 
 #### Execution behavior and validation
 
