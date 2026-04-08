@@ -341,7 +341,7 @@ TaskForge supports task management using 10 commands:
 - `task edit PROJECT_NAME -i TASK_INDEX -n NEW_TASK_NAME`
 - `task list -n PROJECT_NAME`
 - `task find KEYWORD [MORE_KEYWORDS]`
-- `task assign INDEX -i TASK_INDEX`
+- `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX`
 - `task unassign INDEX -i TASK_INDEX`
 - `task view INDEX`
 - `task mark PERSON_INDEX TASK_INDEX`
@@ -456,7 +456,7 @@ TaskForge supports task management using 10 commands:
 - `ViewTasksCommandParser` parses the preamble as the target person `INDEX`.
 - `MarkTaskCommandParser` and `UnmarkTaskCommandParser` parse the preamble as the target person `INDEX` and target task `INDEX`.
 - If no task payload is provided (e.g., `task assign 1` or `task unassign 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
-- Similarly, if an empty task payload is provided (e.g., `task assign 1 -i` or `task unassign 1 -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
+- Similarly, if an empty task payload is provided (e.g., `task assign 1 -i` or `task unassign 1 -pi`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
 
 #### Execution behavior and validation
 
