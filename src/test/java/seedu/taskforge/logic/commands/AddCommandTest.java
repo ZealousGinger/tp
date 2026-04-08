@@ -186,7 +186,6 @@ public class AddCommandTest {
         public ObservableList<Project> getProjectList() {
             return FXCollections.observableArrayList();
         }
-
     }
 
     /**

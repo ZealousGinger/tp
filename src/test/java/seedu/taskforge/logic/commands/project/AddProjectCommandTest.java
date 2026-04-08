@@ -146,7 +146,6 @@ public class AddProjectCommandTest {
             return FXCollections.observableArrayList();
         }
 
-
         @Override
         public boolean hasPerson(Person person) {
             throw new AssertionError("This method should not be called.");

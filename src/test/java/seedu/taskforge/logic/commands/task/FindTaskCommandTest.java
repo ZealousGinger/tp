@@ -161,7 +161,6 @@ public class FindTaskCommandTest {
         public void updateFilteredPersonList(Predicate<Person> predicate) {
             throw new AssertionError("This method should not be called.");
         }
-
     }
 
     /**
