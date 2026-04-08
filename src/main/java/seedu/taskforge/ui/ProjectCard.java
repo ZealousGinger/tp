@@ -3,12 +3,10 @@ package seedu.taskforge.ui;
 import java.util.List;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.shape.Circle;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
@@ -48,20 +46,7 @@ public class ProjectCard extends UiPart<Region> {
         List<Task> taskList = project.getTasks();
 
         for (int i = 0; i < taskList.size(); i++) {
-            Task task = taskList.get(i);
-            Circle circle = new Circle(4);
-            circle.getStyleClass().add("task-not-done");
-            if (task.getStatus()) {
-                circle.getStyleClass().add("task-done");
-            }
-
-            Label taskLabel = new Label((i + 1) + ". " + task.description);
-
-            HBox taskContainer = new HBox(2);
-            taskContainer.setAlignment(Pos.CENTER_LEFT);
-            taskContainer.getChildren().addAll(circle, taskLabel);
-
-            tasks.getChildren().add(taskContainer);
+            tasks.getChildren().add(PersonCard.createTaskDisplayRow(i + 1, i + 1, taskList.get(i)));
         }
     }
 }
