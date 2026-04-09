@@ -1,33 +1,16 @@
 .help-container {
-    -fx-background-color: white;
+    -fx-background-color: #0f1115;
 }
 
-<<<<<<< help-command
 .help-text-area {
     -fx-font-size: 14px;
-    -fx-text-fill: black;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #e3e9f2;
+    -fx-background-color: #131821;
+    -fx-border-color: #2a3b49;
+    -fx-border-width: 1;
 }
 
 .help-text-area .content {
-    -fx-background-color: white;
-}
-
-.help-text-area {
-    -fx-control-inner-background: white;
-=======
-#copyButton {
-    -fx-background-color: #00312f;
-}
-
-#copyButton:hover {
-    -fx-background-color: #005958;
-}
-
-#copyButton:armed {
-    -fx-background-color: #014848;
-}
-
-#helpMessageContainer {
-    -fx-background-color: #11151b;
->>>>>>> master
+    -fx-background-color: #131821;
 }

@@ -19,6 +19,8 @@
     <scene>
       <Scene width="700" height="600">
         <stylesheets>
+          <URL value="@DarkTheme.css" />
+          <URL value="@Extensions.css" />
           <URL value="@HelpWindow.css" />
         </stylesheets>
 
