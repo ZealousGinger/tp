@@ -12,6 +12,7 @@ title: Developer Guide
 * This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
 * Widespread code reuse of AI-generated work (GitHub Copilot) by Hsu, used for auto complete, generate alternative solutions, generate fixes/help with debugging, generate some code solutions.
 * Code reuse of AB3 UserGuide and DeveloperGuide sections.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
@@ -528,11 +529,6 @@ The availability status is displayed in the `PersonCard` UI as a colored circle 
 - Model side: assigned projects/tasks are stored on `Person` as references (`PersonProject`, `PersonTask`) to Project and Task.
 - Storage side: JSON loading enforces that project and task references remain valid against the global project or project's task lists before data is accepted.
 - This ensure consistent when editting data from the database.
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
 
 --------------------------------------------------------------------------------------------------------------------
 
