@@ -37,74 +37,74 @@ public interface Model {
     void setGuiSettings(GuiSettings guiSettings);
 
     /**
-     * Returns the user prefs' address book file path.
+     * Returns the user prefs' TaskForge file path.
      */
-    Path getAddressBookFilePath();
+    Path getTaskForgeFilePath();
 
     /**
-     * Sets the user prefs' address book file path.
+     * Sets the user prefs' TaskForge file path.
      */
-    void setAddressBookFilePath(Path addressBookFilePath);
+    void setTaskForgeFilePath(Path taskForgeFilePath);
 
     /**
-     * Replaces address book data with the data in {@code addressBook}.
+     * Replaces TaskForge data with the data in {@code taskForge}.
      */
-    void setAddressBook(ReadOnlyAddressBook addressBook);
+    void setTaskForge(ReadOnlyTaskForge taskForge);
 
-    /** Returns the AddressBook */
-    ReadOnlyAddressBook getAddressBook();
+    /** Returns the TaskForge */
+    ReadOnlyTaskForge getTaskForge();
 
     /**
-     * Returns true if a project with the same identity as {@code project} exists in the address book.
+     * Returns true if a project with the same identity as {@code project} exists in the TaskForge.
      */
     boolean hasProject(Project project);
 
     /**
      * Deletes the given project.
-     * The project must exist in the address book.
+     * The project must exist in the TaskForge.
      */
     void deleteProject(Project target);
 
     /**
      * Adds the given project.
-     * {@code project} must not already exist in the address book.
+     * {@code project} must not already exist in the TaskForge.
      */
     void addProject(Project project);
 
     /**
         * Replaces the given project {@code target} with {@code editedProject}.
-        * {@code target} must exist in the address book.
+        * {@code target} must exist in the TaskForge.
         * The project identity of {@code editedProject} must not be the same as
-        * another existing project in the address book.
+        * another existing project in the TaskForge.
         */
     void setProject(Project target, Project editedProject);
 
     /**
-     * Returns a list of all projects in the address book.
+     * Returns a list of all projects in the TaskForge.
      */
     ObservableList<Project> getProjectList();
 
     /**
-     * Returns true if a person with the same identity as {@code person} exists in the address book.
+     * Returns true if a person with the same identity as {@code person} exists in the TaskForge.
      */
     boolean hasPerson(Person person);
 
     /**
      * Deletes the given person.
-     * The person must exist in the address book.
+     * The person must exist in the TaskForge.
      */
     void deletePerson(Person target);
 
     /**
      * Adds the given person.
-     * {@code person} must not already exist in the address book.
+     * {@code person} must not already exist in the TaskForge.
      */
     void addPerson(Person person);
 
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
-     * {@code target} must exist in the address book.
-     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     * {@code target} must exist in the TaskForge.
+     * The person identity of {@code editedPerson} must not be the same as another existing person in the TaskForge.
      */
     void setPerson(Person target, Person editedPerson);
 
@@ -122,27 +122,27 @@ public interface Model {
     void updateFilteredPersonList(Predicate<Person> predicate);
 
     /**
-     * Commits the current address book state to the undo/redo history.
+     * Commits the current taskforge state to the undo/redo history.
      */
-    void commitAddressBook(String input);
+    void commitTaskForge(String input);
 
     /**
-     * Restores the previous address book state.
+     * Restores the previous taskforge state.
      */
-    String undoAddressBook();
+    String undoTaskForge();
 
     /**
-     * Restores a previously undone address book state.
+     * Restores a previously undone taskforge state.
      */
-    String redoAddressBook();
+    String redoTaskForge();
 
     /**
      * Checks if an undo operation is possible.
      */
-    boolean canUndoAddressBook();
+    boolean canUndoTaskForge();
 
     /**
      * Checks if a redo operation is possible.
      */
-    boolean canRedoAddressBook();
+    boolean canRedoTaskForge();
 }

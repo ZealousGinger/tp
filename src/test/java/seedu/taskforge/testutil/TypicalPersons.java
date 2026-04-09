@@ -20,7 +20,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import seedu.taskforge.model.AddressBook;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
@@ -74,10 +74,10 @@ public class TypicalPersons {
     private TypicalPersons() {} // prevents instantiation
 
     /**
-     * Returns an {@code AddressBook} with all the typical persons.
+     * Returns an {@code TaskForge} with all the typical persons.
      */
-    public static AddressBook getTypicalAddressBook() {
-        AddressBook ab = new AddressBook();
+    public static TaskForge getTypicalTaskForge() {
+        TaskForge ab = new TaskForge();
         Set<Project> uniqueProjects = new LinkedHashSet<>();
         // Also add projects used in command tests.
         uniqueProjects.add(new Project(VALID_PROJECT_ALPHA));

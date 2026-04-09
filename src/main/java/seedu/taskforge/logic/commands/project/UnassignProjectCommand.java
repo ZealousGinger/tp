@@ -26,7 +26,7 @@ import seedu.taskforge.model.person.PersonTask;
 import seedu.taskforge.model.person.Phone;
 
 /**
- * Unassigns a project from an existing person in the address book.
+ * Unassigns a project from an existing person in the TaskForge.
  */
 public class UnassignProjectCommand extends ProjectCommand {
 
@@ -79,7 +79,7 @@ public class UnassignProjectCommand extends ProjectCommand {
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
+        model.commitTaskForge(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_UNASSIGN_PROJECT_SUCCESS,
             Messages.formatPersonSummary(editedPerson)));
     }

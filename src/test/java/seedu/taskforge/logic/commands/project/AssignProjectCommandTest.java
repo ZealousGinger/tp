@@ -15,23 +15,23 @@ import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PROJECT;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_PROJECT;
-import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalTaskForge;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.taskforge.commons.core.index.Index;
 import seedu.taskforge.logic.Messages;
 import seedu.taskforge.logic.commands.project.AssignProjectCommand.AssignProjectDescriptor;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.testutil.AssignProjectDescriptorBuilder;
 import seedu.taskforge.testutil.PersonBuilder;
 
 public class AssignProjectCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalTaskForge(), new UserPrefs());
 
     @Test
     public void execute_assignOneProjectUnfilteredList_success() {
@@ -49,7 +49,7 @@ public class AssignProjectCommandTest {
                 Messages.formatPersonSummary(editedPerson)
         );
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(assignProjectCommand, model, expectedMessage, expectedModel);
@@ -70,7 +70,7 @@ public class AssignProjectCommandTest {
         String expectedMessage = String.format(AssignProjectCommand.MESSAGE_ASSIGN_PROJECT_SUCCESS,
                 Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(assignProjectCommand, model, expectedMessage, expectedModel);
@@ -132,7 +132,7 @@ public class AssignProjectCommandTest {
         String expectedMessage = String.format(AssignProjectCommand.MESSAGE_ASSIGN_PROJECT_SUCCESS,
                 Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(assignProjectCommand, model, expectedMessage, expectedModel);
@@ -154,7 +154,7 @@ public class AssignProjectCommandTest {
         String expectedMessage = String.format(AssignProjectCommand.MESSAGE_ASSIGN_PROJECT_SUCCESS,
                 Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(assignProjectCommand, model, expectedMessage, expectedModel);
@@ -189,14 +189,14 @@ public class AssignProjectCommandTest {
 
     /**
      * Assigns project to a person of a filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
+     * but smaller than size of TaskForge
      */
     @Test
     public void execute_invalidPersonIndexFilteredList_failure() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
-        // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+        // ensures that outOfBoundIndex is still in bounds of TaskForgest
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getTaskForge().getPersonList().size());
 
         AssignProjectCommand assignProjectCommand = new AssignProjectCommand(outOfBoundIndex,
                 new AssignProjectDescriptorBuilder().withProjectIndexes("3").build());

@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import seedu.taskforge.model.AddressBook;
-import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.ReadOnlyTaskForge;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.person.Email;
 import seedu.taskforge.model.person.Name;
 import seedu.taskforge.model.person.Person;
@@ -16,7 +16,7 @@ import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
 /**
- * Contains utility methods for populating {@code AddressBook} with sample data.
+ * Contains utility methods for populating {@code TaskForge} with sample data.
  */
 public class SampleDataUtil {
     public static Person[] getSamplePersons() {
@@ -59,8 +59,8 @@ public class SampleDataUtil {
         };
     }
 
-    public static ReadOnlyAddressBook getSampleAddressBook() {
-        AddressBook sampleAb = new AddressBook();
+    public static ReadOnlyTaskForge getSampleTaskForge() {
+        TaskForge sampleAb = new TaskForge();
         Project[] sampleProjects = getSampleProjects();
         for (Project sampleProject : sampleProjects) {
             sampleAb.addProject(sampleProject);

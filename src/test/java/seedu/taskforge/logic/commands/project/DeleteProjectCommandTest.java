@@ -19,7 +19,7 @@ import seedu.taskforge.logic.Messages;
 import seedu.taskforge.logic.commands.CommandResult;
 import seedu.taskforge.logic.commands.exceptions.CommandException;
 import seedu.taskforge.model.Model;
-import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.ReadOnlyTaskForge;
 import seedu.taskforge.model.ReadOnlyUserPrefs;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
@@ -106,22 +106,22 @@ public class DeleteProjectCommandTest {
         }
 
         @Override
-        public Path getAddressBookFilePath() {
+        public Path getTaskForgeFilePath() {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void setAddressBookFilePath(Path addressBookFilePath) {
+        public void setTaskForgeFilePath(Path taskForgeFilePath) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void setAddressBook(ReadOnlyAddressBook addressBook) {
+        public void setTaskForge(ReadOnlyTaskForge taskForge) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public ReadOnlyAddressBook getAddressBook() {
+        public ReadOnlyTaskForge getTaskForge() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -191,27 +191,27 @@ public class DeleteProjectCommandTest {
         }
 
         @Override
-        public void commitAddressBook(String input) {
+        public void commitTaskForge(String input) {
 
         }
 
         @Override
-        public String undoAddressBook() {
+        public String undoTaskForge() {
             return "";
         }
 
         @Override
-        public String redoAddressBook() {
+        public String redoTaskForge() {
             return "";
         }
 
         @Override
-        public boolean canUndoAddressBook() {
+        public boolean canUndoTaskForge() {
             return false;
         }
 
         @Override
-        public boolean canRedoAddressBook() {
+        public boolean canRedoTaskForge() {
             return false;
         }
     }

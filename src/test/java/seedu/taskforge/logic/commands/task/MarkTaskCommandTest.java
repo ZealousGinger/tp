@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalTaskForge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import seedu.taskforge.model.task.Task;
 
 public class MarkTaskCommandTest {
 
-    private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalTaskForge(), new UserPrefs());
 
     @Test
     public void execute_markTask_success() throws Exception {
@@ -84,7 +84,7 @@ public class MarkTaskCommandTest {
         assertTrue(firstCommand.equals(sameValuesCommand));
         assertFalse(firstCommand.equals(differentCommand));
         assertFalse(firstCommand.equals(1));
-        assertFalse(firstCommand.equals(null));
+        assertFalse(firstCommand.equals((Object) null));
     }
 }
 

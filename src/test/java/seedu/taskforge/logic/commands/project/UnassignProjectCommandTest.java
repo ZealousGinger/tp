@@ -8,7 +8,7 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandSucces
 import static seedu.taskforge.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalTaskForge;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,9 +20,9 @@ import org.junit.jupiter.api.Test;
 
 import seedu.taskforge.commons.core.index.Index;
 import seedu.taskforge.logic.Messages;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonProject;
@@ -31,7 +31,7 @@ import seedu.taskforge.testutil.PersonBuilder;
 import seedu.taskforge.testutil.UnassignProjectDescriptorBuilder;
 
 public class UnassignProjectCommandTest {
-    private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalTaskForge(), new UserPrefs());
 
     @Test
     public void execute_unassignOneProjectUnfilteredList_success() {
@@ -47,7 +47,7 @@ public class UnassignProjectCommandTest {
         String expectedMessage = String.format(UnassignProjectCommand.MESSAGE_UNASSIGN_PROJECT_SUCCESS,
                 Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(unassignProjectCommand, model, expectedMessage, expectedModel);
@@ -67,7 +67,7 @@ public class UnassignProjectCommandTest {
         String expectedMessage = String.format(UnassignProjectCommand.MESSAGE_UNASSIGN_PROJECT_SUCCESS,
                 Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(unassignProjectCommand, model, expectedMessage, expectedModel);
@@ -131,7 +131,7 @@ public class UnassignProjectCommandTest {
         String expectedMessage = String.format(UnassignProjectCommand.MESSAGE_UNASSIGN_PROJECT_SUCCESS,
                 Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(unassignProjectCommand, model, expectedMessage, expectedModel);
@@ -151,7 +151,7 @@ public class UnassignProjectCommandTest {
         String expectedMessage = String.format(UnassignProjectCommand.MESSAGE_UNASSIGN_PROJECT_SUCCESS,
                 Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(unassignProjectCommand, model, expectedMessage, expectedModel);
@@ -186,14 +186,14 @@ public class UnassignProjectCommandTest {
 
     /**
      * Unassigns project to a person of a filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
+     * but smaller than size of TaskForge
      */
     @Test
     public void execute_invalidPersonIndexFilteredList_failure() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
-        // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+        // ensures that outOfBoundIndex is still in bounds of TaskForge list
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getTaskForge().getPersonList().size());
 
         UnassignProjectCommand unassignProjectCommand = new UnassignProjectCommand(outOfBoundIndex,
                 new UnassignProjectDescriptorBuilder().withProjects("1").build());
@@ -203,7 +203,7 @@ public class UnassignProjectCommandTest {
 
     @Test
     public void execute_unassignProjectRemovesTaskReferences_success() {
-        Model modelWithProjectTasks = new ModelManager(new AddressBook(), new UserPrefs());
+        Model modelWithProjectTasks = new ModelManager(new TaskForge(), new UserPrefs());
         modelWithProjectTasks.addProject(new seedu.taskforge.model.project.Project("Alpha"));
         modelWithProjectTasks.addProject(new seedu.taskforge.model.project.Project("Beta"));
 
@@ -233,7 +233,7 @@ public class UnassignProjectCommandTest {
 
         String expectedMessage = String.format(UnassignProjectCommand.MESSAGE_UNASSIGN_PROJECT_SUCCESS,
                 Messages.formatPersonSummary(expectedPerson));
-        Model expectedModel = new ModelManager(new AddressBook(modelWithProjectTasks.getAddressBook()),
+        Model expectedModel = new ModelManager(new TaskForge(modelWithProjectTasks.getTaskForge()),
                 new UserPrefs());
         expectedModel.setPerson(personWithProjectsAndTasks, expectedPerson);
 

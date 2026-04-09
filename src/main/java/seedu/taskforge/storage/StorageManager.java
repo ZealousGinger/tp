@@ -7,24 +7,24 @@ import java.util.logging.Logger;
 
 import seedu.taskforge.commons.core.LogsCenter;
 import seedu.taskforge.commons.exceptions.DataLoadingException;
-import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.ReadOnlyTaskForge;
 import seedu.taskforge.model.ReadOnlyUserPrefs;
 import seedu.taskforge.model.UserPrefs;
 
 /**
- * Manages storage of AddressBook data in local storage.
+ * Manages storage of TaskForge data in local storage.
  */
 public class StorageManager implements Storage {
 
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
-    private AddressBookStorage addressBookStorage;
+    private TaskForgeStorage taskForgeStorage;
     private UserPrefsStorage userPrefsStorage;
 
     /**
-     * Creates a {@code StorageManager} with the given {@code AddressBookStorage} and {@code UserPrefStorage}.
+     * Creates a {@code StorageManager} with the given {@code TaskForgeStorage} and {@code UserPrefStorage}.
      */
-    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage) {
-        this.addressBookStorage = addressBookStorage;
+    public StorageManager(TaskForgeStorage taskForgeStorage, UserPrefsStorage userPrefsStorage) {
+        this.taskForgeStorage = taskForgeStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
 
@@ -46,33 +46,33 @@ public class StorageManager implements Storage {
     }
 
 
-    // ================ AddressBook methods ==============================
+    // ================ TaskForge methods ==============================
 
     @Override
-    public Path getAddressBookFilePath() {
-        return addressBookStorage.getAddressBookFilePath();
+    public Path getTaskForgeFilePath() {
+        return taskForgeStorage.getTaskForgeFilePath();
     }
 
     @Override
-    public Optional<ReadOnlyAddressBook> readAddressBook() throws DataLoadingException {
-        return readAddressBook(addressBookStorage.getAddressBookFilePath());
+    public Optional<ReadOnlyTaskForge> readTaskForge() throws DataLoadingException {
+        return readTaskForge(taskForgeStorage.getTaskForgeFilePath());
     }
 
     @Override
-    public Optional<ReadOnlyAddressBook> readAddressBook(Path filePath) throws DataLoadingException {
+    public Optional<ReadOnlyTaskForge> readTaskForge(Path filePath) throws DataLoadingException {
         logger.fine("Attempting to read data from file: " + filePath);
-        return addressBookStorage.readAddressBook(filePath);
+        return taskForgeStorage.readTaskForge(filePath);
     }
 
     @Override
-    public void saveAddressBook(ReadOnlyAddressBook addressBook) throws IOException {
-        saveAddressBook(addressBook, addressBookStorage.getAddressBookFilePath());
+    public void saveTaskForge(ReadOnlyTaskForge taskForge) throws IOException {
+        saveTaskForge(taskForge, taskForgeStorage.getTaskForgeFilePath());
     }
 
     @Override
-    public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
+    public void saveTaskForge(ReadOnlyTaskForge taskForge, Path filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
-        addressBookStorage.saveAddressBook(addressBook, filePath);
+        taskForgeStorage.saveTaskForge(taskForge, filePath);
     }
 
 }

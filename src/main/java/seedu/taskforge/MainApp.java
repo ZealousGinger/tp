@@ -15,18 +15,18 @@ import seedu.taskforge.commons.util.ConfigUtil;
 import seedu.taskforge.commons.util.StringUtil;
 import seedu.taskforge.logic.Logic;
 import seedu.taskforge.logic.LogicManager;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
-import seedu.taskforge.model.ReadOnlyAddressBook;
+import seedu.taskforge.model.ReadOnlyTaskForge;
 import seedu.taskforge.model.ReadOnlyUserPrefs;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.util.SampleDataUtil;
-import seedu.taskforge.storage.AddressBookStorage;
-import seedu.taskforge.storage.JsonAddressBookStorage;
+import seedu.taskforge.storage.JsonTaskForgeStorage;
 import seedu.taskforge.storage.JsonUserPrefsStorage;
 import seedu.taskforge.storage.Storage;
 import seedu.taskforge.storage.StorageManager;
+import seedu.taskforge.storage.TaskForgeStorage;
 import seedu.taskforge.storage.UserPrefsStorage;
 import seedu.taskforge.ui.Ui;
 import seedu.taskforge.ui.UiManager;
@@ -48,7 +48,7 @@ public class MainApp extends Application {
 
     @Override
     public void init() throws Exception {
-        logger.info("=============================[ Initializing AddressBook ]===========================");
+        logger.info("=============================[ Initializing TaskForge ]===========================");
         super.init();
 
         AppParameters appParameters = AppParameters.parse(getParameters());
@@ -57,8 +57,8 @@ public class MainApp extends Application {
 
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
-        AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
-        storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        TaskForgeStorage taskForgeStorage = new JsonTaskForgeStorage(userPrefs.getTaskForgeFilePath());
+        storage = new StorageManager(taskForgeStorage, userPrefsStorage);
 
         model = initModelManager(storage, userPrefs);
 
@@ -68,26 +68,26 @@ public class MainApp extends Application {
     }
 
     /**
-     * Returns a {@code ModelManager} with the data from {@code storage}'s address book and {@code userPrefs}. <br>
-     * The data from the sample address book will be used instead if {@code storage}'s address book is not found,
-     * or an empty address book will be used instead if errors occur when reading {@code storage}'s address book.
+     * Returns a {@code ModelManager} with the data from {@code storage}'s TaskForge and {@code userPrefs}. <br>
+     * The data from the sample TaskForge will be used instead if {@code storage}'s TaskForge is not found,
+     * or an empty TaskForge will be used instead if errors occur when reading {@code storage}'s TaskForge.
      */
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
-        logger.info("Using data file : " + storage.getAddressBookFilePath());
+        logger.info("Using data file : " + storage.getTaskForgeFilePath());
 
-        Optional<ReadOnlyAddressBook> addressBookOptional;
-        ReadOnlyAddressBook initialData;
+        Optional<ReadOnlyTaskForge> taskForgeOptional;
+        ReadOnlyTaskForge initialData;
         try {
-            addressBookOptional = storage.readAddressBook();
-            if (!addressBookOptional.isPresent()) {
-                logger.info("Creating a new data file " + storage.getAddressBookFilePath()
-                        + " populated with a sample AddressBook.");
+            taskForgeOptional = storage.readTaskForge();
+            if (!taskForgeOptional.isPresent()) {
+                logger.info("Creating a new data file " + storage.getTaskForgeFilePath()
+                        + " populated with a sample TaskForge.");
             }
-            initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
+            initialData = taskForgeOptional.orElseGet(SampleDataUtil::getSampleTaskForge);
         } catch (DataLoadingException e) {
-            logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
-                    + " Will be starting with an empty AddressBook.");
-            initialData = new AddressBook();
+            logger.warning("Data file at " + storage.getTaskForgeFilePath() + " could not be loaded."
+                    + " Will be starting with an empty TaskForge.");
+            initialData = new TaskForge();
         }
 
         return new ModelManager(initialData, userPrefs);
@@ -170,13 +170,13 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        logger.info("Starting AddressBook " + MainApp.VERSION);
+        logger.info("Starting TaskForge " + MainApp.VERSION);
         ui.start(primaryStage);
     }
 
     @Override
     public void stop() {
-        logger.info("============================ [ Stopping AddressBook ] =============================");
+        logger.info("============================ [ Stopping TaskForge ] =============================");
         try {
             storage.saveUserPrefs(model.getUserPrefs());
         } catch (IOException e) {

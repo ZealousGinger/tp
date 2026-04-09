@@ -8,23 +8,23 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandFailur
 import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.taskforge.testutil.Assert.assertThrows;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PROJECT;
-import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalTaskForge;
 
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.taskforge.commons.core.index.Index;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
 public class DeleteTaskCommandTest {
 
-    private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalTaskForge(), new UserPrefs());
 
     @Test
     public void execute_deleteOneTask_success() {
@@ -41,7 +41,7 @@ public class DeleteTaskCommandTest {
 
         String expectedMessage = String.format(DeleteTaskCommand.MESSAGE_SUCCESS, editedProject);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setProject(projectWithTasks, editedProject);
 
         assertCommandSuccess(deleteTaskCommand, model, expectedMessage, expectedModel);

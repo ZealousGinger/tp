@@ -18,7 +18,7 @@ import seedu.taskforge.model.task.Task;
 import seedu.taskforge.model.task.exceptions.DuplicateTaskException;
 
 /**
- * Edits an existing task name from an existing project in the address book.
+ * Edits an existing task name from an existing project in the TaskForge
  */
 public class EditTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "edit";
@@ -73,7 +73,7 @@ public class EditTaskCommand extends TaskCommand {
         model.setProject(projectToEdit, editedProject);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
+        model.commitTaskForge(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_SUCCESS, editedProject));
     }
 

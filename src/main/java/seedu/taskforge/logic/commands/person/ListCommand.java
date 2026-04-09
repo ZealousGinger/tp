@@ -8,7 +8,7 @@ import seedu.taskforge.logic.commands.CommandResult;
 import seedu.taskforge.model.Model;
 
 /**
- * Lists all persons in the address book to the user.
+ * Lists all persons in the TaskForge to the user.
  */
 public class ListCommand extends Command {
 

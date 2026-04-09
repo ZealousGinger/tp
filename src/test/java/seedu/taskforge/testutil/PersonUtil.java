@@ -45,8 +45,9 @@ public class PersonUtil {
         person.getProjects().stream().forEach(
             s -> sb.append(PREFIX_PROJECT_TITLE + "project" + s.getProjectIndex() + " ")
         );
-        person.getTasks().stream().forEach(
-            s -> sb.append(PREFIX_TASK + "task" + s.getProjectIndex() + "_" + s.getTaskIndex() + " ")
+        person.getTasks().forEach(
+            s -> sb.append(PREFIX_TASK).append("task").append(s.getProjectIndex()).append("_")
+                    .append(s.getTaskIndex()).append(" ")
         );
         return sb.toString();
     }

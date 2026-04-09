@@ -10,7 +10,7 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.taskforge.testutil.Assert.assertThrows;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalTaskForge;
 
 import java.util.Arrays;
 
@@ -19,9 +19,9 @@ import org.junit.jupiter.api.Test;
 import seedu.taskforge.commons.core.index.Index;
 import seedu.taskforge.logic.Messages;
 import seedu.taskforge.logic.commands.task.UnassignTaskCommand.UnassignTaskDescriptor;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
@@ -33,7 +33,7 @@ public class UnassignTaskCommandTest {
     private final Model model = createModelWithProjectTasks();
 
     private Model createModelWithProjectTasks() {
-        Model seededModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model seededModel = new ModelManager(getTypicalTaskForge(), new UserPrefs());
         seededModel.setProject(new Project("alpha"), new Project("alpha", Arrays.asList(
                 new Task(VALID_TASK_REFACTOR),
                 new Task(VALID_TASK_FIX_ERROR)
@@ -58,10 +58,9 @@ public class UnassignTaskCommandTest {
         UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(indexFirstPerson, descriptor);
 
         String expectedMessage = String.format(UnassignTaskCommand.MESSAGE_SUCCESS,
-            editedPerson.getName() + "; Phone: " + editedPerson.getPhone()
-            + "; Email: " + editedPerson.getEmail());
+            Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(unassignTaskCommand, model, expectedMessage, expectedModel);
@@ -80,10 +79,9 @@ public class UnassignTaskCommandTest {
         UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(INDEX_FIRST_PERSON, descriptor);
 
         String expectedMessage = String.format(UnassignTaskCommand.MESSAGE_SUCCESS,
-            editedPerson.getName() + "; Phone: " + editedPerson.getPhone()
-            + "; Email: " + editedPerson.getEmail());
+            Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(unassignTaskCommand, model, expectedMessage, expectedModel);
@@ -142,10 +140,9 @@ public class UnassignTaskCommandTest {
         UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(indexSecondPerson, descriptor);
 
         String expectedMessage = String.format(UnassignTaskCommand.MESSAGE_SUCCESS,
-            editedPerson.getName() + "; Phone: " + editedPerson.getPhone()
-            + "; Email: " + editedPerson.getEmail());
+            Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(unassignTaskCommand, model, expectedMessage, expectedModel);
@@ -164,10 +161,9 @@ public class UnassignTaskCommandTest {
         UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(INDEX_FIRST_PERSON, descriptor);
 
         String expectedMessage = String.format(UnassignTaskCommand.MESSAGE_SUCCESS,
-            editedPerson.getName() + "; Phone: " + editedPerson.getPhone()
-            + "; Email: " + editedPerson.getEmail());
+            Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(unassignTaskCommand, model, expectedMessage, expectedModel);
@@ -200,14 +196,14 @@ public class UnassignTaskCommandTest {
 
     /**
      * Adds task to a person of a filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
+     * but smaller than size of TaskForge
      */
     @Test
     public void execute_invalidPersonIndexFilteredList_failure() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
-        // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+        // ensures that outOfBoundIndex is still in bounds of TaskForge list
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getTaskForge().getPersonList().size());
 
         UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(outOfBoundIndex,
                 new UnassignTaskDescriptorBuilder().withTasks("1").build());
@@ -217,7 +213,7 @@ public class UnassignTaskCommandTest {
 
     @Test
     public void execute_taskNotInAssignedProjects_success() {
-        Model modelWithMissingTask = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model modelWithMissingTask = new ModelManager(getTypicalTaskForge(), new UserPrefs());
         modelWithMissingTask.setProject(new Project("alpha"), new Project("alpha", Arrays.asList(
             new Task(VALID_TASK_FIX_ERROR)
         )));
@@ -228,9 +224,8 @@ public class UnassignTaskCommandTest {
         UnassignTaskCommand unassignTaskCommand = new UnassignTaskCommand(INDEX_FIRST_PERSON, descriptor);
 
         String expectedMessage = String.format(UnassignTaskCommand.MESSAGE_SUCCESS,
-            editedPerson.getName() + "; Phone: " + editedPerson.getPhone()
-            + "; Email: " + editedPerson.getEmail());
-        Model expectedModel = new ModelManager(new AddressBook(modelWithMissingTask.getAddressBook()), new UserPrefs());
+            Messages.formatPersonSummary(editedPerson));
+        Model expectedModel = new ModelManager(new TaskForge(modelWithMissingTask.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(unassignTaskCommand, modelWithMissingTask, expectedMessage, expectedModel);

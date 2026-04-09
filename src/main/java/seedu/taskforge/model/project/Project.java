@@ -13,7 +13,7 @@ import seedu.taskforge.model.task.Task;
 import seedu.taskforge.model.task.UniqueTaskList;
 
 /**
- * Represents a Project in the address book.
+ * Represents a Project in the TaskForge.
  * Guarantees: immutable; title is valid as declared in {@link #isValidProjectTitle(String)}
  */
 public class Project {

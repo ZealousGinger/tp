@@ -26,7 +26,7 @@ import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Assigns task(s) to an existing person in the address book.
+ * Assigns task(s) to an existing person in the TaskForge
  */
 public class AssignTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "assign";
@@ -72,7 +72,7 @@ public class AssignTaskCommand extends TaskCommand {
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
+        model.commitTaskForge(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_SUCCESS,
             Messages.formatPersonSummary(editedPerson)));
     }

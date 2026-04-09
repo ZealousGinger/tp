@@ -15,7 +15,7 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.assertCommandSucces
 import static seedu.taskforge.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalTaskForge;
 
 import java.util.List;
 
@@ -26,9 +26,9 @@ import seedu.taskforge.logic.Messages;
 import seedu.taskforge.logic.commands.person.ClearCommand;
 import seedu.taskforge.logic.commands.person.EditCommand;
 import seedu.taskforge.logic.commands.person.EditCommand.EditPersonDescriptor;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonProject;
@@ -43,7 +43,7 @@ import seedu.taskforge.testutil.PersonBuilder;
  */
 public class EditCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalTaskForge(), new UserPrefs());
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
@@ -59,7 +59,7 @@ public class EditCommandTest {
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
             Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -81,7 +81,7 @@ public class EditCommandTest {
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
             Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(lastPerson, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -95,7 +95,7 @@ public class EditCommandTest {
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
             Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -112,7 +112,7 @@ public class EditCommandTest {
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
             Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -131,8 +131,8 @@ public class EditCommandTest {
     public void execute_duplicatePersonFilteredList_failure() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
-        // edit person in filtered list into a duplicate in address book
-        Person personInList = model.getAddressBook().getPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        // edit person in filtered list into a duplicate in TaskForge
+        Person personInList = model.getTaskForge().getPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
                 new EditPersonDescriptorBuilder(personInList).build());
 
@@ -150,14 +150,14 @@ public class EditCommandTest {
 
     /**
      * Checks editing a filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book.
+     * but smaller than size of TaskForge.
      */
     @Test
     public void execute_invalidPersonIndexFilteredList_failure() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
-        // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+        // ensures that outOfBoundIndex is still in bounds of TaskForge list
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getTaskForge().getPersonList().size());
 
         EditCommand editCommand = new EditCommand(outOfBoundIndex,
                 new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build());
@@ -166,12 +166,12 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_assignProjectNotInAddressBook_failure() {
+    public void execute_assignProjectNotInTaskForge_failure() {
         EditPersonDescriptor descriptor = new EditPersonDescriptor();
         descriptor.setProjects(List.of(new Project("ghost project")));
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, descriptor);
 
-        assertCommandFailure(editCommand, model, "The project to assign does not exist in the address book");
+        assertCommandFailure(editCommand, model, "The project to assign does not exist in the TaskForge.");
     }
 
     @Test
@@ -186,8 +186,8 @@ public class EditCommandTest {
 
     @Test
     public void execute_assignTaskWithInvalidAssignedProjectIndex_failure() {
-        AddressBook addressBook = new AddressBook();
-        addressBook.addProject(new Project(VALID_PROJECT_ALPHA, List.of(new Task(VALID_TASK_REFACTOR))));
+        TaskForge taskForge = new TaskForge();
+        taskForge.addProject(new Project(VALID_PROJECT_ALPHA, List.of(new Task(VALID_TASK_REFACTOR))));
         Person malformedPerson = new PersonBuilder()
                 .withName("Malformed Person")
                 .withPhone("99999999")
@@ -199,8 +199,8 @@ public class EditCommandTest {
                 malformedPerson.getEmail(),
                 List.of(new PersonProject(-1)),
                 List.of(new PersonTask(0, 0)));
-        addressBook.addPerson(malformedWithInvalidProject);
-        Model malformedModel = new ModelManager(addressBook, new UserPrefs());
+        taskForge.addPerson(malformedWithInvalidProject);
+        Model malformedModel = new ModelManager(taskForge, new UserPrefs());
 
         EditPersonDescriptor descriptor = new EditPersonDescriptor();
         descriptor.setTasks(List.of(new Task(VALID_TASK_REFACTOR)));
@@ -211,7 +211,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_assignTaskWithMismatchedProjectTitle_failure() {
-        Model localModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model localModel = new ModelManager(getTypicalTaskForge(), new UserPrefs());
         EditPersonDescriptor descriptor = new EditPersonDescriptor();
         descriptor.setTasks(List.of(new Task(VALID_TASK_REFACTOR, VALID_PROJECT_BETA)));
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, descriptor);

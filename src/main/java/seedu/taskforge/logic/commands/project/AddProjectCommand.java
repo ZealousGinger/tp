@@ -10,19 +10,19 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Adds a project to the address book.
+ * Adds a project to the TaskForge.
  */
 public class AddProjectCommand extends ProjectCommand {
 
     public static final String SUBCOMMAND_WORD = "add";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + " " + SUBCOMMAND_WORD
-            + ": Adds a project to the address book. "
+            + ": Adds a project to the TaskForge. "
             + "Parameters: PROJECT_TITLE\n"
             + "Example: " + COMMAND_WORD + " " + SUBCOMMAND_WORD + " alpha";
 
     public static final String MESSAGE_SUCCESS = "New project added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PROJECT = "This project already exists in the address book";
+    public static final String MESSAGE_DUPLICATE_PROJECT = "This project already exists in the TaskForge";
 
     private final Project toAdd;
 
@@ -43,7 +43,7 @@ public class AddProjectCommand extends ProjectCommand {
         }
 
         model.addProject(toAdd);
-        model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
+        model.commitTaskForge(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
     }
 
