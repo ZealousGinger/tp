@@ -506,7 +506,7 @@ TaskForge supports task management using 10 commands:
 
 #### Execution behavior and validation
 
-- Person-targeting commanign`, `task unassign`, `task view`) resolve the target person from `model.getFilteredPersonList()` using the supplied person `PERSON_INDEX`.
+- Person-targeting command`, `task unassign`, `task view`) resolve the target person from `model.getFilteredPersonList()` using the supplied person `PERSON_INDEX`.
 - If the person index is invalid, execution fails with `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX` or the command-specific invalid index message.
 - `AddTaskCommand` and `DeleteTaskCommand` resolve the target project from the list and validate the project index before executing.
 - `EditTaskCommand` resolves the target person by index and validates both the person index and task index before executing.
