@@ -1,7 +1,20 @@
-#copyButton, #helpMessage {
-    -fx-text-fill: white;
+.help-container {
+    -fx-background-color: white;
 }
 
+<<<<<<< help-command
+.help-text-area {
+    -fx-font-size: 14px;
+    -fx-text-fill: black;
+}
+
+.help-text-area .content {
+    -fx-background-color: white;
+}
+
+.help-text-area {
+    -fx-control-inner-background: white;
+=======
 #copyButton {
     -fx-background-color: #00312f;
 }
@@ -16,4 +29,5 @@
 
 #helpMessageContainer {
     -fx-background-color: #11151b;
+>>>>>>> master
 }
