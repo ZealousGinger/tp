@@ -63,7 +63,7 @@ public class UnmarkTaskCommand extends TaskCommand {
 
         PersonTask taskToUnmark = taskList.get(taskIndex.getZeroBased());
         Task resolvedTask = resolveTask(model, taskToUnmark);
-        if (!resolvedTask.getStatus()) {
+        if (!resolvedTask.isDone()) {
             throw new CommandException(MESSAGE_TASK_ALREADY_NOT_DONE);
         }
 

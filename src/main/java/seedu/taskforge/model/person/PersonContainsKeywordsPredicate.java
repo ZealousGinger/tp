@@ -65,15 +65,20 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
 
     private boolean isKeywordMatch(Person person, List<String> keywords,
                                    java.util.function.Function<Person, String> fieldMapper) {
-        return !isNonEmpty(keywords) || keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(fieldMapper.apply(person), keyword));
+        if (keywords == null) {
+            return true;
+        }
+        return keywords.stream()
+                .anyMatch(keyword -> StringUtil.hasWordIgnoreCase(fieldMapper.apply(person), keyword));
     }
 
     private boolean isKeywordMatchForCollection(Person person, List<String> keywords,
             java.util.function.Function<Person, List<String>> collectionMapper) {
-        return !isNonEmpty(keywords) || keywords.stream()
-                .anyMatch(keyword -> collectionMapper.apply(person).stream()
-                        .anyMatch(fieldValue -> StringUtil.containsWordIgnoreCase(fieldValue, keyword)));
+        if (keywords == null) {
+            return true;
+        }
+        return keywords.stream().anyMatch(keyword -> collectionMapper.apply(person).stream()
+                .anyMatch(fieldValue -> StringUtil.hasWordIgnoreCase(fieldValue, keyword)));
     }
 
     @Override

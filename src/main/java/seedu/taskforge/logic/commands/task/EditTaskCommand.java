@@ -107,7 +107,7 @@ public class EditTaskCommand extends TaskCommand {
 
     private static Task createTaskWithProjectAndStatus(String description, String projectTitle, Task sourceTask) {
         Task task = new Task(description, projectTitle);
-        if (sourceTask.getStatus()) {
+        if (sourceTask.isDone()) {
             task.setDone();
         }
         return task;
@@ -134,4 +134,3 @@ public class EditTaskCommand extends TaskCommand {
         return Objects.hash(personIndex, taskIndex, newTask);
     }
 }
-

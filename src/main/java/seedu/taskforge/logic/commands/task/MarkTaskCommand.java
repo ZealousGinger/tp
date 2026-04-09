@@ -63,7 +63,7 @@ public class MarkTaskCommand extends TaskCommand {
 
         PersonTask taskToMark = taskList.get(taskIndex.getZeroBased());
         Task resolvedTask = resolveTask(model, taskToMark);
-        if (resolvedTask.getStatus()) {
+        if (resolvedTask.isDone()) {
             throw new CommandException(MESSAGE_TASK_ALREADY_DONE);
         }
 

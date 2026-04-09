@@ -37,7 +37,7 @@ public class FindProjectCommand extends ProjectCommand {
         requireNonNull(model);
 
         List<Project> matchedProjects = model.getProjectList().stream()
-                .filter(this::matchesAnyKeyword)
+                .filter(this::hasAnyKeyword)
                 .collect(Collectors.toList());
 
         if (matchedProjects.isEmpty()) {
@@ -54,7 +54,7 @@ public class FindProjectCommand extends ProjectCommand {
     /**
      * Returns true if the given project title contains any keyword, case-insensitive.
      */
-    private boolean matchesAnyKeyword(Project project) {
+    private boolean hasAnyKeyword(Project project) {
         String lowerCaseTitle = project.title.toLowerCase();
         return keywords.stream()
                 .map(String::toLowerCase)

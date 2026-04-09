@@ -20,7 +20,7 @@ public class JsonAdaptedTaskTest {
 
         Task modelTask = adaptedTask.toModelType();
 
-        assertTrue(modelTask.getStatus());
+        assertTrue(modelTask.isDone());
     }
 
     @Test
@@ -29,7 +29,7 @@ public class JsonAdaptedTaskTest {
 
         Task modelTask = adaptedTask.toModelType();
 
-        assertFalse(modelTask.getStatus());
+        assertFalse(modelTask.isDone());
     }
 
     @Test
@@ -38,4 +38,3 @@ public class JsonAdaptedTaskTest {
         assertThrows(IllegalValueException.class, Task.MESSAGE_CONSTRAINTS, adaptedTask::toModelType);
     }
 }
-

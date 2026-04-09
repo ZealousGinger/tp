@@ -42,7 +42,7 @@ public class EditTaskCommandTest {
         Project expectedProjectInModel = model.getProjectList().get(expectedPersonTask.getProjectIndex());
         Task taskToEdit = expectedProjectInModel.getTasks().get(expectedPersonTask.getTaskIndex());
         Task renamedTaskWithProject = new Task(VALID_TASK_IMPLEMENT_X, expectedProjectInModel.title);
-        if (taskToEdit.getStatus()) {
+        if (taskToEdit.isDone()) {
             renamedTaskWithProject.setDone();
         }
 
@@ -152,5 +152,3 @@ public class EditTaskCommandTest {
         assertEquals(firstCommand.hashCode(), sameValuesCommand.hashCode());
     }
 }
-
-

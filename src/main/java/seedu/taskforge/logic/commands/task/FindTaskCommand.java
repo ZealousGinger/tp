@@ -44,7 +44,7 @@ public class FindTaskCommand extends TaskCommand {
         List<String> matchedTaskLines = new ArrayList<>();
         for (Project project : model.getProjectList()) {
             for (Task task : project.getTasks()) {
-                if (matchesAnyKeyword(task)) {
+                if (hasAnyKeyword(task)) {
                     matchedTaskLines.add(task.description + " - " + project.title);
                 }
             }
@@ -64,7 +64,7 @@ public class FindTaskCommand extends TaskCommand {
     /**
      * Returns whether the given task matches any of the keywords.
      */
-    private boolean matchesAnyKeyword(Task task) {
+    private boolean hasAnyKeyword(Task task) {
         String lowerCaseTaskName = task.description.toLowerCase();
         return keywords.stream()
                 .map(String::toLowerCase)

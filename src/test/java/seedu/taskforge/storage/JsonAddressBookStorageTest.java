@@ -139,6 +139,6 @@ public class JsonAddressBookStorageTest {
         PersonTask readBackTaskRef = readBackPerson.getTasks().get(0);
         Task readBackTask = readBack.getProjectList().get(readBackTaskRef.getProjectIndex())
             .getTasks().get(readBackTaskRef.getTaskIndex());
-        assertTrue(readBackTask.getStatus());
+        assertTrue(readBackTask.isDone());
     }
 }

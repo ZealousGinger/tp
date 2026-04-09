@@ -169,23 +169,23 @@ public class AddressBook implements ReadOnlyAddressBook {
         List<Person> allPersons = new ArrayList<>(persons.asUnmodifiableObservableList());
         for (Person person : allPersons) {
             List<PersonProject> updatedProjects = new ArrayList<>();
-            boolean changed = false;
+            boolean isChanged = false;
 
             for (PersonProject personProject : person.getProjects()) {
                 int projectIndex = personProject.getProjectIndex();
                 if (projectIndex == removedProjectIndex) {
-                    changed = true;
+                    isChanged = true;
                     continue;
                 }
                 if (projectIndex > removedProjectIndex) {
                     updatedProjects.add(new PersonProject(projectIndex - 1));
-                    changed = true;
+                    isChanged = true;
                 } else {
                     updatedProjects.add(personProject);
                 }
             }
 
-            if (!changed) {
+            if (!isChanged) {
                 continue;
             }
 
@@ -227,7 +227,7 @@ public class AddressBook implements ReadOnlyAddressBook {
             }
 
             List<PersonTask> updatedTasks = new ArrayList<>();
-            boolean changed = false;
+            boolean isChanged = false;
             for (PersonTask personTask : person.getTasks()) {
                 if (personTask.getProjectIndex() != projectIndex) {
                     updatedTasks.add(personTask);
@@ -235,7 +235,7 @@ public class AddressBook implements ReadOnlyAddressBook {
                 }
 
                 if (deletedTaskIndices.contains(personTask.getTaskIndex())) {
-                    changed = true;
+                    isChanged = true;
                     continue;
                 }
 
@@ -247,14 +247,14 @@ public class AddressBook implements ReadOnlyAddressBook {
                 }
 
                 if (shift > 0) {
-                    changed = true;
+                    isChanged = true;
                     updatedTasks.add(new PersonTask(projectIndex, personTask.getTaskIndex() - shift));
                 } else {
                     updatedTasks.add(personTask);
                 }
             }
 
-            if (!changed) {
+            if (!isChanged) {
                 continue;
             }
 

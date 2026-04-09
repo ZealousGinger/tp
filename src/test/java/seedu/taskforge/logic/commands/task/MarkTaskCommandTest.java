@@ -39,7 +39,7 @@ public class MarkTaskCommandTest {
 
         Task updatedTask = model.getProjectList().get(firstPersonTask.getProjectIndex())
             .getTasks().get(firstPersonTask.getTaskIndex());
-        assertTrue(updatedTask.getStatus());
+        assertTrue(updatedTask.isDone());
         assertEquals(String.format(MarkTaskCommand.MESSAGE_MARK_TASK_SUCCESS, taskToMark.description),
                 commandResult.getFeedbackToUser());
     }
@@ -87,4 +87,3 @@ public class MarkTaskCommandTest {
         assertFalse(firstCommand.equals(null));
     }
 }
-

@@ -70,7 +70,7 @@ public class ViewTasksCommand extends TaskCommand {
             return "[invalid-task-reference]";
         }
         Task task = projectTasks.get(taskIndex);
-        String status = task.getStatus() ? "[X] " : "[ ] ";
+        String status = task.isDone() ? "[X] " : "[ ] ";
         return status + task.description;
     }
 

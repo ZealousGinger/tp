@@ -47,7 +47,7 @@ public class Task {
     /**
      * Returns whether this task belongs to the project with the given title.
      */
-    public boolean belongsToProject(String targetProjectTitle) {
+    public boolean isInProject(String targetProjectTitle) {
         return projectTitle != null && projectTitle.equals(targetProjectTitle);
     }
 
@@ -70,7 +70,7 @@ public class Task {
      *
      * @return boolean status.
      */
-    public boolean getStatus() {
+    public boolean isDone() {
         return isDone;
     }
 

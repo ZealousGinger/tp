@@ -37,7 +37,7 @@ class JsonAdaptedTask {
     public JsonAdaptedTask(Task source) {
         description = source.description;
         projectTitle = source.getProjectTitle();
-        isDone = source.getStatus();
+        isDone = source.isDone();
     }
 
     public String getDescription() {

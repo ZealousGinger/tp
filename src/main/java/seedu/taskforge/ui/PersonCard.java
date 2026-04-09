@@ -114,7 +114,7 @@ public class PersonCard extends UiPart<Region> {
             if (taskIndex >= 0 && taskIndex < projectTasks.size()) {
                 Task task = projectTasks.get(taskIndex);
                 taskLabel = task.description;
-                status = task.getStatus() ? "[X] " : "[ ] ";
+                status = task.isDone() ? "[X] " : "[ ] ";
             }
         }
         return status + taskLabel;
@@ -132,7 +132,7 @@ public class PersonCard extends UiPart<Region> {
             if (taskIndex < 0 || taskIndex >= projectTasks.size()) {
                 continue;
             }
-            if (!projectTasks.get(taskIndex).getStatus()) {
+            if (!projectTasks.get(taskIndex).isDone()) {
                 workload++;
             }
         }

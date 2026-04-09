@@ -41,7 +41,7 @@ public class UnmarkTaskCommandTest {
 
         Task unmarkedTask = model.getProjectList().get(firstPersonTask.getProjectIndex())
             .getTasks().get(firstPersonTask.getTaskIndex());
-        assertFalse(unmarkedTask.getStatus());
+        assertFalse(unmarkedTask.isDone());
         assertEquals(String.format(UnmarkTaskCommand.MESSAGE_UNMARK_TASK_SUCCESS, unmarkedTask.description),
                 commandResult.getFeedbackToUser());
     }
@@ -82,4 +82,3 @@ public class UnmarkTaskCommandTest {
         assertFalse(firstCommand.equals(null));
     }
 }
-
