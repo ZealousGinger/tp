@@ -48,8 +48,8 @@ public class UnassignProjectCommandParser implements Parser<UnassignProjectComma
 
         UnassignProjectDescriptor unassignProjectDescriptor = new UnassignProjectDescriptor();
 
-        parseProjectsIndexesForAdd(argMultimap.getAllValues(PREFIX_INDEX))
-                .ifPresent(unassignProjectDescriptor::setProjectsIndexes);
+        parseProjectsIndexesForUnassign(argMultimap.getAllValues(PREFIX_INDEX))
+                .ifPresent(unassignProjectDescriptor::setProjectIndexes);
 
         if (!unassignProjectDescriptor.isProjectFieldEdited()) {
             throw new ParseException(UnassignProjectCommand.MESSAGE_NOT_EDITED);
@@ -63,7 +63,7 @@ public class UnassignProjectCommandParser implements Parser<UnassignProjectComma
      * If {@code projects} contain only one element which is an empty string, it will be parsed into a
      * {@code List<Project>} containing zero projects.
      */
-    private Optional<List<Index>> parseProjectsIndexesForAdd(Collection<String> projectsIndexes)
+    private Optional<List<Index>> parseProjectsIndexesForUnassign(Collection<String> projectsIndexes)
             throws ParseException {
         assert projectsIndexes != null;
 

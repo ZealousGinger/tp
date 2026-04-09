@@ -72,6 +72,10 @@ public class UnassignProjectCommand extends ProjectCommand {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        if (!unassignProjectDescriptor.isProjectFieldEdited()) {
+            throw new CommandException(MESSAGE_NOT_EDITED);
+        }
+
         Person personToEdit = lastShownList.get(index.getZeroBased());
         Person editedPerson = createEditedPerson(personToEdit, unassignProjectDescriptor);
 
@@ -84,7 +88,7 @@ public class UnassignProjectCommand extends ProjectCommand {
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
-     * edited with {@code editPersonDescriptor}.
+     * edited with {@code unassignProjectDescriptor}.
      */
     private static Person createEditedPerson(
             Person personToEdit,
@@ -98,7 +102,7 @@ public class UnassignProjectCommand extends ProjectCommand {
 
         List<PersonProject> newPersonProjects = new ArrayList<>(personToEdit.getProjects());
         List<PersonProject> personProjectsToDelete = new ArrayList<>();
-        List<Index> indexToDelete = unassignProjectDescriptor.getProjectsIndexes()
+        List<Index> indexToDelete = unassignProjectDescriptor.getProjectIndexes()
                 .orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED));
         for (int i = 0; i < indexToDelete.size(); ++i) {
             int projectIndex = indexToDelete.get(i).getZeroBased();
@@ -142,14 +146,14 @@ public class UnassignProjectCommand extends ProjectCommand {
          * A defensive copy of {@code projects} is used internally.
          */
         public UnassignProjectDescriptor(UnassignProjectDescriptor toCopy) {
-            setProjectsIndexes(toCopy.indexes);
+            setProjectIndexes(toCopy.indexes);
         }
 
         /**
          * Sets {@code projects} to this object's {@code projects}.
-                * A defensive copy of {@code projects} is used internally.
+         * A defensive copy of {@code projects} is used internally.
          */
-        public void setProjectsIndexes(List<Index> indexes) {
+        public void setProjectIndexes(List<Index> indexes) {
             this.indexes = (indexes != null) ? new ArrayList<>(indexes) : null;
         }
 
@@ -158,7 +162,7 @@ public class UnassignProjectCommand extends ProjectCommand {
          * if modification is attempted.
          * Returns {@code Optional#empty()} if {@code projects} is null.
          */
-        public Optional<List<Index>> getProjectsIndexes() {
+        public Optional<List<Index>> getProjectIndexes() {
             return (indexes != null) ? Optional.of(Collections.unmodifiableList(indexes)) : Optional.empty();
         }
 

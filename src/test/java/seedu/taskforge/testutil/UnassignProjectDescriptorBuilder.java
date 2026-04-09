@@ -29,19 +29,36 @@ public class UnassignProjectDescriptorBuilder {
         descriptor = new UnassignProjectDescriptor();
         ArrayList<Index> indexes = new ArrayList<>();
         indexes.add(index);
-        descriptor.setProjectsIndexes(indexes);
+        descriptor.setProjectIndexes(indexes);
     }
 
     /**
      * Parses the {@code projects} into a {@code List<Project>} and set it to the
      * {@code UnassignProjectDescriptorBuilder} that we are building.
      */
-    public UnassignProjectDescriptorBuilder withProjects(String... indexes) {
+    public UnassignProjectDescriptorBuilder withProjectIndexes(List<Index> indexes) {
+        descriptor.setProjectIndexes(indexes);
+        return this;
+    }
+
+    /**
+     * Parses the {@code projects} into a {@code List<Project>} and set it to the
+     * {@code UnassignProjectDescriptorBuilder} that we are building.
+     */
+    public UnassignProjectDescriptorBuilder withProjectIndexes(String... indexes) {
         List<Index> projectIndexSet = Stream.of(indexes)
                 .map(s -> Index.fromOneBased(Integer.parseInt(s)))
                 .collect(Collectors.toList());
-        descriptor.setProjectsIndexes(projectIndexSet);
+        descriptor.setProjectIndexes(projectIndexSet);
         return this;
+    }
+
+    public UnassignProjectDescriptorBuilder withProjects(List<Index> indexes) {
+        return withProjectIndexes(indexes);
+    }
+
+    public UnassignProjectDescriptorBuilder withProjects(String... index) {
+        return withProjectIndexes(index);
     }
 
     public UnassignProjectDescriptor build() {

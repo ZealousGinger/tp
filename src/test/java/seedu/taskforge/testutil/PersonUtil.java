@@ -99,8 +99,8 @@ public class PersonUtil {
      */
     public static String getUnassignProjectDescriptorDetails(UnassignProjectDescriptor descriptor) {
         StringBuilder sb = new StringBuilder();
-        if (descriptor.getProjectsIndexes().isPresent()) {
-            List<Index> indexes = descriptor.getProjectsIndexes().get();
+        if (descriptor.getProjectIndexes().isPresent()) {
+            List<Index> indexes = descriptor.getProjectIndexes().get();
             if (indexes.isEmpty()) {
                 sb.append(PREFIX_INDEX).append(" ");
             } else {
