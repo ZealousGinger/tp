@@ -852,6 +852,19 @@ testers are expected to do more *exploratory* testing.
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
+### Finding a person (`find`)
+
+1. Finding persons by prefixed keywords
+
+   1. Prerequisites: Prepare a minimal dataset using the following inputs:
+      `clear`
+      `add -n Alice Tan -p 91234567 -e alice@example.com`
+      `add -n Bob Lee -p 92345678 -e bob@example.com`
+   2. Test case: `find -n alice`<br>
+      Expected: One person is listed (`Alice Tan`). 
+   3. Test case: `find -n carol`<br>
+      Expected: No person is listed (`0 persons listed!`).
+
 ### Finding a project
 
 1. Finding projects by name
