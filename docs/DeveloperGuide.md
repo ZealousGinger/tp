@@ -10,7 +10,9 @@ title: Developer Guide
 ## **Acknowledgements**
 
 * {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
-
+* This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
+* Widespread code reuse of AI-generated work (GitHub Copilot) by Hsu, used for auto complete, generate alternative solutions, generate fixes/help with debugging, generate some code solutions.
+* Code reuse of AB3 UserGuide and DeveloperGuide sections.
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
