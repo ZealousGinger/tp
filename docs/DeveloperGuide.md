@@ -872,6 +872,35 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
+### Editing a task (`task edit`)
+
+1. Renaming a task from a person's assigned task list
+
+    1. Prerequisites: Prepare a minimal dataset using the following inputs:
+
+       `clear`
+
+       `add -n Alice -p 91234567 -e alice@example.com`
+
+       `project add Alpha`
+
+       `project assign 1 -i 1`
+
+       `task add 1 -n Draft API`
+
+       `task assign 1 -pi 1 -i 1`
+
+   2.Test case: `task edit 1 -i 1 -n Finalise API`<br>
+   Expected: Success message is shown. `task view 1` and `task list 1` both show `Finalise API`, and `Draft API` is no longer shown.
+
+   3.Test case: `task edit 2 -i 1 -n Anything`<br>
+   Expected: No data is changed. An invalid person index error is shown.
+
+   4.Test case: `task edit 1 -i 2 -n Anything`<br>
+   Expected: No data is changed. A task index out-of-bound error is shown.
+
+   5.Test case: `task add 1 -n Prepare Demo`, then `task edit 1 -i 1 -n Prepare Demo`<br>
+   Expected: No data is changed. A duplicate task error is shown.
 
 ### Saving data
 
