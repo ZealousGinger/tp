@@ -21,8 +21,6 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
 
     }
 
-
-
     public PersonContainsKeywordsPredicate setNameKeywords(List<String> nameKeywords) {
         this.nameKeywords = nameKeywords;
         return this;
@@ -54,13 +52,25 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
             return false;
         }
 
-        return isKeywordMatch(person, nameKeywords, p -> p.getName().fullName)
-                && isKeywordMatch(person, phoneKeywords, p -> p.getPhone().value)
-                && isKeywordMatch(person, emailKeywords, p -> p.getEmail().value)
-                && isKeywordMatchForCollection(person, taskKeywords, p -> p.getTasks().stream()
-                    .map(PersonTask::toString).toList())
-                && isKeywordMatchForCollection(person, projectKeywords, p -> p.getProjects().stream()
-                        .map(project -> project.toString()).toList());
+        boolean matchesName = isKeywordMatch(person, nameKeywords, p -> p.getName().fullName);
+        boolean matchesPhone = isKeywordMatch(person, phoneKeywords, p -> p.getPhone().value);
+        boolean matchesEmail = isKeywordMatch(person, emailKeywords, p -> p.getEmail().value);
+        boolean matchesTasks = isKeywordMatchForCollection(person, taskKeywords, this::getTaskNames);
+        boolean matchesProjects = isKeywordMatchForCollection(person, projectKeywords, this::getProjectNames);
+
+        return matchesName && matchesPhone && matchesEmail && matchesTasks && matchesProjects;
+    }
+
+    private List<String> getTaskNames(Person person) {
+        return person.getTasks().stream()
+                .map(PersonTask::toString)
+                .toList();
+    }
+
+    private List<String> getProjectNames(Person person) {
+        return person.getProjects().stream()
+                .map(Object::toString)
+                .toList();
     }
 
     private boolean isKeywordMatch(Person person, List<String> keywords,
