@@ -5,11 +5,12 @@ import static seedu.taskforge.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Task in the address book.
- * Guarantees: immutable; description is valid as declared in {@link #isValidTaskDescription(String)}
+ * Guarantees: mutable; description is valid as declared in {@link #isValidTaskDescription(String)}.
+ * Equality is based on {@code description} only.
  */
 public class Task {
 
-    public static final String MESSAGE_CONSTRAINTS = "Task name should be alphanumeric"
+    public static final String MESSAGE_CONSTRAINTS = "Task name should be alphanumeric and spaces"
             + " between 1 to 64 characters";
     public static final String VALIDATION_REGEX = "^[a-zA-Z0-9 ]{1,64}$";
 
