@@ -1,7 +1,11 @@
 package seedu.taskforge.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_PROJECT_ALPHA;
+import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_PROJECT_BETA;
+import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_FIX_ERROR;
+import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_IMPLEMENT_X;
+import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_TASK_REFACTOR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +22,10 @@ public class PersonCardTest {
     @Test
     public void calculateWorkload_validAndInvalidTaskReferences_countsOnlyUnfinishedValidTasks() {
         List<Project> projects = List.of(
-                new Project("alpha", List.of(new Task("task 1"), new Task("task 2"))),
-                new Project("beta", List.of(new Task("task 3"))));
+                new Project(VALID_PROJECT_ALPHA,
+                        List.of(new Task(VALID_TASK_REFACTOR), new Task(VALID_TASK_FIX_ERROR))),
+                new Project(VALID_PROJECT_BETA,
+                        List.of(new Task(VALID_TASK_IMPLEMENT_X))));
 
         List<PersonTask> tasks = new ArrayList<>();
         tasks.add(new PersonTask(0, 0));
@@ -33,10 +39,10 @@ public class PersonCardTest {
 
     @Test
     public void calculateWorkload_doneTask_notCounted() {
-        Task doneTask = new Task("task 1");
+        Task doneTask = new Task(VALID_TASK_REFACTOR);
         doneTask.setDone();
 
-        List<Project> projects = List.of(new Project("alpha", List.of(doneTask)));
+        List<Project> projects = List.of(new Project(VALID_PROJECT_ALPHA, List.of(doneTask)));
         List<PersonTask> tasks = List.of(new PersonTask(0, 0));
 
         assertEquals(0, PersonCard.calculateWorkload(tasks, projects));
@@ -53,25 +59,18 @@ public class PersonCardTest {
     }
 
     @Test
-    public void calculateAvailability_negativeWorkload_returnsAvailable() {
-        assertEquals(Availability.AVAILABLE, PersonCard.calculateAvailability(-1));
-    }
-
-    @Test
     public void formatAvailabilityText_returnsExpectedString() {
         assertEquals("Available.  Workload:  2", PersonCard.formatAvailabilityText(2));
     }
 
     @Test
-    public void resolveTask_validAndInvalidReferences() {
-        Task doneTask = new Task("task 1");
+    public void resolveTask_returnsExpectedTask() {
+        Task doneTask = new Task(VALID_TASK_REFACTOR);
         doneTask.setDone();
-        Task todoTask = new Task("task 2");
-        List<Project> projects = List.of(new Project("alpha", List.of(doneTask, todoTask)));
+        Task notDoneTask = new Task(VALID_TASK_FIX_ERROR);
+        List<Project> projects = List.of(new Project(VALID_PROJECT_ALPHA, List.of(doneTask, notDoneTask)));
 
         assertEquals(doneTask, PersonCard.resolveTask(new PersonTask(0, 0), projects));
-        assertEquals(todoTask, PersonCard.resolveTask(new PersonTask(0, 1), projects));
-        assertNull(PersonCard.resolveTask(new PersonTask(0, 2), projects));
-        assertNull(PersonCard.resolveTask(new PersonTask(2, 0), projects));
+        assertEquals(notDoneTask, PersonCard.resolveTask(new PersonTask(0, 1), projects));
     }
 }

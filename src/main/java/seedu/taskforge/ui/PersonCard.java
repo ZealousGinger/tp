@@ -1,9 +1,7 @@
 package seedu.taskforge.ui;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -93,11 +91,11 @@ public class PersonCard extends UiPart<Region> {
     }
 
     private List<Integer> collectProjectIndexes(List<PersonProject> personProjects) {
-        Set<Integer> orderedProjectIndexes = new LinkedHashSet<>();
+        List<Integer> orderedProjectIndexes = new ArrayList<>();
         for (PersonProject personProject : personProjects) {
             orderedProjectIndexes.add(personProject.getProjectIndex());
         }
-        return new ArrayList<>(orderedProjectIndexes);
+        return orderedProjectIndexes;
     }
 
     private TitledPane createProjectBox(int displayIndex, int projectIndex, List<PersonTask> personTasks,
@@ -132,13 +130,8 @@ public class PersonCard extends UiPart<Region> {
     static Task resolveTask(PersonTask personTask, List<Project> globalProjects) {
         int projectIndex = personTask.getProjectIndex();
         int taskIndex = personTask.getTaskIndex();
-        if (projectIndex >= 0 && projectIndex < globalProjects.size()) {
-            List<Task> projectTasks = globalProjects.get(projectIndex).getTasks();
-            if (taskIndex >= 0 && taskIndex < projectTasks.size()) {
-                return projectTasks.get(taskIndex);
-            }
-        }
-        return null;
+        List<Task> projectTasks = globalProjects.get(projectIndex).getTasks();
+        return projectTasks.get(taskIndex);
     }
 
     static HBox createTaskDisplayRow(int taskId, Task task) {

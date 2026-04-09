@@ -1,5 +1,6 @@
 package seedu.taskforge.model.project;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.taskforge.logic.commands.CommandTestUtil.VALID_PROJECT_ALPHA;
@@ -16,16 +17,25 @@ public class ProjectContainsKeywordsPredicateTest {
 
     @Test
     public void equals() {
+        ProjectContainsKeywordsPredicate emptyPredicate = new ProjectContainsKeywordsPredicate();
         ProjectContainsKeywordsPredicate firstPredicate = new ProjectContainsKeywordsPredicate()
                 .setProjectKeywords(Collections.singletonList(VALID_PROJECT_ALPHA));
+        ProjectContainsKeywordsPredicate firstPredicateCopy = new ProjectContainsKeywordsPredicate()
+                .setProjectKeywords(Collections.singletonList(VALID_PROJECT_ALPHA));
+        ProjectContainsKeywordsPredicate differentProjectPredicate = new ProjectContainsKeywordsPredicate()
+                .setProjectKeywords(Collections.singletonList("beta"));
+        ProjectContainsKeywordsPredicate taskPredicate = new ProjectContainsKeywordsPredicate()
+                .setTaskKeywords(Collections.singletonList(VALID_TASK_REFACTOR));
         ProjectContainsKeywordsPredicate secondPredicate = new ProjectContainsKeywordsPredicate()
                 .setTaskKeywords(Collections.singletonList("Deploy"));
 
+        assertTrue(emptyPredicate.equals(new ProjectContainsKeywordsPredicate()));
         assertTrue(firstPredicate.equals(firstPredicate));
-        assertTrue(firstPredicate.equals(new ProjectContainsKeywordsPredicate()
-                .setProjectKeywords(Collections.singletonList(VALID_PROJECT_ALPHA))));
+        assertTrue(firstPredicate.equals(firstPredicateCopy));
         assertFalse(firstPredicate.equals(1));
         assertFalse(firstPredicate.equals(null));
+        assertFalse(firstPredicate.equals(differentProjectPredicate));
+        assertFalse(taskPredicate.equals(secondPredicate));
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -90,5 +100,23 @@ public class ProjectContainsKeywordsPredicateTest {
 
         assertFalse(projectPredicate.test(alpha));
         assertFalse(taskPredicate.test(alpha));
+    }
+
+    @Test
+    public void toStringMethod() {
+        ProjectContainsKeywordsPredicate projectPredicate = new ProjectContainsKeywordsPredicate()
+                .setProjectKeywords(Collections.singletonList(VALID_PROJECT_ALPHA));
+        String expected = ProjectContainsKeywordsPredicate.class.getCanonicalName()
+                + "{projectKeywords=[alpha], taskKeywords=null}";
+        assertEquals(expected, projectPredicate.toString());
+    }
+
+    @Test
+    public void isAnyFieldChecked_nullAndEmptyLists_returnsFalse() {
+        assertFalse(new ProjectContainsKeywordsPredicate().isAnyFieldChecked());
+        assertFalse(new ProjectContainsKeywordsPredicate()
+                .setProjectKeywords(Collections.emptyList()).isAnyFieldChecked());
+        assertFalse(new ProjectContainsKeywordsPredicate()
+                .setTaskKeywords(Collections.emptyList()).isAnyFieldChecked());
     }
 }
