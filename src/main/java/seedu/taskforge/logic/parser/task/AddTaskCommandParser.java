@@ -30,13 +30,7 @@ public class AddTaskCommandParser implements Parser<AddTaskCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME);
 
-        Index index;
-
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddTaskCommand.MESSAGE_USAGE), pe);
-        }
+        Index index = parseIndex(argMultimap.getPreamble());
 
         AddTaskDescriptor addTaskDescriptor = new AddTaskDescriptor();
         parseTasksForAdd(argMultimap.getAllValues(PREFIX_NAME)).ifPresent(addTaskDescriptor::setTasks);
@@ -61,5 +55,13 @@ public class AddTaskCommandParser implements Parser<AddTaskCommand> {
         }
         Collection<String> taskSet = tasks.size() == 1 && tasks.contains("") ? Collections.emptyList() : tasks;
         return Optional.of(ParserUtil.parseTasks(taskSet));
+    }
+
+    private Index parseIndex(String preamble) throws ParseException {
+        try {
+            return ParserUtil.parseIndex(preamble);
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddTaskCommand.MESSAGE_USAGE), pe);
+        }
     }
 }

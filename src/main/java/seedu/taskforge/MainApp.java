@@ -74,23 +74,23 @@ public class MainApp extends Application {
      */
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
         logger.info("Using data file : " + storage.getAddressBookFilePath());
+        ReadOnlyAddressBook initialData = readInitialData(storage);
+        return new ModelManager(initialData, userPrefs);
+    }
 
-        Optional<ReadOnlyAddressBook> addressBookOptional;
-        ReadOnlyAddressBook initialData;
+    private ReadOnlyAddressBook readInitialData(Storage storage) {
         try {
-            addressBookOptional = storage.readAddressBook();
+            Optional<ReadOnlyAddressBook> addressBookOptional = storage.readAddressBook();
             if (!addressBookOptional.isPresent()) {
                 logger.info("Creating a new data file " + storage.getAddressBookFilePath()
                         + " populated with a sample AddressBook.");
             }
-            initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
+            return addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
                     + " Will be starting with an empty AddressBook.");
-            initialData = new AddressBook();
+            return new AddressBook();
         }
-
-        return new ModelManager(initialData, userPrefs);
     }
 
     private void initLogging(Config config) {
@@ -103,10 +103,7 @@ public class MainApp extends Application {
      * if {@code configFilePath} is null.
      */
     protected Config initConfig(Path configFilePath) {
-        Config initializedConfig;
-        Path configFilePathUsed;
-
-        configFilePathUsed = Config.DEFAULT_CONFIG_FILE;
+        Path configFilePathUsed = Config.DEFAULT_CONFIG_FILE;
 
         if (configFilePath != null) {
             logger.info("Custom Config file specified " + configFilePath);
@@ -114,18 +111,7 @@ public class MainApp extends Application {
         }
 
         logger.info("Using config file : " + configFilePathUsed);
-
-        try {
-            Optional<Config> configOptional = ConfigUtil.readConfig(configFilePathUsed);
-            if (!configOptional.isPresent()) {
-                logger.info("Creating new config file " + configFilePathUsed);
-            }
-            initializedConfig = configOptional.orElse(new Config());
-        } catch (DataLoadingException e) {
-            logger.warning("Config file at " + configFilePathUsed + " could not be loaded."
-                    + " Using default config properties.");
-            initializedConfig = new Config();
-        }
+        Config initializedConfig = readConfig(configFilePathUsed);
 
         //Update config file in case it was missing to begin with or there are new/unused fields
         try {
@@ -136,6 +122,20 @@ public class MainApp extends Application {
         return initializedConfig;
     }
 
+    private Config readConfig(Path configFilePathUsed) {
+        try {
+            Optional<Config> configOptional = ConfigUtil.readConfig(configFilePathUsed);
+            if (!configOptional.isPresent()) {
+                logger.info("Creating new config file " + configFilePathUsed);
+            }
+            return configOptional.orElse(new Config());
+        } catch (DataLoadingException e) {
+            logger.warning("Config file at " + configFilePathUsed + " could not be loaded."
+                    + " Using default config properties.");
+            return new Config();
+        }
+    }
+
     /**
      * Returns a {@code UserPrefs} using the file at {@code storage}'s user prefs file path,
      * or a new {@code UserPrefs} with default configuration if errors occur when
@@ -144,19 +144,7 @@ public class MainApp extends Application {
     protected UserPrefs initPrefs(UserPrefsStorage storage) {
         Path prefsFilePath = storage.getUserPrefsFilePath();
         logger.info("Using preference file : " + prefsFilePath);
-
-        UserPrefs initializedPrefs;
-        try {
-            Optional<UserPrefs> prefsOptional = storage.readUserPrefs();
-            if (!prefsOptional.isPresent()) {
-                logger.info("Creating new preference file " + prefsFilePath);
-            }
-            initializedPrefs = prefsOptional.orElse(new UserPrefs());
-        } catch (DataLoadingException e) {
-            logger.warning("Preference file at " + prefsFilePath + " could not be loaded."
-                    + " Using default preferences.");
-            initializedPrefs = new UserPrefs();
-        }
+        UserPrefs initializedPrefs = readUserPrefs(storage, prefsFilePath);
 
         //Update prefs file in case it was missing to begin with or there are new/unused fields
         try {
@@ -166,6 +154,20 @@ public class MainApp extends Application {
         }
 
         return initializedPrefs;
+    }
+
+    private UserPrefs readUserPrefs(UserPrefsStorage storage, Path prefsFilePath) {
+        try {
+            Optional<UserPrefs> prefsOptional = storage.readUserPrefs();
+            if (!prefsOptional.isPresent()) {
+                logger.info("Creating new preference file " + prefsFilePath);
+            }
+            return prefsOptional.orElse(new UserPrefs());
+        } catch (DataLoadingException e) {
+            logger.warning("Preference file at " + prefsFilePath + " could not be loaded."
+                    + " Using default preferences.");
+            return new UserPrefs();
+        }
     }
 
     @Override

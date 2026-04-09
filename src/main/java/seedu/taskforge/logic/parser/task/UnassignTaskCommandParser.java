@@ -32,14 +32,7 @@ public class UnassignTaskCommandParser implements Parser<UnassignTaskCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_INDEX);
 
-        Index index;
-
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    UnassignTaskCommand.MESSAGE_USAGE), pe);
-        }
+        Index index = parseIndex(argMultimap.getPreamble());
 
         UnassignTaskDescriptor unassignTaskDescriptor = new UnassignTaskDescriptor();
 
@@ -66,5 +59,14 @@ public class UnassignTaskCommandParser implements Parser<UnassignTaskCommand> {
             return Optional.empty();
         }
         return Optional.of(ParserUtil.parseTaskIndexes(tasksIndexes));
+    }
+
+    private Index parseIndex(String preamble) throws ParseException {
+        try {
+            return ParserUtil.parseIndex(preamble);
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    UnassignTaskCommand.MESSAGE_USAGE), pe);
+        }
     }
 }

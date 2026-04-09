@@ -32,13 +32,7 @@ public class AssignTaskCommandParser implements Parser<AssignTaskCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_PROJECT, PREFIX_INDEX);
 
-        Index index;
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE), pe);
-        }
+        Index index = parseIndex(argMultimap.getPreamble());
 
         AssignTaskDescriptor assignTaskDescriptor = new AssignTaskDescriptor();
         parseProjectTaskPairs(argMultimap)
@@ -73,5 +67,14 @@ public class AssignTaskCommandParser implements Parser<AssignTaskCommand> {
         }
 
         return pairs.isEmpty() ? java.util.Optional.empty() : java.util.Optional.of(pairs);
+    }
+
+    private Index parseIndex(String preamble) throws ParseException {
+        try {
+            return ParserUtil.parseIndex(preamble);
+        } catch (ParseException pe) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE), pe);
+        }
     }
 }

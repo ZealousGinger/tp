@@ -110,23 +110,10 @@ public class EditCommand extends Command {
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        List<PersonProject> updatedPersonProjects;
-
-        if (editPersonDescriptor.getProjects().isPresent()) {
-            List<Project> projectsToAssign = editPersonDescriptor.getProjects().get();
-            updatedPersonProjects = new ArrayList<>();
-            List<Project> globalProjectList = new ArrayList<>(model.getProjectList());
-
-            for (Project project : projectsToAssign) {
-                int projectIndex = globalProjectList.indexOf(project);
-                if (projectIndex == -1) {
-                    throw new CommandException("The project to assign does not exist in the address book");
-                }
-                updatedPersonProjects.add(new PersonProject(projectIndex));
-            }
-        } else {
-            updatedPersonProjects = personToEdit.getProjects();
-        }
+        List<PersonProject> updatedPersonProjects = editPersonDescriptor.getProjects().isPresent()
+                ? resolvePersonProjects(editPersonDescriptor.getProjects().get(),
+                        new ArrayList<>(model.getProjectList()))
+                : personToEdit.getProjects();
 
         List<PersonTask> updatedTasks = editPersonDescriptor.getTasks().isPresent()
             ? resolvePersonTasks(editPersonDescriptor.getTasks().get(), updatedPersonProjects,
@@ -152,6 +139,20 @@ public class EditCommand extends Command {
         }
 
         return resolved;
+    }
+
+    private static List<PersonProject> resolvePersonProjects(List<Project> projectsToAssign,
+                                                             List<Project> globalProjectList)
+            throws CommandException {
+        List<PersonProject> updatedPersonProjects = new ArrayList<>();
+        for (Project project : projectsToAssign) {
+            int projectIndex = globalProjectList.indexOf(project);
+            if (projectIndex == -1) {
+                throw new CommandException("The project to assign does not exist in the address book");
+            }
+            updatedPersonProjects.add(new PersonProject(projectIndex));
+        }
+        return updatedPersonProjects;
     }
 
     private static PersonTask resolveSingleTask(Task task, List<PersonProject> assignedProjects,

@@ -37,14 +37,7 @@ public class UnassignProjectCommandParser implements Parser<UnassignProjectComma
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_INDEX);
 
-        Index index;
-
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    UnassignProjectCommand.MESSAGE_USAGE), pe);
-        }
+        Index index = parseIndex(argMultimap.getPreamble());
 
         UnassignProjectDescriptor unassignProjectDescriptor = new UnassignProjectDescriptor();
 
@@ -73,5 +66,14 @@ public class UnassignProjectCommandParser implements Parser<UnassignProjectComma
         Collection<String> projectSet = (projectsIndexes.size() == 1)
                 && projectsIndexes.contains("") ? Collections.emptyList() : projectsIndexes;
         return Optional.of(ParserUtil.parseProjectIndexes(projectSet));
+    }
+
+    private Index parseIndex(String preamble) throws ParseException {
+        try {
+            return ParserUtil.parseIndex(preamble);
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    UnassignProjectCommand.MESSAGE_USAGE), pe);
+        }
     }
 }

@@ -47,12 +47,9 @@ public class VersionTest {
 
     @Test
     public void versionComparable_validVersion_compareToIsCorrect() {
-        Version one;
-        Version another;
-
         // Tests equality
-        one = new Version(0, 0, 0, true);
-        another = new Version(0, 0, 0, true);
+        Version one = new Version(0, 0, 0, true);
+        Version another = new Version(0, 0, 0, true);
         assertTrue(one.compareTo(another) == 0);
 
         one = new Version(11, 12, 13, false);
@@ -116,11 +113,8 @@ public class VersionTest {
 
     @Test
     public void versionComparable_validVersion_equalIsCorrect() {
-        Version one;
-        Version another;
-
-        one = new Version(0, 0, 0, false);
-        another = new Version(0, 0, 0, false);
+        Version one = new Version(0, 0, 0, false);
+        Version another = new Version(0, 0, 0, false);
         assertTrue(one.equals(another));
 
         one = new Version(100, 191, 275, true);
