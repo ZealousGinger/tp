@@ -451,7 +451,7 @@ Action | Format, Examples
 **Add Task** | `task add PROJECT_INDEX -n TASK_NAME`<br> e.g., `task add 1 -n Write report`
 **Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX`<br> e.g., `task delete 1 -i 2`
 **Edit Task** | `task edit PROJECT_NAME -i TASK_INDEX_FROM_PROJECT -n NEW_TASK_NAME`<br> e.g., `task edit Alpha -i 1 -n Prepare sprint report`
-**List Tasks by Project** | `task list PROJECT_NAME`<br> e.g., `task list 1`
+**List Tasks by Project** | `task list PROJECT_INDEX`<br> e.g., `task list 1`
 **Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]`<br> e.g., `task find report bug`
 **Assign Task** | `task assign PERSON_INDEX -pi PROJECT_INDEX i TASK_INDEX`<br> e.g., `task assign 1 -pi 1 -i 2`
 **Assign Project** | `project assign INDEX -i PROJECT_INDEX`<br> e.g., `project assign 1 -i 2`
