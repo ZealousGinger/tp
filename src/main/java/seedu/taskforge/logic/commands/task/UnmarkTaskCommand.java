@@ -3,6 +3,7 @@ package seedu.taskforge.logic.commands.task;
 import static java.util.Objects.requireNonNull;
 import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import seedu.taskforge.commons.core.index.Index;
@@ -28,7 +29,6 @@ public class UnmarkTaskCommand extends TaskCommand {
 
     public static final String MESSAGE_UNMARK_TASK_SUCCESS = "Marked task as not done: %1$s";
     public static final String MESSAGE_TASK_ALREADY_NOT_DONE = "This task is already marked as not done.";
-    public static final String MESSAGE_INVALID_TASK_REFERENCE = "Task reference is invalid.";
 
     private final Index personIndex;
     private final Index taskIndex;
@@ -68,7 +68,7 @@ public class UnmarkTaskCommand extends TaskCommand {
         }
 
         Project project = model.getProjectList().get(taskToUnmark.getProjectIndex());
-        List<Task> updatedTasks = project.getTasks();
+        List<Task> updatedTasks = new ArrayList<>(project.getTasks());
         updatedTasks.get(taskToUnmark.getTaskIndex()).setNotDone();
         Project editedProject = new Project(project.title, updatedTasks);
 
@@ -76,19 +76,6 @@ public class UnmarkTaskCommand extends TaskCommand {
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_UNMARK_TASK_SUCCESS, resolvedTask.description));
-    }
-
-    private static Task resolveTask(Model model, PersonTask personTask) throws CommandException {
-        int projectIndex = personTask.getProjectIndex();
-        int taskIndex = personTask.getTaskIndex();
-        if (projectIndex < 0 || projectIndex >= model.getProjectList().size()) {
-            throw new CommandException(MESSAGE_INVALID_TASK_REFERENCE);
-        }
-        List<Task> projectTasks = model.getProjectList().get(projectIndex).getTasks();
-        if (taskIndex < 0 || taskIndex >= projectTasks.size()) {
-            throw new CommandException(MESSAGE_INVALID_TASK_REFERENCE);
-        }
-        return projectTasks.get(taskIndex);
     }
 
     @Override

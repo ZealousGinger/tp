@@ -85,15 +85,6 @@ public class EditTaskCommand extends TaskCommand {
         return model.getProjectList().get(projectIndex);
     }
 
-    private static Task resolveTask(Model model, PersonTask personTask) throws CommandException {
-        int taskIndex = personTask.getTaskIndex();
-        List<Task> projectTasks = resolveProject(model, personTask).getTasks();
-        if (taskIndex < 0 || taskIndex >= projectTasks.size()) {
-            throw new CommandException(MESSAGE_INVALID_TASK_REFERENCE);
-        }
-        return projectTasks.get(taskIndex);
-    }
-
     private static Project createEditedProject(Project projectToEdit, Task taskToEdit, Task renamedTask)
             throws CommandException {
         Project editedProject = new Project(projectToEdit.title, projectToEdit.getTasks());
@@ -134,4 +125,3 @@ public class EditTaskCommand extends TaskCommand {
         return Objects.hash(personIndex, taskIndex, newTask);
     }
 }
-
