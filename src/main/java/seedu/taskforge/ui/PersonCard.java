@@ -137,7 +137,7 @@ public class PersonCard extends UiPart<Region> {
     static HBox createTaskDisplayRow(int taskId, Task task) {
         Circle circle = new Circle(4);
         circle.getStyleClass().add("task-not-done");
-        if (task != null && task.getStatus()) {
+        if (task != null && task.isDone()) {
             circle.getStyleClass().add("task-done");
         }
 
