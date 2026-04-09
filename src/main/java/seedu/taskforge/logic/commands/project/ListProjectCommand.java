@@ -13,7 +13,7 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Lists all projects in the address book to the user.
+ * Lists all projects in the TaskForge to the user.
  */
 public class ListProjectCommand extends ProjectCommand {
 

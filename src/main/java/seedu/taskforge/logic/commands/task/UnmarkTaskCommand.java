@@ -16,7 +16,7 @@ import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
 /**
- * Unmarks a task as done for an existing person in the address book.
+ * Unmarks a task as done for an existing person in the TaskForge
  */
 public class UnmarkTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "unmark";

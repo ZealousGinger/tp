@@ -15,7 +15,7 @@ import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Represents the in-memory model of the address book data.
+ * Represents the in-memory model of the TaskForge data.
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
@@ -31,7 +31,7 @@ public class ModelManager implements Model {
     public ModelManager(ReadOnlyTaskForge taskForge, ReadOnlyUserPrefs userPrefs) {
         requireAllNonNull(taskForge, userPrefs);
 
-        logger.fine("Initializing with address book: " + taskForge + " and user prefs " + userPrefs);
+        logger.fine("Initializing with TaskForge: " + taskForge + " and user prefs " + userPrefs);
 
         this.taskForge = new VersionedTaskForge(taskForge);
         this.userPrefs = new UserPrefs(userPrefs);

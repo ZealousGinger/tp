@@ -26,7 +26,7 @@ import seedu.taskforge.model.person.PersonTask;
 import seedu.taskforge.model.person.Phone;
 
 /**
- * Unassigns a project from an existing person in the address book.
+ * Unassigns a project from an existing person in the TaskForge.
  */
 public class UnassignProjectCommand extends ProjectCommand {
 

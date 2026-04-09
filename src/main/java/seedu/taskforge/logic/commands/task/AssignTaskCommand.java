@@ -26,7 +26,7 @@ import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Assigns task(s) to an existing person in the address book.
+ * Assigns task(s) to an existing person in the TaskForge
  */
 public class AssignTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "assign";

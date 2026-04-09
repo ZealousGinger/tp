@@ -18,7 +18,7 @@ import seedu.taskforge.model.task.Task;
 import seedu.taskforge.model.task.exceptions.DuplicateTaskException;
 
 /**
- * Edits an existing task name from an existing project in the address book.
+ * Edits an existing task name from an existing project in the TaskForge
  */
 public class EditTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "edit";

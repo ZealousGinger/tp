@@ -13,7 +13,7 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Deletes a project from the address book.
+ * Deletes a project from the TaskForge
  */
 public class DeleteProjectCommand extends ProjectCommand {
 

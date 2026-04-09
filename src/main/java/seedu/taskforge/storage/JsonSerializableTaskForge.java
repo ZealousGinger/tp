@@ -55,7 +55,7 @@ class JsonSerializableTaskForge {
     }
 
     /**
-     * Converts this address book into the model's {@code TaskForge} object.
+     * Converts this TaskForge into the model's {@code TaskForge} object.
      *
      * @throws IllegalValueException if there were any data constraints violated.
      */

@@ -24,7 +24,7 @@ import seedu.taskforge.model.person.PersonTask;
 import seedu.taskforge.model.person.Phone;
 
 /**
- * Unassign task(s) from an existing person in the address book.
+ * Unassign task(s) from an existing person in the TaskForge
  */
 public class UnassignTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "unassign";

@@ -203,13 +203,13 @@ public class AssignTaskCommandTest {
 
     /**
      * Adds task to a person of a filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
+     * but smaller than size of TaskForge
      */
     @Test
     public void execute_invalidPersonIndexFilteredList_failure() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
-        // ensures that outOfBoundIndex is still in bounds of address book list
+        // ensures that outOfBoundIndex is still in bounds of TaskForge list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getTaskForge().getPersonList().size());
 
         AssignTaskCommand assignTaskCommand = new AssignTaskCommand(outOfBoundIndex,

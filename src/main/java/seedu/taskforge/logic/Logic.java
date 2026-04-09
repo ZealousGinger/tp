@@ -37,7 +37,7 @@ public interface Logic {
     ObservableList<Project> getFilteredProjectList();
 
     /**
-     * Returns the user prefs' address book file path.
+     * Returns the user prefs' TaskForge file path.
      */
     Path getTaskForgeFilePath();
 

@@ -14,7 +14,7 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.person.Person;
 
 /**
- * Deletes a person identified using it's displayed index from the address book.
+ * Deletes a person identified using it's displayed index from the TaskForge.
  */
 public class DeleteCommand extends Command {
 

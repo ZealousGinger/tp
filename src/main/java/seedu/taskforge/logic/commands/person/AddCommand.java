@@ -25,13 +25,13 @@ import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
 /**
- * Adds a person to the address book.
+ * Adds a person to the TaskForge.
  */
 public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the TaskForge. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
@@ -90,7 +90,7 @@ public class AddCommand extends Command {
             for (Project project : projectsToAssign) {
                 int projectIndex = globalProjectList.indexOf(project);
                 if (projectIndex == -1) {
-                    throw new CommandException("The project to assign does not exist in the address book.");
+                    throw new CommandException("The project to assign does not exist in the TaskForge.");
                 }
                 personProjectsToAssign.add(new PersonProject(projectIndex));
             }

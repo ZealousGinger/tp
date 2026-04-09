@@ -5,7 +5,7 @@ import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Unmodifiable view of an address book
+ * Unmodifiable view of an TaskForge
  */
 public interface ReadOnlyTaskForge {
 

@@ -66,7 +66,7 @@ public class AddCommandTest {
         Person person = new PersonBuilder().build();
         AddCommand command = new AddCommand(person, List.of(new Project("beta")), List.of());
 
-        assertThrows(CommandException.class, "The project to assign does not exist in the address book.", () ->
+        assertThrows(CommandException.class, "The project to assign does not exist in the TaskForge.", () ->
             command.execute(modelStub));
     }
 

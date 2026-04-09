@@ -34,7 +34,7 @@ import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
 /**
- * Edits the details of an existing person in the address book.
+ * Edits the details of an existing person in the TaskForge.
  */
 public class EditCommand extends Command {
 
@@ -120,7 +120,7 @@ public class EditCommand extends Command {
             for (Project project : projectsToAssign) {
                 int projectIndex = globalProjectList.indexOf(project);
                 if (projectIndex == -1) {
-                    throw new CommandException("The project to assign does not exist in the address book");
+                    throw new CommandException("The project to assign does not exist in the TaskForge.");
                 }
                 updatedPersonProjects.add(new PersonProject(projectIndex));
             }

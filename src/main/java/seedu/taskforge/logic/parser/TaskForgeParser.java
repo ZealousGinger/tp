@@ -122,7 +122,7 @@ public class TaskForgeParser {
         case ProjectCommand.COMMAND_WORD:
             return handleProject(arguments);
 
-        // Address book related commands
+        // TaskForge
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
 

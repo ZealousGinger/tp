@@ -16,7 +16,7 @@ import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
 /**
- * Marks a task as done for an existing person in the address book.
+ * Marks a task as done for an existing person in the TaskForge
  */
 public class MarkTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "mark";

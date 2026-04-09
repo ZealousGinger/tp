@@ -25,7 +25,7 @@ import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Assigns a project to an existing person in the address book.
+ * Assigns a project to an existing person in the TaskForge.
  */
 public class AssignProjectCommand extends ProjectCommand {
 

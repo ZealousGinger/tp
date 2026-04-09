@@ -77,7 +77,7 @@ public class TaskForge implements ReadOnlyTaskForge {
     //// person-level operations
 
     /**
-     * Returns true if a person with the same identity as {@code person} exists in the address book.
+     * Returns true if a person with the same identity as {@code person} exists in the TaskForge.
      */
     public boolean hasPerson(Person person) {
         requireNonNull(person);
@@ -85,8 +85,8 @@ public class TaskForge implements ReadOnlyTaskForge {
     }
 
     /**
-     * Adds a person to the address book.
-     * The person must not already exist in the address book.
+     * Adds a person to the TaskForge.
+     * The person must not already exist in the TaskForge.
      */
     public void addPerson(Person p) {
         persons.add(p);
@@ -94,8 +94,8 @@ public class TaskForge implements ReadOnlyTaskForge {
 
     /**
      * Replaces the given person {@code target} in the list with {@code editedPerson}.
-     * {@code target} must exist in the address book.
-     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     * {@code target} must exist in the TaskForge.
+     * The person identity of {@code editedPerson} must not be the same as another existing person in the TaskForge.
      */
     public void setPerson(Person target, Person editedPerson) {
         requireNonNull(editedPerson);
@@ -105,7 +105,7 @@ public class TaskForge implements ReadOnlyTaskForge {
 
     /**
      * Removes {@code key} from this {@code TaskForge}.
-     * {@code key} must exist in the address book.
+     * {@code key} must exist in the TaskForge.
      */
     public void removePerson(Person key) {
         persons.remove(key);
@@ -114,7 +114,7 @@ public class TaskForge implements ReadOnlyTaskForge {
     //// project-level operations
 
     /**
-     * Returns true if a project with the same identity as {@code project} exists in the address book.
+     * Returns true if a project with the same identity as {@code project} exists in the TaskForge.
      */
     public boolean hasProject(Project project) {
         requireNonNull(project);
@@ -122,8 +122,8 @@ public class TaskForge implements ReadOnlyTaskForge {
     }
 
     /**
-     * Adds a project to the address book.
-     * The project must not already exist in the address book.
+     * Adds a project to the TaskForge.
+     * The project must not already exist in the TaskForge.
      */
     public void addProject(Project project) {
         projects.add(project);
@@ -132,9 +132,9 @@ public class TaskForge implements ReadOnlyTaskForge {
     /**
         * Replaces the given project {@code target} in the list with
         * {@code editedProject}.
-     * {@code target} must exist in the address book.
+     * {@code target} must exist in the TaskForge.
      * The project identity of {@code editedProject} must not be the same as
-     * another existing project in the address book.
+     * another existing project in the TaskForge.
      */
     public void setProject(Project target, Project editedProject) {
         requireNonNull(editedProject);
@@ -153,7 +153,7 @@ public class TaskForge implements ReadOnlyTaskForge {
 
     /**
      * Removes {@code key} from this {@code TaskForge}.
-     * {@code key} must exist in the address book.
+     * {@code key} must exist in the TaskForge.
      */
     public void removeProject(Project key) {
         requireNonNull(key);

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents an address book with undo/redo capabilities.
+ * Represents an TaskForge with undo/redo capabilities.
  *
  * <p>The undo/redo history is maintained only for the current session.
  * History is not persisted between application restarts. When the
  * application closes, all saved states are discarded.</p>
  *
- * Maintains a history of address book states and the commands that created them.
+ * Maintains a history of TaskForge states and the commands that created them.
  */
 public class VersionedTaskForge extends TaskForge {
     private final List<ReadOnlyTaskForge> taskForgeStateList = new ArrayList<>();
@@ -48,7 +48,7 @@ public class VersionedTaskForge extends TaskForge {
     }
 
     /**
-     * Restores the previous address book state from history.
+     * Restores the previous TaskForge state from history.
      * @return The command that is being undone
      */
     public String undo() {
@@ -62,7 +62,7 @@ public class VersionedTaskForge extends TaskForge {
     }
 
     /**
-     * Restores a previously undone address book state.
+     * Restores a previously undone TaskForge state.
      * @return The command that is being redone
      */
     public String redo() {
