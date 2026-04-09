@@ -42,7 +42,7 @@ public class AssignProjectDescriptorBuilder {
         List<Index> projectIndexSet = Stream.of(indexes)
                 .map(s -> Index.fromOneBased(Integer.parseInt(s)))
                 .collect(Collectors.toList());
-        descriptor.setProjectsIndexes(projectIndexSet);
+        descriptor.setProjectIndexes(projectIndexSet);
         return this;
     }
 

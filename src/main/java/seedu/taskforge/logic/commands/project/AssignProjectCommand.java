@@ -90,7 +90,7 @@ public class AssignProjectCommand extends ProjectCommand {
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
-     * edited with {@code editPersonDescriptor}.
+     * edited with {@code assignProjectDescriptor}.
      */
     private static Person createEditedPerson(
             Person personToEdit,
@@ -124,16 +124,15 @@ public class AssignProjectCommand extends ProjectCommand {
     }
 
     /**
-     * Checks and returns a {@code List<PersonProject>} if there are no duplicates.
+     * Checks {@code personProjects} for duplicates.
      * A {@code CommandException} is thrown if there are duplicates.
      */
-    public static List<PersonProject> checkUniquePersonProjects(List<PersonProject> personProjects)
+    public static void checkUniquePersonProjects(List<PersonProject> personProjects)
             throws CommandException {
         long distinctCount = personProjects.stream().distinct().count();
         if (distinctCount != personProjects.size()) {
             throw new CommandException(MESSAGE_DUPLICATE_PROJECT);
         }
-        return personProjects;
     }
 
     @Override
@@ -165,14 +164,14 @@ public class AssignProjectCommand extends ProjectCommand {
          * A defensive copy of {@code projects} is used internally.
          */
         public AssignProjectDescriptor(AssignProjectDescriptor toCopy) {
-            setProjectsIndexes(toCopy.indexes);
+            setProjectIndexes(toCopy.indexes);
         }
 
         /**
          * Sets {@code projects} to this object's {@code projects}.
          * A defensive copy of {@code projects} is used internally.
          */
-        public void setProjectsIndexes(List<Index> indexes) {
+        public void setProjectIndexes(List<Index> indexes) {
             this.indexes = (indexes != null) ? new ArrayList<>(indexes) : null;
         }
 

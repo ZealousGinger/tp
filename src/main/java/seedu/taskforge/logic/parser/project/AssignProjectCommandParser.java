@@ -48,7 +48,7 @@ public class AssignProjectCommandParser implements Parser<AssignProjectCommand> 
         AssignProjectDescriptor assignProjectDescriptor = new AssignProjectDescriptor();
 
         parseProjectsIndexesForAssign(argMultimap.getAllValues(PREFIX_INDEX))
-                .ifPresent(assignProjectDescriptor::setProjectsIndexes);
+                .ifPresent(assignProjectDescriptor::setProjectIndexes);
 
         if (!assignProjectDescriptor.isProjectFieldEdited()) {
             throw new ParseException(AssignProjectCommand.MESSAGE_NOT_EDITED);

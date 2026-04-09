@@ -239,18 +239,18 @@ public class AssignProjectCommandTest {
 
         // different descriptor -> false
         AssignProjectDescriptor otherDescriptor = new AssignProjectDescriptor();
-        otherDescriptor.setProjectsIndexes(java.util.List.of(INDEX_FIRST_PROJECT));
+        otherDescriptor.setProjectIndexes(java.util.List.of(INDEX_FIRST_PROJECT));
         assertNotEquals(command, new AssignProjectCommand(INDEX_FIRST_PROJECT, otherDescriptor));
     }
 
     @Test
     public void assignProjectDescriptor_equals() {
         AssignProjectDescriptor descriptor = new AssignProjectDescriptor();
-        descriptor.setProjectsIndexes(java.util.List.of(INDEX_FIRST_PROJECT));
+        descriptor.setProjectIndexes(java.util.List.of(INDEX_FIRST_PROJECT));
 
         // same values
         AssignProjectDescriptor descriptorCopy = new AssignProjectDescriptor();
-        descriptorCopy.setProjectsIndexes(java.util.List.of(INDEX_FIRST_PROJECT));
+        descriptorCopy.setProjectIndexes(java.util.List.of(INDEX_FIRST_PROJECT));
         assertEquals(descriptor, descriptorCopy);
 
         // same object
@@ -264,7 +264,7 @@ public class AssignProjectCommandTest {
 
         // different list -> false
         AssignProjectDescriptor otherDescriptor = new AssignProjectDescriptor();
-        descriptor.setProjectsIndexes(java.util.List.of(INDEX_SECOND_PROJECT));
+        descriptor.setProjectIndexes(java.util.List.of(INDEX_SECOND_PROJECT));
         assertNotEquals(descriptor, otherDescriptor);
     }
 }
