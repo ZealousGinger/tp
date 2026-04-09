@@ -195,7 +195,20 @@
 }
 
 .context-menu {
-    -fx-background-color: #00312f;
+    -fx-background-color: #022b1e;
+    -fx-padding: 0;
+}
+
+.context-menu .menu-item {
+    -fx-padding: 10 16 10 16;
+}
+
+.context-menu .menu-item:focused {
+    -fx-background-color: #022b1e;
+}
+
+.context-menu .menu-item:hover {
+    -fx-background-color: #033d2a;
 }
 
 .context-menu .label {
@@ -213,6 +226,11 @@
     -fx-font-family: "Segoe UI Light";
     -fx-text-fill: #dbe2ec;
     -fx-opacity: 0.9;
+}
+
+.menu-bar .menu:hover,
+.menu-bar .menu:showing {
+    -fx-background-color: #1b212a;
 }
 
 .menu .left-container {
