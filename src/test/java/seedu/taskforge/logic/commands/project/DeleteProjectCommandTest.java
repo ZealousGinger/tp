@@ -171,6 +171,16 @@ public class DeleteProjectCommandTest {
         }
 
         @Override
+        public ObservableList<Project> getFilteredProjectList() {
+            return null;
+        }
+
+        @Override
+        public void updateFilteredProjectList(Predicate<Project> predicate) {
+
+        }
+
+        @Override
         public ObservableList<Person> getFilteredPersonList() {
             throw new AssertionError("This method should not be called.");
         }

@@ -235,6 +235,16 @@ public class AddCommandTest {
         public ObservableList<Project> getProjectList() {
             return FXCollections.observableArrayList();
         }
+
+        @Override
+        public ObservableList<Project> getFilteredProjectList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredProjectList(Predicate<Project> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     private class ModelStubWithPerson extends ModelStub {
@@ -282,6 +292,11 @@ public class AddCommandTest {
 
         @Override
         public ObservableList<Project> getProjectList() {
+            return FXCollections.observableArrayList(projects);
+        }
+
+        @Override
+        public ObservableList<Project> getFilteredProjectList() {
             return FXCollections.observableArrayList(projects);
         }
     }
