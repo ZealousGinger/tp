@@ -52,8 +52,11 @@ TaskForge is a **desktop app for managing contacts, optimized for use via a Comm
 * Items in square brackets are optional.<br>
   e.g `-n NAME [-d TASK]` can be used as `-n John Doe -d task1` or as `-n John Doe`.
 
-* Items with `…`​ after them can be used multiple times including zero times.<br>
+* Items with `…`​ after square brackets can be used multiple times including zero times.<br>
   e.g. `[-d TASK]…​` can be used as ` ` (i.e. 0 times), `-d task1`, `-d task2 -d task3` etc.
+
+* Items inside curly brackets must be provided at least once and may be repeated.<br>
+  e.g. `{-i PROJECT_INDEX}` can be used as `-i 1` or `-i 1 -i 2` (it cannot be empty).
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `-n NAME -p PHONE_NUMBER`, `-pPHONE_NUMBER -nNAME` is also acceptable.
@@ -202,13 +205,12 @@ Examples:
 
 Assigns a project to a person
 
-Format: `project assign PERSON_INDEX -i PROJECT_INDEX`
+Format: `project assign PERSON_INDEX {-i PROJECT_INDEX}`
 
 * Assigns project(s) from `project list` to a person.
 * `PERSON_INDEX` refers to the person index that's displayed on `list`
 * `PROJECT_INDEX` refers to the project index that's displayed on `project list`
-* `PERSON_INDEX` **must be a positive integer** `1, 2, 3, ...`
-* `PROJECT_INDEX` **must be a positive integer** `1, 2, 3, ...`
+* Both `PERSON_INDEX` and `PROJECT_INDEX` **must be a positive integer** `1, 2, 3, ...`
 * The same project cannot be assigned twice to the same person (no duplicates)
 * To assign multiple projects in one command, repeat the `-i` prefix.
 
@@ -220,13 +222,13 @@ Example:
 
 Unassigns a project from a person
 
-Format: `project unassign PERSON_INDEX -i PROJECT_INDEX`
+Format: `project unassign PERSON_INDEX {-i PROJECT_INDEX}`
 
 * Unassigns project(s) from the person at the specified `INDEX`.
 * `PROJECT_INDEX` refers to the project numbering shown for that person in the app.
 * `PROJECT_INDEX` does NOT refer to the project index that's displayed on `project list`.
 * `PERSON_INDEX` refers to the person index that's displayed on `list`
-* Both person `PERSON_INDEX` and `PROJECT_INDEX` **must be positive integers** `1, 2, 3, ...`
+* Both `PERSON_INDEX` and `PROJECT_INDEX` **must be positive integers** `1, 2, 3, ...`
 * To unassign multiple projects in one command, repeat the `-i` prefix.
 
 Examples:
@@ -239,7 +241,7 @@ Examples:
 
 Adds task(s) to a project in the project list.
 
-Format: `task add PROJECT_INDEX -n TASK_NAME`
+Format: `task add PROJECT_INDEX {-n TASK_NAME}`
 
 * Adds new task(s) with the specified `TASK_NAME` to the project at the specified `PROJECT_INDEX`.
 * The project index refers to the index number shown by `project list`.
@@ -256,7 +258,7 @@ Examples:
 
 Deletes a task from a project in the project list.
 
-Format: `task delete PROJECT_INDEX -i TASK_INDEX`
+Format: `task delete PROJECT_INDEX {-i TASK_INDEX}`
 
 * Deletes task(s) from the project at the specified `PROJECT_INDEX`.
 * `TASK_INDEX` refers to the task numbering shown for that project in the app.
@@ -277,7 +279,6 @@ Format: `task edit PERSON_INDEX -i TASK_INDEX_FROM_PERSON -n NEW_TASK_NAME`
 * `TASK_INDEX_FROM_PERSON` refers to the task ID shown for that person in the app.
 * `TASK_INDEX_FROM_PERSON` **must be a positive integer** `1, 2, 3, ...`
 * `NEW_TASK_NAME` must be alphanumeric (only letters, numbers and spaces), between 1 to 64 characters.
-* If the edited task is assigned to another person, TaskForge preserves those assignments by reassigning the renamed task.
 
 Examples:
 * `task edit 1 -i 1 -n Prepare sprint report`
@@ -315,7 +316,7 @@ Examples:
 
 Assigns one or more tasks to a person.
 
-Format: `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX`
+Format: `task assign PERSON_INDEX {-pi PROJECT_INDEX -i TASK_INDEX}`
 
 * Adds task(s) to the person at the specified `PERSON_INDEX`.
 * The person index refers to the index number shown in the displayed person list.
@@ -324,17 +325,17 @@ Format: `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX`
 * `PROJECT_INDEX` **must be a positive integer** `1, 2, 3, ...`
 * `TASK_INDEX` refers to task numbering from the selected person's assigned projects.
 * `TASK_INDEX` **must be a positive integer** `1, 2, 3, ...`
-* To assign multiple tasks in one command, repeat the `-i` prefix.
+* To assign multiple tasks in one command, repeat each -piand-i pair with the corresponding indexes.
 
 Examples:
 * `task assign 1 -pi 1 -i 2`
-* `task assign 2 -pi 1 -i 3`
+* `task assign 2 -pi 1 -i 3 -pi 2 -i 1`
 
 #### Unassigning a task : `task unassign`
 
 Unassigns one or more tasks from a person by task index.
 
-Format: `task unassign PERSON_INDEX -i TASK_INDEX`
+Format: `task unassign PERSON_INDEX {-i TASK_INDEX}`
 
 * Deletes task(s) from the person at the specified `PERSON_INDEX`.
 * `TASK_INDEX` refers to the task numbering shown for that person in the app.
