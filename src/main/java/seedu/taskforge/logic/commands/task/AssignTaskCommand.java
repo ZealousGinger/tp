@@ -64,6 +64,10 @@ public class AssignTaskCommand extends TaskCommand {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        if (!assignTaskDescriptor.isTaskFieldEdited()) {
+            throw new CommandException(MESSAGE_NOT_EDITED);
+        }
+
         Person personToEdit = lastShownList.get(index.getZeroBased());
         List<ProjectTaskPair> projectTaskPairs = assignTaskDescriptor.getProjectTaskPairs()
             .orElseThrow(() -> new CommandException(MESSAGE_NOT_EDITED));
@@ -79,7 +83,7 @@ public class AssignTaskCommand extends TaskCommand {
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
-     * edited with {@code editPersonDescriptor}.
+     * edited with {@code tasksToAssign}.
      */
     private static Person createEditedPerson(
             Person personToEdit,
@@ -125,7 +129,7 @@ public class AssignTaskCommand extends TaskCommand {
     }
 
     /**
-     * Checks and returns a {@code List<Task>} if there is no duplicates.
+     * Checks {@code tasks} for duplicates.
      * A {@code CommandException} is thrown if there are duplicates.
      *
      */
