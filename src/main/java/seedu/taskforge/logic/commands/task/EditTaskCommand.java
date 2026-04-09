@@ -3,6 +3,7 @@ package seedu.taskforge.logic.commands.task;
 import static java.util.Objects.requireNonNull;
 import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +28,6 @@ public class EditTaskCommand extends TaskCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD + " "
             + SUBCOMMAND_WORD + " PERSON_INDEX TASK_INDEX -n NEW_TASK_NAME";
     public static final String MESSAGE_INDEX_OUT_OF_BOUND = "Task index is out of bound";
-    public static final String MESSAGE_INVALID_TASK_REFERENCE = "This task reference is invalid.";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists for this project!";
 
     private final Index personIndex;
@@ -87,7 +87,7 @@ public class EditTaskCommand extends TaskCommand {
 
     private static Project createEditedProject(Project projectToEdit, Task taskToEdit, Task renamedTask)
             throws CommandException {
-        Project editedProject = new Project(projectToEdit.title, projectToEdit.getTasks());
+        Project editedProject = new Project(projectToEdit.title, new ArrayList<>(projectToEdit.getTasks()));
         try {
             editedProject.getUniqueTaskList().setTask(taskToEdit, renamedTask);
         } catch (DuplicateTaskException e) {
