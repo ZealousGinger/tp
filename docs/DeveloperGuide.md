@@ -38,7 +38,8 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** (consisting of classes [`Main`](https://github.com/AY2526S2-CS2103T-W09-4/tp/blob/master/src/main/java/seedu/taskforge/Main.java) 
+and [`MainApp`](https://github.com/AY2526S2-CS2103T-W09-4/tp/blob/master/src/main/java/seedu/taskforge/MainApp.java)) is in charge of the app launch and shut down.
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -70,75 +71,95 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+The **API** of this component is specified 
+in [`Ui.java`](https://github.com/AY2526S2-CS2103T-W09-4/tp/blob/master/src/main/java/seedu/taskforge/ui/Ui.java)
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+The UI consists of a `MainWindow` that is made up of parts such as
+`CommandBox`, `ResultDisplay`, `PersonListPanel`, `ProjectListPanel`,
+`StatusBarFooter`, etc. All these, including the `MainWindow`, inherit
+from the abstract `UiPart` class which captures the commonalities between
+classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The UI also includes additional windows such as `HelpWindow`, which displays
+command usage instructions to the user.
 
-The `UI` component,
+The `UI` component uses the JavaFX UI framework. The layout of these UI parts
+are defined in matching `.fxml` files located in the `src/main/resources/view` folder.
+For example, the layout of the 
+[`MainWindow`](https://github.com/AY2526S2-CS2103T-W09-4/tp/blob/master/src/main/java/seedu/taskforge/ui/MainWindow.java) 
+is specified in [`MainWindow.fxml`](https://github.com/AY2526S2-CS2103T-W09-4/tp/blob/master/src/main/resources/view/MainWindow.fxml).
 
-* executes user commands using the `Logic` component.
-* listens for changes to `Model` data so that the UI can be updated with the modified data.
-* keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
-* depends on some classes in the `Model` component, as it displays `Person` object and `Project` object residing in the `Model`.
+The `UiManager` implements the `Ui` interface and is responsible for
+initializing and managing the JavaFX application.
 
+The `UI` component:
+
+* executes user commands by delegating to the `Logic` component.
+* listens for changes to `Model` data and updates the UI accordingly.
+* keeps a reference to the `Logic` component, as it relies on it to execute commands.
+* depends on classes in the `Model` component, as it displays `Person` and `Project` objects, with their associated `Task` data embedded within the UI.
 ### Logic component
 
 **API** : [`Logic.java`](https://github.com/AY2526S2-CS2103T-W09-4/tp/blob/master/src/main/java/seedu/taskforge/logic/Logic.java)
 
-Here's a (partial) class diagram of the `Logic` component:
+The following class diagram shows the structure of the `Logic` component:
 
 <img src="images/LogicClassDiagram.png" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking the execution of `delete 1` as an example.
 
 ![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X), but due to a limitation of PlantUML, the lifeline continues until the end of the diagram.
 </div>
 
 How the `Logic` component works:
 
-1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
-1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
-   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
-1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
+1. When `Logic` is asked to execute a command, the command text is passed to a `TaskForgeParser` object.
+1. The `TaskForgeParser` identifies the command word and delegates the parsing to the corresponding parser (for example, `DeleteCommandParser`).
+1. The parser parses the user input and creates the appropriate `Command` object (for example, `DeleteCommand`).
+1. The `LogicManager` then executes the `Command` object.
+1. During execution, the command may interact with the `Model` to read or modify TaskForge data, such as persons, projects, or tasks.
+1. The result of the command execution is encapsulated as a `CommandResult` object, which is returned by `Logic`.
 
-Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
+The following classes in `Logic` are used to parse user commands:
 
 <img src="images/ParserClasses.png" width="600"/>
 
 How the parsing works:
-* When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
-* All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
+
+* When parsing a user command, the `TaskForgeParser` creates the corresponding command parser, such as `AddCommandParser`, `DeleteProjectCommandParser`, or `MarkTaskCommandParser`.
+* That parser uses supporting classes such as `ArgumentTokenizer`, `ArgumentMultimap`, `CliSyntax`, and `ParserUtil` to process the input and construct the appropriate `Command` object.
+* All command parser classes implement the `Parser` interface so that they can be handled consistently where appropriate, such as during testing.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+
+**API** : [`Model.java`](https://github.com/AY2526S2-CS2103T-W09-4/tp/blob/master/src/main/java/seedu/taskforge/model/Model.java)
 
 <img src="images/ModelClassDiagram.png" width="450" />
 
+The `Model` component:
 
-The `Model` component,
-
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
-* does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
+* stores TaskForge data, including `Person` and `Project` objects, as well as task-related data used by the application.
+* stores a separate _filtered_ list of `Person` objects and a separate _filtered_ list of `Project` objects, which are exposed as unmodifiable `ObservableList`s so that the UI can automatically update when the data changes.
+* stores a `UserPrefs` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPrefs` object.
+* supports undo/redo by maintaining a versioned `TaskForge` state history.
+* does not depend on the `Logic`, `UI`, or `Storage` components, as the `Model` represents the domain data and should be independent of the other components.
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`Storage.java`](https://github.com/AY2526S2-CS2103T-W09-4/tp/blob/master/src/main/java/seedu/taskforge/storage/Storage.java)
 
 <img src="images/StorageClassDiagram.png" width="700" />
 
-The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
-* depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
+The `Storage` component:
+
+* can save both TaskForge data and user preference data in JSON format, and read them back into corresponding objects.
+* inherits from both `TaskForgeStorage` and `UserPrefsStorage`, which means it can be treated as either one when only specific functionality is required.
+* uses JSON-adapted classes (e.g., `JsonAdaptedPerson`, `JsonAdaptedProject`, `JsonAdaptedTask`) to convert between in-memory model objects and JSON format.
+* depends on classes in the `Model` component, as its responsibility is to persist and retrieve model data.
 
 ### Common classes
 
@@ -150,80 +171,93 @@ Classes used by multiple components are in the `seedu.taskforge.commons` package
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### Undo/redo feature
+### Undo/Redo feature
 
-#### Implementation
+The undo/redo mechanism is facilitated by `VersionedTaskForge`. It extends `TaskForge` with an undo/redo history, stored internally as a list of TaskForge states and a pointer to the current state.
 
-The undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+Additionally, it implements the following operations:
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+* `VersionedTaskForge#commit(String input)` — Saves the current TaskForge state in its history.
+* `VersionedTaskForge#undo()` — Restores the previous TaskForge state from its history.
+* `VersionedTaskForge#redo()` — Restores a previously undone TaskForge state from its history.
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+These operations are exposed in the `Model` interface as `Model#commitTaskForge(String input)`, `Model#undoTaskForge()` and `Model#redoTaskForge()` respectively.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+---
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+### Example usage scenario
+
+Step 1. The user launches the application for the first time. The `VersionedTaskForge` is initialized with the initial TaskForge state, and the current state pointer points to that initial state.
 
 ![UndoRedoState0](images/UndoRedoState0.png)
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Step 2. The user executes a command that modifies data (e.g., `delete 5`).  
+The command calls `Model#commitTaskForge(String input)`, causing the modified state to be saved, and the pointer moves to the new state.
 
 ![UndoRedoState1](images/UndoRedoState1.png)
 
-Step 3. The user executes `add -n David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Step 3. The user executes another modifying command (e.g., adding a person, project, or task).  
+The new state is again saved into the history.
 
 ![UndoRedoState2](images/UndoRedoState2.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
-
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails, it will not call `Model#commitTaskForge(...)`, so no new state is saved.
 </div>
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+Step 4. The user executes the `undo` command.  
+The `undo` command calls `Model#undoTaskForge()`, shifting the pointer to the previous state and restoring it.
 
 ![UndoRedoState3](images/UndoRedoState3.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
-
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If there is no previous state, `Model#canUndoTaskForge()` will return false and the command will fail.
 </div>
 
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</div>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</div>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+Step 5. The user executes a non-modifying command (e.g., `list`).  
+Such commands do not call commit/undo/redo methods, so the state history remains unchanged.
 
 ![UndoRedoState4](images/UndoRedoState4.png)
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add -n David …​` command. This is the behavior that most modern desktop applications follow.
+Step 6. The user executes another modifying command.  
+If the pointer is not at the end of the history, all future states are discarded before saving the new state.
 
 ![UndoRedoState5](images/UndoRedoState5.png)
+
+---
+
+### Undo/Redo sequence diagrams
+
+The following sequence diagram shows how an undo operation flows through the `Logic` component:
+
+![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X), but due to a limitation of PlantUML, it extends to the end of the diagram.
+</div>
+
+Similarly, the interaction within the `Model` component is shown below:
+
+![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
+
+---
+
+### Summary
+
+The `redo` command performs the opposite operation of `undo`, restoring a previously undone state by calling `Model#redoTaskForge()`.
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If there are no states to redo, `Model#canRedoTaskForge()` will return false and the command will fail.
+</div>
+
+---
+
+### Activity Diagram
 
 The following activity diagram summarizes what happens when a user executes a new command:
 
 <img src="images/CommitActivityDiagram.png" width="250" />
-
 #### Design considerations:
 
 **Aspect: How undo & redo executes:**
 
-* **Alternative 1 (current choice):** Saves the entire address book.
+* **Alternative 1 (current choice):** Saves the entire taskforge.
   * Pros: Easy to implement.
   * Cons: May have performance issues in terms of memory usage.
 
@@ -234,16 +268,17 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 _{more aspects and alternatives to be added}_
 
-### Project management feature (`project add`, `project delete`, `project list`, `project assign`, `project unassign`, `project find`)
+
+### Project management feature (`project add`, `project delete`, `project list`, `project assign`, `project unassign`, `project find`, `project members`)
 
 TaskForge supports project management through the parent command `project` with the following subcommands:
 - `project add PROJECT_NAME`
 - `project delete PROJECT_INDEX`
 - `project list`
-- `project assign INDEX -i PROJECT_INDEX`
-- `project unassign INDEX -i PROJECT_INDEX`
+- `project assign PERSON_INDEX -i PROJECT_INDEX`
+- `project unassign PERSON_INDEX -i PROJECT_INDEX`
 - `project find [KEYWORD]`
-
+- `project members PROJECT_INDEX`
 
 #### Implementation overview
 
@@ -251,21 +286,21 @@ TaskForge supports project management through the parent command `project` with 
    - `UniqueProjectList` stores globally unique project entries.
     - `Person` stores assigned projects as `List<PersonProject>`, where each `PersonProject` stores a project index refers to the index of Project inside the global UniqueProjectList.
     - Project references are resolved against the global UniqueProjectList when rendering UI output or validating commands.
-   - `AddressBook` exposes project operations through methods such as
+   - `TaskForge` exposes project operations through methods such as
      `hasProject`, `addProject`, `setProject`, `removeProject`, `cascadeRemoveProjectFromPersons`, and `getProjectList`.
 
 2. **Logic layer**
-    - `AddProjectCommand` adds a new project entry to the global UniqueProjectList.
-    - `DeleteProjectCommand` removes project(s) entry from the list by the index and cascades deletion from all persons.
-    - `ListProjectCommand` shows all project entries in the list.
-    - `AssignProjectCommand` assigns project from the global UniqueProjectList to a person
-    - `UnassignProjectCommand` unassigns project from a person
-    - `FindProjectCommand` searches the global project list and displays projects whose titles contain the given keyword(s).
-    - `AddressBookParser` routes `project add`, `project delete`, `project list`, `project assign`, `project unassign` and `project find` to their
-       corresponding command parsers/commands.
+    - `AddProjectCommand` adds a new project to the global `UniqueProjectList`.
+    - `DeleteProjectCommand` deletes a project from the global project list by index and removes it from all assigned persons.
+    - `ListProjectCommand` displays all projects in the global project list.
+    - `AssignProjectCommand` assigns project(s) from the global `UniqueProjectList` to a person.
+    - `UnassignProjectCommand` removes assigned project(s) from a person.
+    - `FindProjectCommand` searches the global project list and displays projects whose names match the given keyword(s).
+    - `ViewProjectMembersCommand` displays all persons assigned to a specified project.
+    - `TaskForgeParser` routes `project add`, `project delete`, `project list`, `project assign`, `project unassign`, `project find`, and `project members` to their corresponding command parsers and commands.
 
 3. **Parser flow**
-   - `AddressBookParser#parseCommand` routes top-level `project` input to `AddressBookParser#handleProject`.
+   - `TaskForgeParser#parseCommand` routes top-level `project` input to `TaskForgeParser#handleProject`.
    - `handleProject` extracts the project subcommand and dispatches as follows:
       - `add` -> `AddProjectCommandParser`
       - `delete` -> `DeleteProjectCommandParser`
@@ -273,58 +308,67 @@ TaskForge supports project management through the parent command `project` with 
       - `assign` -> `AssignProjectCommandParser`
       - `unassign` -> `UnassignProjectCommandParser`
       - `find` -> `FindProjectCommandParser`
+      - `members` -> `ViewProjectMembersCommandParser`
    - Unknown or missing project subcommands throw a `ParseException` with `ProjectCommand.MESSAGE_USAGE`.
 
 4. **Storage layer**
-    - `JsonSerializableAddressBook` persists project entries in the `projects` JSON array.
-      - Person-side project assignments are persisted as project references (`PersonProject`) instead of persists Project object.
-      - During load, project references are validated against the global project list before persons are accepted.
-    - During deserialization, projects are restored into the model so project entries persist across application restarts.
-      - `JsonSerializableAddressBook#toModelType()` validates cross-entity consistency for reference integrity.
+    - `JsonSerializableTaskForge` persists project data in the `projects` JSON array.
+        - Person-side project assignments are stored as project references (`PersonProject`), rather than duplicating full `Project` objects.
+        - During loading, these references are validated against the global project list before persons are reconstructed.
+    - During deserialization, projects are restored into the model so that project data persists across application restarts.
+        - `JsonSerializableTaskForge#toModelType()` validates cross-entity consistency to ensure reference integrity.
 
 #### Validation and cascading behavior
 
 **Project addition (`project add`)**:
-- `AddProjectCommand` validates the project name constraints before adding.
+- `AddProjectCommand` validates the project name against the defined project name constraints before adding it.
 - Projects must be globally unique; attempting to add a duplicate project fails with `MESSAGE_DUPLICATE_PROJECT`.
 
 **Project deletion (`project delete`)**:
 - `DeleteProjectCommand` removes project(s) from the global `UniqueProjectList`.
-- `AddressBook#cascadeRemoveProjectFromPersons()` automatically removes all assignments of that project from contacts.
-- Tasks associated with that removed project are also removed from affected persons inside
-   `AddressBook#cascadeRemoveProjectFromPersons()`.
+- `TaskForge#cascadeRemoveProjectFromPersons()` automatically removes all assignments of the deleted project(s) from persons.
+- Tasks associated with the removed project(s) are also removed from affected persons during the cascading update.
 
 **Project listing (`project list`)**:
 - `ListProjectCommand` retrieves and displays all projects in the global project list.
-- No validation is required; the command succeeds regardless of project count.
-- Updates the filtered project list to show all projects.
+- No validation is required; the command succeeds regardless of the number of stored projects.
+- It updates the filtered project list to show all projects.
 
 **Project finding (`project find`)**:
-- `FindProjectCommand` validates that at least one keyword is provided.
-- `FindProjectCommandParser` throws a parse error if the user does not provide any keyword.
+- `FindProjectCommand` requires at least one keyword.
+- `FindProjectCommandParser` throws a parse error if no keyword is provided.
 - The command performs a case-insensitive search on project titles in the global project list.
 - A project is included in the result if its title contains at least one of the given keywords.
-- Updates the filtered project list to show matching projects.
+- It updates the filtered project list to show the matching projects.
 
 **Project assignment to person (`project assign`)**:
 - `AssignProjectCommand` resolves each `PROJECT_INDEX` against the global project list.
 - Invalid `PROJECT_INDEX` values are rejected.
-- Rejects duplicate assignments via `MESSAGE_DUPLICATE_PROJECT`.
+- Each valid referenced project is converted into a `PersonProject` before being added to the person’s assigned project list, instead of storing the full `Project` object directly.
+- Duplicate assignments are rejected with `MESSAGE_DUPLICATE_PROJECT`. 
 
 **Project unassignment from person (`project unassign`)**:
-- `UnassignProjectCommand` validates whether project(s) exist in the person's assigned projects before unassignment.
-- If a person is unassigned from a project, all tasks assigned to that person that belong to that project are automatically removed.
+- `UnassignProjectCommand` validates that the specified project(s) exist in the person’s assigned project list before unassignment.
+- When a project is unassigned from a person, all tasks assigned to that person that belong to that project are also removed automatically.
+
+**View project members (`project members`)**:
+- `ViewProjectMembersCommand` validates that the provided `PROJECT_INDEX` is within bounds of the global project list.
+- Invalid `PROJECT_INDEX` values are rejected.
+- The command retrieves all persons whose assigned project list contains the specified project.
+- Matching is done based on project references (e.g., `PersonProject`) rather than full `Project` objects.
+- The command returns a formatted result displaying all members associated with the specified project.
 
 #### Input parsing details
 
 - `AddProjectCommandParser` parses the preamble as the new project `NAME`.
-- `DeleteProjectCommandParser` parses the preamble as the target project `INDEX`.
-- `ListProjectCommandParser` takes no arguments; the entire input after `list` is discarded.
-- `AssignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project indexes from repeated `-i` prefixes.
-- `UnassignProjectCommandParser` parses the preamble as the target person `INDEX` and parses project indexes from repeated `-i` prefixes.
+- `DeleteProjectCommandParser` parses the preamble as the target `PROJECT_INDEX`.
+- `ListProjectCommandParser` takes no arguments; any extra input after `list` is ignored.
+- `AssignProjectCommandParser` parses the preamble as the target `PERSON_INDEX` and parses one or more `PROJECT_INDEX` values using repeated `-i` prefixes.
+- `UnassignProjectCommandParser` parses the preamble as the target `PERSON_INDEX` and parses one or more `PROJECT_INDEX` values using repeated `-i` prefixes.
 - `FindProjectCommandParser` parses the input into one or more keywords.
-- If no project payload is provided (e.g., `project assign 1` or `project unassign 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
-- Similarly, if an empty project payload is provided (e.g., `project assign 1 -i` or `project unassign 1 -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
+- `ViewProjectMembersCommandParser` parses the preamble as the target `PROJECT_INDEX`.
+- If no `PROJECT_INDEX` is provided (e.g., `project assign PERSON_INDEX` or `project unassign PERSON_INDEX`), parsing fails with `MESSAGE_NOT_EDITED`.
+- If an incomplete `PROJECT_INDEX` is provided (e.g., `project assign PERSON_INDEX -i` or `project unassign PERSON_INDEX -i`), parsing fails with `MESSAGE_NOT_EDITED`.
 
 #### Execution behavior and validation in person-related commands
 
@@ -340,15 +384,15 @@ This ensures a person can only be assigned to valid existing projects.
 
 TaskForge supports task management using 10 commands:
 - `task add PROJECT_INDEX -n TASK_NAME`
-- `task delete PROJECT_INDEX -i TASK_INDEX`
-- `task edit PERSON_INDEX -i TASK_INDEX -n NEW_TASK_NAME`
+- `task delete PROJECT_INDEX -i TASK_INDEX_FROM_PROJECT`
+- `task edit PERSON_INDEX -i TASK_INDEX_FROM_PERSON -n NEW_TASK_NAME`
 - `task list PROJECT_INDEX`
 - `task find KEYWORD [MORE_KEYWORDS]`
-- `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX`
-- `task unassign INDEX -i TASK_INDEX`
-- `task view INDEX`
-- `task mark PERSON_INDEX TASK_INDEX`
-- `task unmark PERSON_INDEX TASK_INDEX`
+- `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX_FROM_PROJECT`
+- `task unassign INDEX -i TASK_INDEX_FROM_PERSON`
+- `task view PERSON_INDEX`
+- `task mark PERSON_INDEX TASK_INDEX_FROM_PERSON`
+- `task unmark PERSON_INDEX TASK_INDEX_FROM_PERSON`
 
 #### Implementation overview
 
@@ -356,25 +400,25 @@ TaskForge supports task management using 10 commands:
    - `UniqueTaskList` stores task entries within each project.
    - `Project` exposes task operations through methods such as `hasTask`, `addTask`, `removeTask`, and `getTasks`.
     - `Person` stores assigned tasks as `List<PersonTask>`, where each `PersonTask` stores `(projectIndex, taskIndex)` refers to the index of Project in the global UniqueProjectList and the index of task inside the UniqueTaskList of the Project.
-   - `AddressBook` provides cascade deletion from all task assignments when a task is deleted from a project.
+   - `TaskForge` provides cascade deletion from all task assignments when a task is deleted from a project.
    - `Task` includes an `isDone` boolean field to track the completion status of a task. It provides `getStatus()`, `setDone()`, and `setNotDone()` methods.
 
 2. **Logic layer**
     - `AddTaskCommand` adds new task(s) to a project in the global project list.
     - `DeleteTaskCommand` removes task(s) from a project by project index and task index.
     - `EditTaskCommand` renames a task in a person by person index and task index.
-    - `ListTaskCommand` lists all task(s) from a specified project by project name.
+    - `ListTaskCommand` lists all task(s) from a specified project by project index.
     - `FindTaskCommand` finds task(s) across all projects by keyword(s).
     - `AssignTaskCommand` assigns existing task(s) to a person.
     - `UnassignTaskCommand` unassigns task(s) from a person.
     - `ViewTasksCommand` displays all tasks assigned to a person.
     - `MarkTaskCommand` marks a task as done for a specific person.
     - `UnmarkTaskCommand` marks a task as not done for a specific person.
-    - `AddressBookParser` routes task subcommands to their corresponding command parsers/commands.
-   - `AddressBookParser` routes `task add`, `task delete`, `task list`, `task find`, `task assign`, `task unassign`, and `task view` to their corresponding command parsers/commands.
+    - `TaskForgeParser` routes task subcommands to their corresponding command parsers/commands.
+    - `TaskForgeParser` routes `task add`, `task delete`, `task list`, `task find`, `task assign`, `task unassign`, and `task view` to their corresponding command parsers/commands.
 
 3. **Parser flow**
-   - `AddressBookParser#parseCommand` routes top-level `task` input to `AddressBookParser#handleTask`.
+   - `TaskForge#parseCommand` routes top-level `task` input to `TaskForgeParser#handleTask`.
    - `handleTask` extracts the task subcommand and dispatches as follows:
       - `add` -> `AddTaskCommandParser`
       - `delete` -> `DeleteTaskCommandParser`
@@ -403,7 +447,7 @@ TaskForge supports task management using 10 commands:
 
 **Task deletion from project (`task delete`)**:
 - `DeleteTaskCommand` removes task(s) from a project by project index and task index.
-- `AddressBook#cascadeRemoveDeletedProjectTasksFromPersons()` automatically removes the deleted task from all persons who have it assigned.
+- `TaskForge#cascadeRemoveDeletedProjectTasksFromPersons()` automatically removes the deleted task from all persons who have it assigned.
 
 **Task editing in project (`task edit`)**:
 - `EditTaskCommand` validates that the person index and task index is within bounds.
@@ -450,21 +494,21 @@ TaskForge supports task management using 10 commands:
 
 #### Input parsing details
 
-- `AddTaskCommandParser` parses the preamble as the target project `INDEX` and parses task names from repeated `-n` prefixes.
-- `DeleteTaskCommandParser` parses the preamble as the target project `INDEX` and parses task indexes from repeated `-i` prefixes.
-- `EditTaskCommandParser` parses the preamble as target `PERSON_INDEX`, parses task index from `-i`, and parses the new task name from `-n`.
-- `ListTaskCommandParser` parses project name from `-n PROJECT_NAME`.
-- `FindTaskCommandParser` parses one or more keyword tokens from the argument preamble.
-- `AssignTaskCommandParser` parses the preamble as the target person `INDEX` and parses task indexes from repeated `-i` prefixes.
-- `UnassignTaskCommandParser` parses the preamble as the target person `INDEX` and parses task indexes from repeated `-i` prefixes.
-- `ViewTasksCommandParser` parses the preamble as the target person `INDEX`.
-- `MarkTaskCommandParser` and `UnmarkTaskCommandParser` parse the preamble as the target person `INDEX` and target task `INDEX`.
-- If no task payload is provided (e.g., `task assign 1` or `task unassign 1`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
-- Similarly, if an empty task payload is provided (e.g., `task assign 1 -i` or `task unassign 1 -pi`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
+- `AddTaskCommandParser` parses the preamble as the target `PROJECT_INDEX` and parses one or more task names using repeated `-n` prefixes.
+- `DeleteTaskCommandParser` parses the preamble as the target `PROJECT_INDEX` and parses one or more `TASK_INDEX_FROM_PROJECT` values using repeated `-i` prefixes.
+- `EditTaskCommandParser` parses the preamble as the target `PERSON_INDEX`, parses `TASK_INDEX_FROM_PERSON` from `-i`, and parses the new task name from `-n`.
+- `ListTaskCommandParser` parses the preamble as the target `PROJECT_INDEX`.
+- `FindTaskCommandParser` parses the input into one or more keywords.
+- `AssignTaskCommandParser` parses the preamble as the target `PERSON_INDEX`, parses `PROJECT_INDEX` from `-pi`, and parses one or more `TASK_INDEX_FROM_PROJECT` values using repeated `-i` prefixes.
+- `UnassignTaskCommandParser` parses the preamble as the target `PERSON_INDEX` and parses one or more `TASK_INDEX_FROM_PERSON` values using repeated `-i` prefixes.
+- `ViewTasksCommandParser` parses the preamble as the target `PERSON_INDEX`.
+- `MarkTaskCommandParser` and `UnmarkTaskCommandParser` parse the preamble as the target `PERSON_INDEX` followed by `TASK_INDEX_FROM_PERSON`.
+- If no task indexes are provided where required (e.g., `task delete PROJECT_INDEX`, `task assign PERSON_INDEX -pi PROJECT_INDEX`, or `task unassign PERSON_INDEX`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
+- If an incomplete task argument is provided (e.g., `task delete PROJECT_INDEX -i`, `task assign PERSON_INDEX -pi PROJECT_INDEX -i`, or `task unassign PERSON_INDEX -i`), parsing fails with the corresponding `MESSAGE_NOT_EDITED`.
 
 #### Execution behavior and validation
 
-- Person-targeting commands (`task assign`, `task unassign`, `task view`) resolve the target person from `model.getFilteredPersonList()` using the supplied person `INDEX`.
+- Person-targeting command`, `task unassign`, `task view`) resolve the target person from `model.getFilteredPersonList()` using the supplied person `PERSON_INDEX`.
 - If the person index is invalid, execution fails with `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX` or the command-specific invalid index message.
 - `AddTaskCommand` and `DeleteTaskCommand` resolve the target project from the list and validate the project index before executing.
 - `EditTaskCommand` resolves the target person by index and validates both the person index and task index before executing.
@@ -716,7 +760,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Guarantees**
 
-1. The previous change made to the address book is reverted.
+1. The previous change made to the taskforge is reverted.
 
 **MSS**
 
