@@ -2,6 +2,7 @@ package seedu.taskforge.logic.parser.task;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.taskforge.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_NAME;
 
 import seedu.taskforge.commons.core.index.Index;
@@ -21,20 +22,23 @@ public class EditTaskCommandParser implements Parser<EditTaskCommand> {
     @Override
     public EditTaskCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME);
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_INDEX, PREFIX_NAME);
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_INDEX, PREFIX_NAME);
 
-        if (argMultimap.getValue(PREFIX_NAME).isEmpty()) {
+        Index personIndex;
+
+        try {
+            personIndex = ParserUtil.parseIndex(argMultimap.getPreamble());
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    EditTaskCommand.MESSAGE_USAGE), pe);
+        }
+
+        if (argMultimap.getValue(PREFIX_INDEX).isEmpty() || argMultimap.getValue(PREFIX_NAME).isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditTaskCommand.MESSAGE_USAGE));
         }
 
-        String[] preambleSplit = argMultimap.getPreamble().trim().split("\\s+");
-        if (preambleSplit.length != 2) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditTaskCommand.MESSAGE_USAGE));
-        }
-
-        Index personIndex = ParserUtil.parseIndex(preambleSplit[0]);
-        Index taskIndex = ParserUtil.parseIndex(preambleSplit[1]);
+        Index taskIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).get());
         Task newTask = ParserUtil.parseTask(argMultimap.getValue(PREFIX_NAME).get());
 
         return new EditTaskCommand(personIndex, taskIndex, newTask);

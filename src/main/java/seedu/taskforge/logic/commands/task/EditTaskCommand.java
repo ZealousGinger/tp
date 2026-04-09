@@ -25,7 +25,7 @@ public class EditTaskCommand extends TaskCommand {
 
     public static final String MESSAGE_SUCCESS = "Task edited in project: %1$s";
     public static final String MESSAGE_USAGE = COMMAND_WORD + " "
-            + SUBCOMMAND_WORD + " PERSON_INDEX TASK_INDEX -n NEW_TASK_NAME";
+            + SUBCOMMAND_WORD + " PERSON_INDEX -i TASK_INDEX_FROM_PROJECT -n NEW_TASK_NAME";
     public static final String MESSAGE_INDEX_OUT_OF_BOUND = "Task index is out of bound";
     public static final String MESSAGE_INVALID_TASK_REFERENCE = "This task reference is invalid.";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists for this project!";
