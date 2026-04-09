@@ -33,8 +33,7 @@ public class VersionedAddressBook extends AddressBook {
     }
 
     /**
-     * Commits the current address book state to history.
-     * Clears forward history.
+     * Stores the current address book state in history and clears forward history.
      * @param input The command input string that produced this state
      */
     public void commit(String input) {
