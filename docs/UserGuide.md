@@ -66,7 +66,7 @@ TaskForge is a **desktop app for managing contacts, optimized for use via a Comm
 
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+Shows a message explaining all the commands and contains a link to UserGuide.
 
 ![help message](images/helpMessage.png)
 
