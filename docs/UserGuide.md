@@ -98,9 +98,9 @@ Format: `list`
 
 Edits an existing person in TaskForge.
 
-Format: `edit INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-d TASK] [-l PROJECT]…​`
+Format: `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-d TASK] [-l PROJECT]…​`
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* Edits the person at the specified `PERSON_INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tasks/projects, the existing tasks/projects of the person will be removed i.e adding of tasks/projects is not cumulative.
@@ -134,9 +134,9 @@ Examples:
 
 Deletes the specified person from TaskForge.
 
-Format: `delete INDEX`
+Format: `delete PERSON_INDEX`
 
-* Deletes the person at the specified `INDEX`.
+* Deletes the person at the specified `PERSON_INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
@@ -317,7 +317,7 @@ Assigns one or more tasks to a person.
 
 Format: `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX`
 
-* Adds task(s) to the person at the specified `INDEX`.
+* Adds task(s) to the person at the specified `PERSON_INDEX`.
 * The person index refers to the index number shown in the displayed person list.
 * The person index **must be a positive integer** `1, 2, 3, ...`
 * `PROJECT_INDEX` refers to a project index in the displayed project list.
@@ -334,11 +334,11 @@ Examples:
 
 Unassigns one or more tasks from a person by task index.
 
-Format: `task unassign INDEX -i TASK_INDEX`
+Format: `task unassign PERSON_INDEX -i TASK_INDEX`
 
-* Deletes task(s) from the person at the specified `INDEX`.
+* Deletes task(s) from the person at the specified `PERSON_INDEX`.
 * `TASK_INDEX` refers to the task numbering shown for that person in the app.
-* Both person `INDEX` and `TASK_INDEX` **must be positive integers** `1, 2, 3, ...`
+* Both person `PERSON_INDEX` and `TASK_INDEX` **must be positive integers** `1, 2, 3, ...`
 * To unassign multiple tasks in one command, repeat the `-i` prefix.
 
 Examples:
@@ -349,9 +349,9 @@ Examples:
 
 Displays all tasks assigned to a person.
 
-Format: `task view INDEX`
+Format: `task view PERSON_INDEX`
 
-* Shows all tasks assigned to the person at the specified `INDEX`.
+* Shows all tasks assigned to the person at the specified `PERSON_INDEX`.
 * The person index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** `1, 2, 3, ...`
 * If the person has no tasks, a message will be shown.
@@ -455,20 +455,20 @@ Action | Format, Examples
 **List Tasks by Project** | `task list PROJECT_INDEX`<br> e.g., `task list 1`
 **Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]`<br> e.g., `task find report bug`
 **Assign Task** | `task assign PERSON_INDEX -pi PROJECT_INDEX i TASK_INDEX`<br> e.g., `task assign 1 -pi 1 -i 2`
-**Assign Project** | `project assign INDEX -i PROJECT_INDEX`<br> e.g., `project assign 1 -i 2`
+**Assign Project** | `project assign PERSON_INDEX -i PROJECT_INDEX`<br> e.g., `project assign 1 -i 2`
 **Clear** | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete** | `delete PERSON_INDEX`<br> e.g., `delete 3`
 **Delete Project** | `project delete INDEX`<br> e.g., `project delete 1`
 **Find Project** | `project find KEYWORD [MORE_KEYWORDS]`<br> e.g., `project find Alpha Web`
-**View Tasks** | `task view INDEX`<br> e.g.,`task view 1`
+**View Tasks** | `task view PERSON_INDEX`<br> e.g.,`task view 1`
 **Mark Task** | `task mark PERSON_INDEX TASK_INDEX`<br> e.g., `task mark 1 1`
 **Unmark Task** | `task unmark PERSON_INDEX TASK_INDEX`<br> e.g., `task unmark 1 1`
-**Edit Person** | `edit Index [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit Index -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Edit Person** | `edit PERSON_Index [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit PERSON_Index -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
 **Find Person** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List Person** | `list`
-**Unassign Task** | `task unassign INDEX -i TASK_INDEX`<br> e.g., `task unassign 2 -i 1`
-**Edit Person** | `edit INDEX [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit INDEX -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
-**Unassign Project** | `project unassign INDEX -i PROJECT_INDEX`<br> e.g., `project unassign 2 -i 1`
+**Unassign Task** | `task unassign PERSON_INDEX -i TASK_INDEX`<br> e.g., `task unassign 2 -i 1`
+**Edit Person** | `edit PERSON_INDEX [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit PERSON_INDEX -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Unassign Project** | `project unassign PERSON_INDEX -i PROJECT_INDEX`<br> e.g., `project unassign 2 -i 1`
 **View Projects** | `project list`
 **Undo** | `undo`
 **Redo** | `redo`
