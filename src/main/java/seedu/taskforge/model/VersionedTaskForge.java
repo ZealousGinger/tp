@@ -4,44 +4,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents an address book with undo/redo capabilities.
+ * Represents an TaskForge with undo/redo capabilities.
  *
  * <p>The undo/redo history is maintained only for the current session.
  * History is not persisted between application restarts. When the
  * application closes, all saved states are discarded.</p>
  *
- * Maintains a history of address book states and the commands that created them.
+ * Maintains a history of TaskForge states and the commands that created them.
  */
-public class VersionedAddressBook extends AddressBook {
-    private final List<ReadOnlyAddressBook> addressBookStateList = new ArrayList<>();
+public class VersionedTaskForge extends TaskForge {
+    private final List<ReadOnlyTaskForge> taskForgeStateList = new ArrayList<>();
     private final List<String> storedInputs = new ArrayList<>();
     private int currentStatePointer;
     private int currentInputPointer;
 
     /**
-     * Constructs a VersionedAddressBook with the given initial state.
+     * Constructs a VersionedTaskForge with the given initial state.
      * Initializes the history with the initial state and sets pointers accordingly.
-     * @param initialState The initial address book state
+     * @param initialState The initial task forge state
      */
-    public VersionedAddressBook(ReadOnlyAddressBook initialState) {
+    public VersionedTaskForge(ReadOnlyTaskForge initialState) {
         super(initialState);
 
-        addressBookStateList.add(new AddressBook(initialState));
+        taskForgeStateList.add(new TaskForge(initialState));
 
         currentStatePointer = 0;
         currentInputPointer = -1;
     }
 
     /**
-     * Commits the current address book state to history.
-     * Clears forward history.
+     * Stores the current taskforge state in history and clears forward history.
      * @param input The command input string that produced this state
      */
     public void commit(String input) {
-        addressBookStateList.subList(currentStatePointer + 1, addressBookStateList.size()).clear();
+        taskForgeStateList.subList(currentStatePointer + 1, taskForgeStateList.size()).clear();
         storedInputs.subList(currentInputPointer + 1, storedInputs.size()).clear();
 
-        addressBookStateList.add(new AddressBook(this));
+        taskForgeStateList.add(new TaskForge(this));
         storedInputs.add(input);
 
         currentStatePointer++;
@@ -49,12 +48,12 @@ public class VersionedAddressBook extends AddressBook {
     }
 
     /**
-     * Restores the previous address book state from history.
+     * Restores the previous TaskForge state from history.
      * @return The command that is being undone
      */
     public String undo() {
         currentStatePointer--;
-        resetData(addressBookStateList.get(currentStatePointer));
+        resetData(taskForgeStateList.get(currentStatePointer));
 
         String commandToUndo = storedInputs.get(currentInputPointer);
         currentInputPointer--;
@@ -63,12 +62,12 @@ public class VersionedAddressBook extends AddressBook {
     }
 
     /**
-     * Restores a previously undone address book state.
+     * Restores a previously undone TaskForge state.
      * @return The command that is being redone
      */
     public String redo() {
         currentStatePointer++;
-        resetData(addressBookStateList.get(currentStatePointer));
+        resetData(taskForgeStateList.get(currentStatePointer));
 
         currentInputPointer++;
         return storedInputs.get(currentInputPointer);
@@ -89,6 +88,6 @@ public class VersionedAddressBook extends AddressBook {
      * @return true if there is a next state available, false otherwise
      */
     public boolean canRedo() {
-        return currentStatePointer < addressBookStateList.size() - 1;
+        return currentStatePointer < taskForgeStateList.size() - 1;
     }
 }

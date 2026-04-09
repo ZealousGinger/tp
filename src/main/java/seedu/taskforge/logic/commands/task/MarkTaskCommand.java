@@ -16,7 +16,7 @@ import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
 /**
- * Marks a task as done for an existing person in the address book.
+ * Marks a task as done for an existing person in the TaskForge
  */
 public class MarkTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "mark";
@@ -74,7 +74,7 @@ public class MarkTaskCommand extends TaskCommand {
 
         model.setProject(project, editedProject);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
+        model.commitTaskForge(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_MARK_TASK_SUCCESS, resolvedTask.description));
     }
 

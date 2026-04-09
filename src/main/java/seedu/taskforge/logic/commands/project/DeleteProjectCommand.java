@@ -13,7 +13,7 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Deletes a project from the address book.
+ * Deletes a project from the TaskForge
  */
 public class DeleteProjectCommand extends ProjectCommand {
 
@@ -43,7 +43,7 @@ public class DeleteProjectCommand extends ProjectCommand {
 
         Project projectToDelete = lastShownList.get(targetIndex.getZeroBased());
         model.deleteProject(projectToDelete);
-        model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
+        model.commitTaskForge(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_DELETE_PROJECT_SUCCESS, projectToDelete));
     }
 

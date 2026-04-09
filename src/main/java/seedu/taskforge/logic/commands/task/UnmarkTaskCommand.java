@@ -16,7 +16,7 @@ import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
 /**
- * Unmarks a task as done for an existing person in the address book.
+ * Unmarks a task as done for an existing person in the TaskForge
  */
 public class UnmarkTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "unmark";
@@ -74,7 +74,7 @@ public class UnmarkTaskCommand extends TaskCommand {
 
         model.setProject(project, editedProject);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
+        model.commitTaskForge(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_UNMARK_TASK_SUCCESS, resolvedTask.description));
     }
 

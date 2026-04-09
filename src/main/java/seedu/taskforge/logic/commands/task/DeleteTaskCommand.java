@@ -18,7 +18,7 @@ import seedu.taskforge.model.task.Task;
 import seedu.taskforge.model.task.exceptions.TaskNotFoundException;
 
 /**
- * Deletes a task from the task list of an existing project in the address book.
+ * Deletes a task from the task list of an existing project in the TaskForge
  */
 public class DeleteTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "delete";
@@ -57,7 +57,7 @@ public class DeleteTaskCommand extends TaskCommand {
         Project editedProject = createEditedProject(projectToEdit, deleteTaskDescriptor);
 
         model.setProject(projectToEdit, editedProject);
-        model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
+        model.commitTaskForge(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_SUCCESS, editedProject));
     }
 

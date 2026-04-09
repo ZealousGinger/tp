@@ -15,30 +15,32 @@ import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Represents the in-memory model of the address book data.
+ * Represents the in-memory model of the TaskForge data.
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final VersionedAddressBook addressBook;
+    private final VersionedTaskForge taskForge;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    private final FilteredList<Project> filteredProjects;
 
     /**
-     * Initializes a ModelManager with the given addressBook and userPrefs.
+     * Initializes a ModelManager with the given TaskForge and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {
-        requireAllNonNull(addressBook, userPrefs);
+    public ModelManager(ReadOnlyTaskForge taskForge, ReadOnlyUserPrefs userPrefs) {
+        requireAllNonNull(taskForge, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with TaskForge: " + taskForge + " and user prefs " + userPrefs);
 
-        this.addressBook = new VersionedAddressBook(addressBook);
+        this.taskForge = new VersionedTaskForge(taskForge);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredPersons = new FilteredList<>(this.taskForge.getPersonList());
+        filteredProjects = new FilteredList<>(this.taskForge.getProjectList());
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new TaskForge(), new UserPrefs());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -66,68 +68,69 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public Path getAddressBookFilePath() {
-        return userPrefs.getAddressBookFilePath();
+    public Path getTaskForgeFilePath() {
+        return userPrefs.getTaskForgeFilePath();
     }
 
     @Override
-    public void setAddressBookFilePath(Path addressBookFilePath) {
-        requireNonNull(addressBookFilePath);
-        userPrefs.setAddressBookFilePath(addressBookFilePath);
+    public void setTaskForgeFilePath(Path taskForgeFilePath) {
+        requireNonNull(taskForgeFilePath);
+        userPrefs.setTaskForgeFilePath(taskForgeFilePath);
     }
 
-    //=========== AddressBook ================================================================================
+    //=========== TaskForge ================================================================================
 
     @Override
-    public void setAddressBook(ReadOnlyAddressBook addressBook) {
-        this.addressBook.resetData(addressBook);
+    public void setTaskForge(ReadOnlyTaskForge taskForge) {
+        this.taskForge.resetData(taskForge);
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return addressBook;
+    public ReadOnlyTaskForge getTaskForge() {
+        return taskForge;
     }
 
     @Override
     public boolean hasProject(Project project) {
         requireNonNull(project);
-        return addressBook.hasProject(project);
+        return taskForge.hasProject(project);
     }
 
     @Override
     public void deleteProject(Project target) {
-        addressBook.removeProject(target);
+        taskForge.removeProject(target);
     }
 
     @Override
     public void addProject(Project project) {
-        addressBook.addProject(project);
+        taskForge.addProject(project);
+        updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
     }
 
     @Override
     public void setProject(Project target, Project editedProject) {
-        addressBook.setProject(target, editedProject);
+        taskForge.setProject(target, editedProject);
     }
 
     @Override
     public ObservableList<Project> getProjectList() {
-        return addressBook.getProjectList();
+        return taskForge.getProjectList();
     }
 
     @Override
     public boolean hasPerson(Person person) {
         requireNonNull(person);
-        return addressBook.hasPerson(person);
+        return taskForge.hasPerson(person);
     }
 
     @Override
     public void deletePerson(Person target) {
-        addressBook.removePerson(target);
+        taskForge.removePerson(target);
     }
 
     @Override
     public void addPerson(Person person) {
-        addressBook.addPerson(person);
+        taskForge.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
     }
 
@@ -135,14 +138,31 @@ public class ModelManager implements Model {
     public void setPerson(Person target, Person editedPerson) {
         requireAllNonNull(target, editedPerson);
 
-        addressBook.setPerson(target, editedPerson);
+        taskForge.setPerson(target, editedPerson);
+    }
+
+    //=========== Filtered Project List Accessors =============================================================
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
+     * {@code versionedTaskForge}
+     */
+    @Override
+    public ObservableList<Project> getFilteredProjectList() {
+        return filteredProjects;
+    }
+
+    @Override
+    public void updateFilteredProjectList(Predicate<Project> predicate) {
+        requireNonNull(predicate);
+        filteredProjects.setPredicate(predicate);
     }
 
     //=========== Filtered Person List Accessors =============================================================
 
     /**
      * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
-     * {@code versionedAddressBook}
+     * {@code versionedTaskForge}
      */
     @Override
     public ObservableList<Person> getFilteredPersonList() {
@@ -156,28 +176,28 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void commitAddressBook(String input) {
-        addressBook.commit(input);
+    public void commitTaskForge(String input) {
+        taskForge.commit(input);
     }
 
     @Override
-    public String undoAddressBook() {
-        return addressBook.undo();
+    public String undoTaskForge() {
+        return taskForge.undo();
     }
 
     @Override
-    public String redoAddressBook() {
-        return addressBook.redo();
+    public String redoTaskForge() {
+        return taskForge.redo();
     }
 
     @Override
-    public boolean canUndoAddressBook() {
-        return addressBook.canUndo();
+    public boolean canUndoTaskForge() {
+        return taskForge.canUndo();
     }
 
     @Override
-    public boolean canRedoAddressBook() {
-        return addressBook.canRedo();
+    public boolean canRedoTaskForge() {
+        return taskForge.canRedo();
     }
 
     @Override
@@ -192,9 +212,10 @@ public class ModelManager implements Model {
         }
 
         ModelManager otherModelManager = (ModelManager) other;
-        return addressBook.equals(otherModelManager.addressBook)
+        return taskForge.equals(otherModelManager.taskForge)
                 && userPrefs.equals(otherModelManager.userPrefs)
-                && filteredPersons.equals(otherModelManager.filteredPersons);
+                && filteredPersons.equals(otherModelManager.filteredPersons)
+                && filteredProjects.equals(otherModelManager.filteredProjects);
     }
 
 

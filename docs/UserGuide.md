@@ -208,7 +208,8 @@ Format: `project find KEYWORD [MORE_KEYWORDS]`
 * The search is case-insensitive. e.g. `alpha` will match `Alpha`
 * The search is performed on project names only.
 * Projects matching at least one keyword will be shown (i.e. `OR` search).
-* The result is shown as plain text in the result display. It does not filter or change the person list.
+* The result is shown as plain text in the result display.
+* Filters the project list.
 
 Examples:
 * `project find alpha`
@@ -287,32 +288,29 @@ Examples:
 
 Edits the name of an existing task in a project.
 
-Format: `task edit PROJECT_NAME -i TASK_INDEX_FROM_PROJECT -n NEW_TASK_NAME`
+Format: `task edit PERSON_INDEX -i TASK_INDEX_FROM_PERSON -n NEW_TASK_NAME`
 
-* Edits the task at `TASK_INDEX_FROM_PROJECT` in the project named `PROJECT_NAME`.
-* `TASK_INDEX_FROM_PROJECT` refers to the task numbering shown for that project in the app.
-* `TASK_INDEX_FROM_PROJECT` **must be a positive integer** `1, 2, 3, ...`
+* Edits the task at `TASK_INDEX_FROM_PERSON` from person with index `PERSON_INDEX`.
+* `TASK_INDEX_FROM_PERSON` refers to the task ID shown for that person in the app.
+* `TASK_INDEX_FROM_PERSON` **must be a positive integer** `1, 2, 3, ...`
 * `NEW_TASK_NAME` must be alphanumeric (only letters, numbers and spaces), between 1 to 64 characters.
-* Duplicate task names in the same project are not allowed.
-* If the edited task is assigned to any person, TaskForge preserves those assignments by reassigning the renamed task.
+* If the edited task is assigned to another person, TaskForge preserves those assignments by reassigning the renamed task.
 
 Examples:
-* `task edit Alpha -i 1 -n Prepare sprint report`
-* `task edit Project X -i 2 -n Finalize API contract`
+* `task edit 1 -i 1 -n Prepare sprint report`
+* `task edit 3 -i 2 -n Finalize API contract`
 
 #### Listing all tasks in a project : `task list`
 
 Lists all tasks that belong to the specified project.
 
-Format: `task list -n PROJECT_NAME`
+Format: `task list PROJECT_INDEX`
 
-* Lists task(s) from the project named `PROJECT_NAME`.
-* `PROJECT_NAME` must match an existing project in TaskForge.
-* Project name matching is case-insensitive.
+* Lists task(s) from the `PROJECT_INDEX`.
+* `PROJECT_INDEX` refers to index in global project list.
 
 Examples:
-* `task list -n Alpha`
-* `task list -n Project X`
+* `task list 1`
 
 #### Finding tasks by keyword : `task find`
 
@@ -322,8 +320,9 @@ Format: `task find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g. `report` will match `Write report`.
 * The search checks all task lists from every project.
-* A matching result is shown as `taskName - projectName`.
+* A matching result is shown as `taskName - projectName` in the dialog box.
 * Tasks matching at least one keyword will be shown (i.e. `OR` search).
+* Project list will filter projects that contain the matching tasks.
 
 Examples:
 * `task find report`
@@ -467,42 +466,31 @@ _Details coming soon ..._
 
 ## Command summary
 
-### Person commands
-
-Action | Format | Examples
---------|--------|---------
-**Add Person** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-l PROJECT_NAME] [-d TASK_NAME]…​` | `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
-**Edit Person** | `edit INDEX [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` | `edit INDEX -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
-**Find Person** | `find [-n NAME_KEYWORDS] [-p PHONE_KEYWORDS] [-e EMAIL_KEYWORDS] [-d TASK_KEYWORDS] [-l PROJECT_KEYWORDS]` | `find -n James -p 91234567`
-**List Person** | `list` | 
-**Delete Person** | `delete INDEX` | `delete 3`
-**Clear** | `clear` | 
-**Undo** | `undo` | 
-**Redo** | `redo` | 
-**Help** | `help` | 
-
-### Project commands
-
-Action | Format | Examples
---------|--------|---------
-**Add Project** | `project add PROJECT_NAME` | `project add WebApp`
-**Delete Project** | `project delete INDEX` | `project delete 1`
-**Find Project** | `project find KEYWORD [MORE_KEYWORDS]` | `project find Alpha Web`
-**Assign Project** | `project assign PERSON_INDEX -i PROJECT_INDEX` | `project assign 1 -i 2`
-**Unassign Project** | `project unassign PERSON_INDEX -i PROJECT_INDEX` | `project unassign 2 -i 1`
-**View Projects** | `project list` | 
-
-### Task commands
-
-Action | Format | Examples
---------|--------|---------
-**Add Task** | `task add PROJECT_INDEX -n TASK_NAME` | `task add 1 -n Write report`
-**Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX` | `task delete 1 -i 2`
-**Edit Task** | `task edit PROJECT_NAME -i TASK_INDEX_FROM_PROJECT -n NEW_TASK_NAME` | `task edit Alpha -i 1 -n Prepare sprint report`
-**List Tasks by Project** | `task list -n PROJECT_NAME` | `task list -n Alpha`
-**Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]` | `task find report bug`
-**Assign Task** | `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX` | `task assign 1 -pi 1 -i 2`
-**Unassign Task** | `task unassign INDEX -i TASK_INDEX` | `task unassign 2 -i 1`
-**View Tasks** | `task view INDEX` | `task view 1`
-**Mark Task** | `task mark PERSON_INDEX TASK_INDEX` | `task mark 1 1`
-**Unmark Task** | `task unmark PERSON_INDEX TASK_INDEX` | `task unmark 1 1`
+Action | Format, Examples
+--------|------------------
+**Add Person** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Add Project** | `project add PROJECT_NAME`<br> e.g., `project add WebApp`
+**Add Task** | `task add PROJECT_INDEX -n TASK_NAME`<br> e.g., `task add 1 -n Write report`
+**Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX`<br> e.g., `task delete 1 -i 2`
+**Edit Task** | `task edit PERSON_INDEX -i TASK_INDEX_FROM_PERSON -n NEW_TASK_NAME`<br> e.g., `task edit 1 -i 1 -n Prepare sprint report`
+**List Tasks by Project** | `task list PROJECT_INDEX`<br> e.g., `task list 1`
+**Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]`<br> e.g., `task find report bug`
+**Assign Task** | `task assign PERSON_INDEX -pi PROJECT_INDEX i TASK_INDEX`<br> e.g., `task assign 1 -pi 1 -i 2`
+**Assign Project** | `project assign INDEX -i PROJECT_INDEX`<br> e.g., `project assign 1 -i 2`
+**Clear** | `clear`
+**Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete Project** | `project delete INDEX`<br> e.g., `project delete 1`
+**Find Project** | `project find KEYWORD [MORE_KEYWORDS]`<br> e.g., `project find Alpha Web`
+**View Tasks** | `task view INDEX`<br> e.g.,`task view 1`
+**Mark Task** | `task mark PERSON_INDEX TASK_INDEX`<br> e.g., `task mark 1 1`
+**Unmark Task** | `task unmark PERSON_INDEX TASK_INDEX`<br> e.g., `task unmark 1 1`
+**Edit Person** | `edit Index [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit Index -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Find Person** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**List Person** | `list`
+**Unassign Task** | `task unassign INDEX -i TASK_INDEX`<br> e.g., `task unassign 2 -i 1`
+**Edit Person** | `edit INDEX [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit INDEX -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Unassign Project** | `project unassign INDEX -i PROJECT_INDEX`<br> e.g., `project unassign 2 -i 1`
+**View Projects** | `project list`
+**Undo** | `undo`
+**Redo** | `redo`
+**Help** | `help`

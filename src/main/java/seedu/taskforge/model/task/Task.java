@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.taskforge.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Task in the address book.
+ * Represents a Task in the TaskForge.
  * Guarantees: immutable; description is valid as declared in {@link #isValidTaskDescription(String)}
  */
 public class Task {
@@ -102,7 +102,7 @@ public class Task {
     }
 
     /**
-     * Format state as text for viewing.
+     * Returns formatted state text for viewing.
      */
     @Override
     public String toString() {

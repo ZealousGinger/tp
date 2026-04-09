@@ -1,6 +1,7 @@
 package seedu.taskforge.logic.commands.project;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.taskforge.model.Model.PREDICATE_SHOW_ALL_PROJECTS;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +13,7 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.project.Project;
 
 /**
- * Lists all projects in the address book to the user.
+ * Lists all projects in the TaskForge to the user.
  */
 public class ListProjectCommand extends ProjectCommand {
 
@@ -29,6 +30,7 @@ public class ListProjectCommand extends ProjectCommand {
                 .mapToObj(i -> (i + 1) + ". " + projectList.get(i).title)
                 .collect(Collectors.joining("\n"));
         String feedback = MESSAGE_SUCCESS + (projectsList.isEmpty() ? " None" : "\n" + projectsList);
+        model.updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
         return new CommandResult(feedback);
     }
 

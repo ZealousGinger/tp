@@ -14,7 +14,7 @@ import static seedu.taskforge.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.taskforge.testutil.Assert.assertThrows;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.taskforge.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.taskforge.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.taskforge.testutil.TypicalPersons.getTypicalTaskForge;
 
 import java.util.Arrays;
 
@@ -23,9 +23,9 @@ import org.junit.jupiter.api.Test;
 import seedu.taskforge.commons.core.index.Index;
 import seedu.taskforge.logic.Messages;
 import seedu.taskforge.logic.commands.task.AssignTaskCommand.AssignTaskDescriptor;
-import seedu.taskforge.model.AddressBook;
 import seedu.taskforge.model.Model;
 import seedu.taskforge.model.ModelManager;
+import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
@@ -37,7 +37,7 @@ public class AssignTaskCommandTest {
     private final Model model = createModelWithProjectTasks();
 
     private Model createModelWithProjectTasks() {
-        Model seededModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model seededModel = new ModelManager(getTypicalTaskForge(), new UserPrefs());
         seededModel.setProject(new Project("alpha"), new Project("alpha", Arrays.asList(
                 new Task(VALID_TASK_REFACTOR),
                 new Task(VALID_TASK_FIX_ERROR),
@@ -67,7 +67,7 @@ public class AssignTaskCommandTest {
         String expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS,
             Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(assignTaskCommand, model, expectedMessage, expectedModel);
@@ -88,7 +88,7 @@ public class AssignTaskCommandTest {
         String expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS,
             Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(assignTaskCommand, model, expectedMessage, expectedModel);
@@ -150,7 +150,7 @@ public class AssignTaskCommandTest {
         String expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS,
             Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(assignTaskCommand, model, expectedMessage, expectedModel);
@@ -172,7 +172,7 @@ public class AssignTaskCommandTest {
         String expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS,
             Messages.formatPersonSummary(editedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(assignTaskCommand, model, expectedMessage, expectedModel);
@@ -203,14 +203,14 @@ public class AssignTaskCommandTest {
 
     /**
      * Adds task to a person of a filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
+     * but smaller than size of TaskForge
      */
     @Test
     public void execute_invalidPersonIndexFilteredList_failure() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
-        // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+        // ensures that outOfBoundIndex is still in bounds of TaskForge list
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getTaskForge().getPersonList().size());
 
         AssignTaskCommand assignTaskCommand = new AssignTaskCommand(outOfBoundIndex,
                 new AssignTaskDescriptorBuilder().withTaskIndexes("3").build());
@@ -225,6 +225,18 @@ public class AssignTaskCommandTest {
         AssignTaskCommand assignTaskCommand = new AssignTaskCommand(INDEX_FIRST_PERSON, descriptor);
 
         assertCommandFailure(assignTaskCommand, model, AssignTaskCommand.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void execute_taskProjectNotAssignedToPerson_failure() {
+        AssignTaskDescriptor descriptor = new AssignTaskDescriptorBuilder()
+                .withProjectTaskPairs(
+                        new AssignTaskCommand.ProjectTaskPair(Index.fromOneBased(2), Index.fromOneBased(1)))
+                .build();
+        AssignTaskCommand assignTaskCommand = new AssignTaskCommand(INDEX_FIRST_PERSON, descriptor);
+
+        assertCommandFailure(assignTaskCommand, model,
+                AssignTaskCommand.MESSAGE_TASK_NOT_IN_ASSIGNED_PROJECTS);
     }
 
     @Test

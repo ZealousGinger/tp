@@ -18,14 +18,14 @@ import seedu.taskforge.model.task.Task;
 import seedu.taskforge.model.task.exceptions.DuplicateTaskException;
 
 /**
- * Edits an existing task name from an existing project in the address book.
+ * Edits an existing task name from an existing project in the TaskForge
  */
 public class EditTaskCommand extends TaskCommand {
     public static final String SUBCOMMAND_WORD = "edit";
 
     public static final String MESSAGE_SUCCESS = "Task edited in project: %1$s";
     public static final String MESSAGE_USAGE = COMMAND_WORD + " "
-            + SUBCOMMAND_WORD + " PERSON_INDEX TASK_INDEX -n NEW_TASK_NAME";
+            + SUBCOMMAND_WORD + " PERSON_INDEX -i TASK_INDEX_FROM_PROJECT -n NEW_TASK_NAME";
     public static final String MESSAGE_INDEX_OUT_OF_BOUND = "Task index is out of bound";
     public static final String MESSAGE_INVALID_TASK_REFERENCE = "This task reference is invalid.";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists for this project!";
@@ -73,7 +73,7 @@ public class EditTaskCommand extends TaskCommand {
         model.setProject(projectToEdit, editedProject);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        model.commitAddressBook(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
+        model.commitTaskForge(String.format("%s %s", COMMAND_WORD, SUBCOMMAND_WORD));
         return new CommandResult(String.format(MESSAGE_SUCCESS, editedProject));
     }
 

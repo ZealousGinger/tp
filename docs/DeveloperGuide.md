@@ -81,7 +81,7 @@ The `UI` component,
 * executes user commands using the `Logic` component.
 * listens for changes to `Model` data so that the UI can be updated with the modified data.
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
-* depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
+* depends on some classes in the `Model` component, as it displays `Person` object and `Project` object residing in the `Model`.
 
 ### Logic component
 
@@ -131,7 +131,7 @@ The `Model` component,
 
 **API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
 
-<img src="images/StorageClassDiagram.png" width="550" />
+<img src="images/StorageClassDiagram.png" width="700" />
 
 The `Storage` component,
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
@@ -295,13 +295,14 @@ TaskForge supports project management through the parent command `project` with 
 **Project listing (`project list`)**:
 - `ListProjectCommand` retrieves and displays all projects in the global project list.
 - No validation is required; the command succeeds regardless of project count.
+- Updates the filtered project list to show all projects.
 
 **Project finding (`project find`)**:
 - `FindProjectCommand` validates that at least one keyword is provided.
 - `FindProjectCommandParser` throws a parse error if the user does not provide any keyword.
 - The command performs a case-insensitive search on project titles in the global project list.
 - A project is included in the result if its title contains at least one of the given keywords.
-- No data is modified during this operation; the command only returns a text-based result.
+- Updates the filtered project list to show matching projects.
 
 **Project assignment to person (`project assign`)**:
 - `AssignProjectCommand` resolves each `PROJECT_INDEX` against the global project list.
@@ -338,8 +339,8 @@ This ensures a person can only be assigned to valid existing projects.
 TaskForge supports task management using 10 commands:
 - `task add PROJECT_INDEX -n TASK_NAME`
 - `task delete PROJECT_INDEX -i TASK_INDEX`
-- `task edit PROJECT_NAME -i TASK_INDEX -n NEW_TASK_NAME`
-- `task list -n PROJECT_NAME`
+- `task edit PERSON_INDEX -i TASK_INDEX -n NEW_TASK_NAME`
+- `task list PROJECT_INDEX`
 - `task find KEYWORD [MORE_KEYWORDS]`
 - `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX`
 - `task unassign INDEX -i TASK_INDEX`
@@ -359,7 +360,7 @@ TaskForge supports task management using 10 commands:
 2. **Logic layer**
     - `AddTaskCommand` adds new task(s) to a project in the global project list.
     - `DeleteTaskCommand` removes task(s) from a project by project index and task index.
-    - `EditTaskCommand` renames a task in a project by project name and task index.
+    - `EditTaskCommand` renames a task in a person by person index and task index.
     - `ListTaskCommand` lists all task(s) from a specified project by project name.
     - `FindTaskCommand` finds task(s) across all projects by keyword(s).
     - `AssignTaskCommand` assigns existing task(s) to a person.
@@ -403,19 +404,20 @@ TaskForge supports task management using 10 commands:
 - `AddressBook#cascadeRemoveDeletedProjectTasksFromPersons()` automatically removes the deleted task from all persons who have it assigned.
 
 **Task editing in project (`task edit`)**:
-- `EditTaskCommand` validates that the target project exists by project name and that the task index is within bounds.
+- `EditTaskCommand` validates that the person index and task index is within bounds.
 - The command renames the selected project task and rejects duplicates via `MESSAGE_DUPLICATE_TASK`.
 - Before applying the rename, the command snapshots people currently assigned to the original task.
 - After updating the project, it reassigns each affected person to the renamed task so assignments are preserved.
 
 **Task listing by project (`task list`)**:
-- `ListTaskCommand` validates that the provided project name exists in the global project list.
+- `ListTaskCommand` validates that the provided project index is valid in the global project list.
 - Retrieves and displays all tasks in the specified project.
 
 **Task finding by keyword (`task find`)**:
 - `FindTaskCommand` iterates through task lists of all projects.
 - Matches tasks whose names contain any provided keywords.
 - Returns output in the format `taskName - projectName`.
+- Updates the filtered project list to show projects that contain matching tasks.
 
 **Task assignment to person (`task assign`)**:
 - `AssignTaskCommand` resolves each selected `TASK_INDEX` into a `(projectIndex, taskIndex)` pair based on tasks
@@ -448,7 +450,7 @@ TaskForge supports task management using 10 commands:
 
 - `AddTaskCommandParser` parses the preamble as the target project `INDEX` and parses task names from repeated `-n` prefixes.
 - `DeleteTaskCommandParser` parses the preamble as the target project `INDEX` and parses task indexes from repeated `-i` prefixes.
-- `EditTaskCommandParser` parses the preamble as target `PROJECT_NAME`, parses task index from `-i`, and parses the new task name from `-n`.
+- `EditTaskCommandParser` parses the preamble as target `PERSON_INDEX`, parses task index from `-i`, and parses the new task name from `-n`.
 - `ListTaskCommandParser` parses project name from `-n PROJECT_NAME`.
 - `FindTaskCommandParser` parses one or more keyword tokens from the argument preamble.
 - `AssignTaskCommandParser` parses the preamble as the target person `INDEX` and parses task indexes from repeated `-i` prefixes.
@@ -463,7 +465,7 @@ TaskForge supports task management using 10 commands:
 - Person-targeting commands (`task assign`, `task unassign`, `task view`) resolve the target person from `model.getFilteredPersonList()` using the supplied person `INDEX`.
 - If the person index is invalid, execution fails with `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX` or the command-specific invalid index message.
 - `AddTaskCommand` and `DeleteTaskCommand` resolve the target project from the list and validate the project index before executing.
-- `EditTaskCommand` resolves the target project by name and validates the provided task index before executing.
+- `EditTaskCommand` resolves the target person by index and validates both the person index and task index before executing.
 - `ListTaskCommand` resolves the target project by project name and fails if the project does not exist.
 - `FindTaskCommand` resolves across all project task lists and returns matching task entries in `taskName - projectName` format.
 - On success, `AddTaskCommand`, `DeleteTaskCommand`, `EditTaskCommand`, `AssignTaskCommand`, and `UnassignTaskCommand` update the model.

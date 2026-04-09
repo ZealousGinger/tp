@@ -54,7 +54,7 @@ public class PersonContainsKeywordsPredicateTest {
         assertFalse(basePredicate.equals(1));
 
         // null -> returns false
-        assertFalse(basePredicate.equals(null));
+        assertFalse(basePredicate.equals((Object) null));
 
         // different nameKeywords -> returns false
         PersonContainsKeywordsPredicate differentNamePredicate = new PersonContainsKeywordsPredicate()

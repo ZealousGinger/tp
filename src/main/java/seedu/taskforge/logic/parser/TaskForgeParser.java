@@ -63,13 +63,13 @@ import seedu.taskforge.logic.parser.task.ViewTasksCommandParser;
 /**
  * Parses user input.
  */
-public class AddressBookParser {
+public class TaskForgeParser {
 
     /**
      * Used for initial separation of command word and args.
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
-    private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
+    private static final Logger logger = LogsCenter.getLogger(TaskForgeParser.class);
 
     /**
      * Parses user input into command for execution.
@@ -122,7 +122,7 @@ public class AddressBookParser {
         case ProjectCommand.COMMAND_WORD:
             return handleProject(arguments);
 
-        // Address book related commands
+        // TaskForge
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
 
