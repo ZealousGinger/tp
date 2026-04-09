@@ -20,9 +20,10 @@ import seedu.taskforge.model.project.Project;
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final AddressBook addressBook;
+    private final VersionedAddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    private final FilteredList<Project> filteredProjects;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -32,9 +33,10 @@ public class ModelManager implements Model {
 
         logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
-        this.addressBook = new AddressBook(addressBook);
+        this.addressBook = new VersionedAddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredProjects = new FilteredList<>(this.addressBook.getProjectList());
     }
 
     public ModelManager() {
@@ -102,6 +104,7 @@ public class ModelManager implements Model {
     @Override
     public void addProject(Project project) {
         addressBook.addProject(project);
+        updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
     }
 
     @Override
@@ -138,6 +141,23 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, editedPerson);
     }
 
+    //=========== Filtered Project List Accessors =============================================================
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
+     * {@code versionedAddressBook}
+     */
+    @Override
+    public ObservableList<Project> getFilteredProjectList() {
+        return filteredProjects;
+    }
+
+    @Override
+    public void updateFilteredProjectList(Predicate<Project> predicate) {
+        requireNonNull(predicate);
+        filteredProjects.setPredicate(predicate);
+    }
+
     //=========== Filtered Person List Accessors =============================================================
 
     /**
@@ -156,6 +176,31 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void commitAddressBook(String input) {
+        addressBook.commit(input);
+    }
+
+    @Override
+    public String undoAddressBook() {
+        return addressBook.undo();
+    }
+
+    @Override
+    public String redoAddressBook() {
+        return addressBook.redo();
+    }
+
+    @Override
+    public boolean canUndoAddressBook() {
+        return addressBook.canUndo();
+    }
+
+    @Override
+    public boolean canRedoAddressBook() {
+        return addressBook.canRedo();
+    }
+
+    @Override
     public boolean equals(Object other) {
         if (other == this) {
             return true;
@@ -169,7 +214,10 @@ public class ModelManager implements Model {
         ModelManager otherModelManager = (ModelManager) other;
         return addressBook.equals(otherModelManager.addressBook)
                 && userPrefs.equals(otherModelManager.userPrefs)
-                && filteredPersons.equals(otherModelManager.filteredPersons);
+                && filteredPersons.equals(otherModelManager.filteredPersons)
+                && filteredProjects.equals(otherModelManager.filteredProjects);
     }
+
+
 
 }

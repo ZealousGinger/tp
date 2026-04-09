@@ -31,8 +31,11 @@ public class PersonListPanel extends UiPart<Region> {
         this.addressBook = addressBook;
         personListView.setItems(personList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
-        this.addressBook.getProjectList().addListener((ListChangeListener.Change<?> change)
-                -> personListView.refresh());
+
+        // Listen to changes in the project list and refresh the person list view when a change occurs
+        this.addressBook.getProjectList().addListener((ListChangeListener.Change<?> change) -> {
+            personListView.refresh();
+        });
     }
 
     /**
