@@ -2,6 +2,7 @@
     -fx-background-color: white;
 }
 
+<<<<<<< help-command
 .help-text-area {
     -fx-font-size: 14px;
     -fx-text-fill: black;
@@ -13,4 +14,20 @@
 
 .help-text-area {
     -fx-control-inner-background: white;
+=======
+#copyButton {
+    -fx-background-color: #00312f;
+}
+
+#copyButton:hover {
+    -fx-background-color: #005958;
+}
+
+#copyButton:armed {
+    -fx-background-color: #014848;
+}
+
+#helpMessageContainer {
+    -fx-background-color: #11151b;
+>>>>>>> master
 }
