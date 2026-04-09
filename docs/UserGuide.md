@@ -3,7 +3,15 @@ layout: page
 title: User Guide
 ---
 
-TaskForge is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, TaskForge can get your contact management tasks done faster than traditional GUI apps.
+TaskForge is a **desktop app for managing contacts and their project tasks**, optimized for users who prefer typing commands. It combines a fast Command Line Interface (CLI) with a visual list so you can verify changes at a glance.
+
+**Who this guide is for**
+- Project coordinators, team leads, and students tracking contacts with project/task context.
+- Users comfortable with basic command-line usage (e.g., running `java -jar ...`).
+
+**Assumptions**
+- You have Java 17 installed and can use a terminal on your OS.
+- You are comfortable reading simple command formats like `add -n NAME -p PHONE`.
 
 * Table of Contents
 {:toc}
@@ -12,31 +20,37 @@ TaskForge is a **desktop app for managing contacts, optimized for use via a Comm
 
 ## Quick start
 
-1. Ensure you have Java `17` or above installed in your Computer.<br>
+1. Ensure you have Java `17` or above installed on your computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/AY2526S2-CS2103T-W09-4/tp/releases).
+1. Download the latest `.jar` file from [the releases page](https://github.com/AY2526S2-CS2103T-W09-4/tp/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your TaskForge.
+1. Copy the file to the folder you want to use as the _home folder_ for TaskForge.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar taskforge.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in, and run:
+   `java -jar taskforge.jar`<br>
+   A GUI similar to the below should appear in a few seconds, with sample data preloaded.<br>
    ![Ui](images/Ui.png)
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
-   Some example commands you can try:
+   **UI at a glance**
+   - Left: contact list.
+   - Right: details of the selected contact (projects and tasks).
+   - Bottom: results and feedback messages.
+   - Top: command box where you type commands.
 
+1. Quick CLI tutorial (type in the command box and press Enter):
+
+   * `help` : Opens the help window.
    * `list` : Lists all contacts.
+   * `add -n John Doe -p 98765432 -e johnd@example.com` : Adds a contact named `John Doe`.
+   * `find -n John` : Filters to contacts whose name contains `John`.
+   * `delete 3` : Deletes the 3rd contact in the current list.
 
-   * `add -n John Doe -p 98765432 -e johnd@example.com` : Adds a contact named `John Doe` to TaskForge.
+   <div markdown="span" class="alert alert-info">:information_source: **Expected result:**
+   After `add`, you should see the new contact appear in the left list panel. After `find -n John`, the list shows only matching contacts.
+   </div>
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
-
-   * `clear` : Deletes all contacts.
-
-   * `exit` : Exits the app.
-
-1. Refer to the [Features](#features) below for details of each command.
+1. Refer to the [Features](#features) below for detailed command behavior and constraints.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -53,10 +67,10 @@ TaskForge is a **desktop app for managing contacts, optimized for use via a Comm
   e.g `-n NAME [-d TASK]` can be used as `-n John Doe -d task1` or as `-n John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[-d TASK]…​` can be used as ` ` (i.e. 0 times), `-d task1`, `-d task2 -d task3` etc.
+  e.g. `[-d TASK]…​` can be used as ` ` (i.e. 0 times), `-d task1`, `-d task2 -d task3` etc.
 
 * Parameters can be in any order.<br>
-  e.g. if the command specifies `-n NAME -p PHONE_NUMBER`, `-pPHONE_NUMBER -nNAME` is also acceptable.
+  e.g. if the command specifies `-n NAME -p PHONE_NUMBER`, `-p PHONE_NUMBER -n NAME` is also acceptable.
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
@@ -80,8 +94,8 @@ Adds a person to TaskForge.
 Format: `add -n NAME -p PHONE_NUMBER -e EMAIL [-d TASK] [-l PROJECT]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tasks and projects (including 0)
-A person must have valid unique phone number and email.
+A person can have any number of tasks and projects (including 0).
+A person must have a unique phone number and email.
 </div>
 
 Examples:
@@ -103,13 +117,12 @@ Format: `edit INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-d TASK] [-l PROJECT]…​
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tasks/projects, the existing tasks/projects of the person will be removed i.e adding of tasks/projects is not cumulative.
-* You can remove all the person’s tasks/projects by typing `-d`/`-l` without
-    specifying any tasks/projects after it.
+* When editing tasks/projects, the existing tasks/projects of the person will be removed i.e. adding of tasks/projects is not cumulative.
+* You can remove all the person’s tasks/projects by typing `-d`/`-l` without specifying any tasks/projects after it.
 
 Examples:
-*  `edit 1 -p 91234567 -e johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 -n Betsy Crower -d` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tasks.
+* `edit 1 -p 91234567 -e johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+* `edit 2 -n Betsy Crower -d` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tasks.
 
 ### Locating persons by multiple fields: `find`
 
@@ -140,6 +153,10 @@ Format: `delete INDEX`
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
+<div markdown="span" class="alert alert-warning">:exclamation: **Warning:**
+`delete` permanently removes the contact. Use `list` or `find` to confirm the target first.
+</div>
+
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in TaskForge.
 * `find -n Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
@@ -167,7 +184,7 @@ Displays all projects currently available in TaskForge.
 Format: `project list`
 
 Example:
-* `project list` returns a list of all existing project
+* `project list` returns a list of all existing projects.
 
 #### Deleting a project : `project delete`
 
@@ -395,6 +412,10 @@ Clears all entries from TaskForge.
 
 Format: `clear`
 
+<div markdown="span" class="alert alert-warning">:exclamation: **Warning:**
+`clear` removes **all** contacts, tasks, and projects in the current data file. Consider exporting or backing up your data first.
+</div>
+
 ### Undoing previous command : `undo`
 Reverts the last change made in TaskForge.
 
@@ -446,31 +467,42 @@ _Details coming soon ..._
 
 ## Command summary
 
-Action | Format, Examples
---------|------------------
-**Add Person** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
-**Add Project** | `project add PROJECT_NAME`<br> e.g., `project add WebApp`
-**Add Task** | `task add PROJECT_INDEX -n TASK_NAME`<br> e.g., `task add 1 -n Write report`
-**Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX`<br> e.g., `task delete 1 -i 2`
-**Edit Task** | `task edit PROJECT_NAME -i TASK_INDEX_FROM_PROJECT -n NEW_TASK_NAME`<br> e.g., `task edit Alpha -i 1 -n Prepare sprint report`
-**List Tasks by Project** | `task list -n PROJECT_NAME`<br> e.g., `task list -n Alpha`
-**Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]`<br> e.g., `task find report bug`
-**Assign Task** | `task assign PERSON_INDEX -pi PROJECT_INDEX i TASK_INDEX`<br> e.g., `task assign 1 -pi 1 -i 2`
-**Assign Project** | `project assign INDEX -i PROJECT_INDEX`<br> e.g., `project assign 1 -i 2`
-**Clear** | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Delete Project** | `project delete INDEX`<br> e.g., `project delete 1`
-**Find Project** | `project find KEYWORD [MORE_KEYWORDS]`<br> e.g., `project find Alpha Web`
-**View Tasks** | `task view INDEX`<br> e.g.,`task view 1`
-**Mark Task** | `task mark PERSON_INDEX TASK_INDEX`<br> e.g., `task mark 1 1`
-**Unmark Task** | `task unmark PERSON_INDEX TASK_INDEX`<br> e.g., `task unmark 1 1`
-**Edit Person** | `edit Index [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit Index -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
-**Find Person** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List Person** | `list`
-**Unassign Task** | `task unassign INDEX -i TASK_INDEX`<br> e.g., `task unassign 2 -i 1`
-**Edit Person** | `edit INDEX [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit INDEX -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
-**Unassign Project** | `project unassign INDEX -i PROJECT_INDEX`<br> e.g., `project unassign 2 -i 1`
-**View Projects** | `project list`
-**Undo** | `undo`
-**Redo** | `redo`
-**Help** | `help`
+### Person commands
+
+Action | Format | Examples
+--------|--------|---------
+**Add Person** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-l PROJECT_NAME] [-d TASK_NAME]…​` | `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Edit Person** | `edit INDEX [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` | `edit INDEX -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Find Person** | `find [-n NAME_KEYWORDS] [-p PHONE_KEYWORDS] [-e EMAIL_KEYWORDS] [-d TASK_KEYWORDS] [-l PROJECT_KEYWORDS]` | `find -n James -p 91234567`
+**List Person** | `list` | 
+**Delete Person** | `delete INDEX` | `delete 3`
+**Clear** | `clear` | 
+**Undo** | `undo` | 
+**Redo** | `redo` | 
+**Help** | `help` | 
+
+### Project commands
+
+Action | Format | Examples
+--------|--------|---------
+**Add Project** | `project add PROJECT_NAME` | `project add WebApp`
+**Delete Project** | `project delete INDEX` | `project delete 1`
+**Find Project** | `project find KEYWORD [MORE_KEYWORDS]` | `project find Alpha Web`
+**Assign Project** | `project assign PERSON_INDEX -i PROJECT_INDEX` | `project assign 1 -i 2`
+**Unassign Project** | `project unassign PERSON_INDEX -i PROJECT_INDEX` | `project unassign 2 -i 1`
+**View Projects** | `project list` | 
+
+### Task commands
+
+Action | Format | Examples
+--------|--------|---------
+**Add Task** | `task add PROJECT_INDEX -n TASK_NAME` | `task add 1 -n Write report`
+**Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX` | `task delete 1 -i 2`
+**Edit Task** | `task edit PROJECT_NAME -i TASK_INDEX_FROM_PROJECT -n NEW_TASK_NAME` | `task edit Alpha -i 1 -n Prepare sprint report`
+**List Tasks by Project** | `task list -n PROJECT_NAME` | `task list -n Alpha`
+**Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]` | `task find report bug`
+**Assign Task** | `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX` | `task assign 1 -pi 1 -i 2`
+**Unassign Task** | `task unassign INDEX -i TASK_INDEX` | `task unassign 2 -i 1`
+**View Tasks** | `task view INDEX` | `task view 1`
+**Mark Task** | `task mark PERSON_INDEX TASK_INDEX` | `task mark 1 1`
+**Unmark Task** | `task unmark PERSON_INDEX TASK_INDEX` | `task unmark 1 1`
