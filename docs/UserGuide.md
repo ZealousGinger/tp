@@ -325,7 +325,7 @@ Format: `task assign PERSON_INDEX {-pi PROJECT_INDEX -i TASK_INDEX}`
 * `PROJECT_INDEX` **must be a positive integer** `1, 2, 3, ...`
 * `TASK_INDEX` refers to task numbering from the selected person's assigned projects.
 * `TASK_INDEX` **must be a positive integer** `1, 2, 3, ...`
-* To assign multiple tasks in one command, repeat each -piand-i pair with the corresponding indexes.
+* To assign multiple tasks in one command, repeat each -pi and -i pair with the corresponding indexes.
 
 Examples:
 * `task assign 1 -pi 1 -i 2`
