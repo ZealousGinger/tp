@@ -25,7 +25,7 @@ public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
     private static final double MIN_WINDOW_WIDTH = 850;
-    private static final double MIN_WINDOW_HEIGHT = 600;
+    private static final double MIN_WINDOW_HEIGHT = 470;
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 

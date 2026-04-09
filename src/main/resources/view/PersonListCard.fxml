@@ -35,8 +35,11 @@
         </Label>
         <Label fx:id="name" text="\$first" styleClass="cell_big_label" />
         <Region prefWidth="14" />
-        <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
+      </HBox>
+
+      <HBox spacing="8" alignment="CENTER_LEFT">
         <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
+        <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
       </HBox>
 
       <FlowPane fx:id="projects" rowValignment="TOP" />
