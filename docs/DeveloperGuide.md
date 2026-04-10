@@ -1337,10 +1337,10 @@ testers are expected to do more *exploratory* testing.
    Then execute: `redo`<br>
    Expected: No redoable command error, since there was no previously undone state-changing command.
 
-### Saving data
+## **Appendix: Planned Enhancements**
 
-1. Dealing with missing/corrupted data files
+Team Size: 4
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+1. **Make window restoration more robust for multi-screen setups**: The current behavior can restore the GUI off-screen when the previous session was on a secondary screen that is no longer connected. To tackle this, our team plan to validate window coordinates against available screen bounds when starting the app and automatically reposition the GUI on the primary screen if needed.
 
-1. _{ more test cases …​ }_
+2. **Make Help Window re-open behavior more intuitive after minimize**: The current behavior keeps the original Help Window minimized when `help` is triggered again, and the new Help Window did not appear. To tackle this, we plan to detect the minimized state of the Help Window and then, restore or focus on the existing Help Window.
