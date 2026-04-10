@@ -170,9 +170,6 @@ Displays all projects currently available in TaskForge.
 
 Format: `project list`
 
-Example:
-* `project list`
-
 #### Deleting a project : `project delete`
 
 Deletes a project by its index in the displayed project list.
