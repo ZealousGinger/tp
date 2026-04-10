@@ -58,8 +58,8 @@ TaskForge is a **desktop app for managing contacts, optimized for use via a Comm
 * Items inside curly brackets must be provided at least once and may be repeated.<br>
   e.g. `{-i PROJECT_INDEX}` can be used as `-i 1` or `-i 1 -i 2` (it cannot be empty).
 
-* Parameters can be in any order.<br>
-  e.g. if the command specifies `-n NAME -p PHONE_NUMBER`, `-pPHONE_NUMBER -nNAME` is also acceptable.
+* Parameters with prefixes can be in any order.<br>
+  e.g. if the command specifies `-n NAME -p PHONE_NUMBER`, `-p PHONE_NUMBER -n NAME` is also acceptable.
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
@@ -69,7 +69,7 @@ TaskForge is a **desktop app for managing contacts, optimized for use via a Comm
 
 ### Viewing help : `help`
 
-Shows a message explaining all the commands and contains a link to UserGuide.
+Shows a message explaining all the commands and contains a button to open the UserGuide.
 
 ![help message](images/helpMessage.png)
 
@@ -80,7 +80,7 @@ Format: `help`
 
 Adds a person to TaskForge.
 
-Format: `add -n NAME -p PHONE_NUMBER -e EMAIL [-d TASK] [-l PROJECT]…​`
+Format: `add -n NAME -p PHONE_NUMBER -e EMAIL [-d TASK]…​ [-l PROJECT]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tasks and projects (including 0)
@@ -101,7 +101,7 @@ Format: `list`
 
 Edits an existing person in TaskForge.
 
-Format: `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-d TASK] [-l PROJECT]…​`
+Format: `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-d TASK]…​ [-l PROJECT]…​`
 
 * Edits the person at the specified `PERSON_INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
@@ -153,15 +153,16 @@ Examples:
 
 Adds a new project to TaskForge into the project list.
 
-Format: `project add PROJECT_NAME`
+Format: `project add PROJECT_TITLE`
 
-* Adds a new project with the specified project name.
-* Project name must be alphanumeric (only letters and numbers), between 1 to 64 characters.
-* Duplicate projects are not allowed.
+* Adds a new project with the specified project title.
+* Project title must be alphanumeric (only letters and numbers), between 1 to 64 characters.
+* Duplicate project title are not allowed.
+* Project titles are automatically normalized to title case. For each word, the first letter is capitalized and the remaining letters are converted to lowercase.
 
 Examples:
-* `project add WebApp` adds a new project named `WebApp`.
-* `project add MobileApp` adds a new project named `MobileApp`.
+* `project add web app` adds a new project named `Web App`.
+* `project add MobileApp` adds a new project named `Mobileapp`.
 
 #### Viewing all projects : `project list`
 
@@ -170,20 +171,20 @@ Displays all projects currently available in TaskForge.
 Format: `project list`
 
 Example:
-* `project list` returns a list of all existing project
+* `project list`
 
 #### Deleting a project : `project delete`
 
 Deletes a project by its index in the displayed project list.
 
-Format: `project delete INDEX`
+Format: `project delete PROJECT_INDEX`
 
-* Deletes the project at the specified `INDEX`.
-* The index refers to the index number shown by `project list`.
-* The index **must be a positive integer** `1, 2, 3, ...`
+* Deletes the project at the specified `PROJECT_INDEX`.
+* `PROJECT_INDEX` refers to the project index number displayed in `project list.`
+* `PROJECT_INDEX` **must be a positive integer** `1, 2, 3, ...`
 
 Example:
-* `project list` followed by `project delete 2` deletes the 2nd project in the list.
+* `project delete 2` deletes the 2nd project in the list.
 
 #### Finding projects by name : `project find`
 
@@ -193,13 +194,13 @@ Format: `project find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g. `alpha` will match `Alpha`
 * The search is performed on project names only.
-* Projects matching at least one keyword will be shown (i.e. `OR` search).
-* The result is shown as plain text in the result display.
-* Filters the project list.
+* Projects matching at least one keyword will be shown (i.e. `OR` search). e.g. `web app` will return `Web Mobile`, `App building`
+* The result is shown as plain text in the result display and filters the project list.
+* Partial words will be matched e.g. `bui` will match `build`
 
 Examples:
-* `project find alpha`
-* `project find web mobile`
+* `project find alpha` returns `Alpha` and `Alpha station`
+* `project find app build` returns `Mobile App` and `Grand Building`
 
 #### Assigning a project : `project assign`
 
@@ -208,8 +209,8 @@ Assigns a project to a person
 Format: `project assign PERSON_INDEX {-i PROJECT_INDEX}`
 
 * Assigns project(s) from `project list` to a person.
-* `PERSON_INDEX` refers to the person index that's displayed on `list`
-* `PROJECT_INDEX` refers to the project index that's displayed on `project list`
+* `PERSON_INDEX` refers to the person index displayed in `list`
+* `PROJECT_INDEX` refers to the project index displayed in `project list`
 * Both `PERSON_INDEX` and `PROJECT_INDEX` **must be a positive integer** `1, 2, 3, ...`
 * The same project cannot be assigned twice to the same person (no duplicates)
 * To assign multiple projects in one command, repeat the `-i` prefix.
@@ -222,13 +223,12 @@ Example:
 
 Unassigns a project from a person
 
-Format: `project unassign PERSON_INDEX {-i PROJECT_INDEX}`
+Format: `project unassign PERSON_INDEX {-i PROJECT_INDEX_FROM_PERSON}`
 
 * Unassigns project(s) from the person at the specified `INDEX`.
-* `PROJECT_INDEX` refers to the project numbering shown for that person in the app.
-* `PROJECT_INDEX` does NOT refer to the project index that's displayed on `project list`.
-* `PERSON_INDEX` refers to the person index that's displayed on `list`
-* Both `PERSON_INDEX` and `PROJECT_INDEX` **must be positive integers** `1, 2, 3, ...`
+* `PROJECT_INDEX_FROM_PERSON` refers to the project index of the person's project list.
+* `PERSON_INDEX` refers to the person index displayed in `list`
+* Both `PERSON_INDEX` and `PROJECT_INDEX_FROM_PERSON` **must be positive integers** `1, 2, 3, ...`
 * To unassign multiple projects in one command, repeat the `-i` prefix.
 
 Examples:
@@ -242,7 +242,7 @@ Displays all persons assigned to a project.
 Format: `project members PROJECT_INDEX`
 
 * Shows all persons who are assigned to the specified project.
-* `PROJECT_INDEX` refers to the project index displayed by `project list`.
+* `PROJECT_INDEX` refers to the project index displayed in `project list`.
 * `PROJECT_INDEX` **must be a positive integer** `1, 2, 3, ...`
 * The result lists all members associated with the project.
 * If no persons are assigned to the project, an empty result or message is shown.
@@ -258,23 +258,24 @@ Format: `task add PROJECT_INDEX {-n TASK_NAME}`
 * Adds new task(s) with the specified `TASK_NAME` to the project at the specified `PROJECT_INDEX`.
 * The project index refers to the index number shown by `project list`.
 * The project index **must be a positive integer** `1, 2, 3, ...`
-* Task name must be alphanumeric (only letters, numbers and spaces), between 1 to 64 characters.
+* `TASK_NAME` must be alphanumeric (only letters, numbers and spaces), between 1 to 64 characters.
 * Duplicate tasks within the same project are not allowed.
-* To add multiple tasks in one command, repeat the `-n` prefix.
+* Task names are case-sensitive. For example, `TASK` and `task` are treated as different task names.
+* To add multiple tasks to the same project in one command, repeat the `-n` prefix.
 
 Examples:
-* `task add 1 -n Write documentation`
-* `task add 2 -n Design UI -n Implement backend`
+* `task add 1 -n Write documentation` adds a new task named `Write documentation` to the 1st project.
+* `task add 2 -n Design UI -n Implement backend` adds multiple new tasks to the 2nd project.
 
 #### Deleting a task from a project : `task delete`
 
 Deletes a task from a project in the project list.
 
-Format: `task delete PROJECT_INDEX {-i TASK_INDEX}`
+Format: `task delete PROJECT_INDEX {-i TASK_INDEX_FROM_PROJECT}`
 
 * Deletes task(s) from the project at the specified `PROJECT_INDEX`.
-* `TASK_INDEX` refers to the task numbering shown for that project in the app.
-* Both `PROJECT_INDEX` and `TASK_INDEX` **must be positive integers** `1, 2, 3, ...`
+* `TASK_INDEX_FROM_PROJECT` refers to the task ID shown in the specified project.
+* Both `PROJECT_INDEX` and `TASK_INDEX_FROM_PROJECT` **must be positive integers** `1, 2, 3, ...`
 * To delete multiple tasks from the same project in one command, repeat the `-i` prefix.
 
 Examples:
@@ -288,13 +289,12 @@ Edits the name of an existing task in a project.
 Format: `task edit PERSON_INDEX -i TASK_INDEX_FROM_PERSON -n NEW_TASK_NAME`
 
 * Edits the task at `TASK_INDEX_FROM_PERSON` from person with index `PERSON_INDEX`.
-* `TASK_INDEX_FROM_PERSON` refers to the task ID shown for that person in the app.
+* `TASK_INDEX_FROM_PERSON` refers to the task ID shown for the specified person.
 * `TASK_INDEX_FROM_PERSON` **must be a positive integer** `1, 2, 3, ...`
-* `NEW_TASK_NAME` must be alphanumeric (only letters, numbers and spaces), between 1 to 64 characters.
+* `NEW_TASK_NAME` must follow the same naming constraints as `TASK_NAME` in `task add`.
 
-Examples:
-* `task edit 1 -i 1 -n Prepare sprint report`
-* `task edit 3 -i 2 -n Finalize API contract`
+Example:
+* `task edit 1 -i 1 -n Prepare sprint report` renames the 2nd task from 1st person to `Prepare sprint report`
 
 #### Listing all tasks in a project : `task list`
 
@@ -319,44 +319,43 @@ Format: `task find KEYWORD [MORE_KEYWORDS]`
 * A matching result is shown as `taskName - projectName` in the dialog box.
 * Tasks matching at least one keyword will be shown (i.e. `OR` search).
 * Project list will filter projects that contain the matching tasks.
+* Partial words will be matched e.g. `bui` will match `build`
 
 Examples:
-* `task find report`
-* `task find bug ui`
+* `task find report` returns `report` and `report bugs`
+* `task find bug ui` returns `fix bug`, `fix ui`, and `guide clients`
 
 #### Assigning a task : `task assign`
 
 Assigns one or more tasks to a person.
 
-Format: `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX_FROM_PROJECT`
+Format: `task assign PERSON_INDEX {-pi PROJECT_INDEX -i TASK_INDEX_FROM_PROJECT}`
 
 * Adds task(s) to the person at the specified `PERSON_INDEX`.
-* The person index refers to the index number shown in the displayed person list.
-* The person index **must be a positive integer** `1, 2, 3, ...`
-* `PROJECT_INDEX` refers to a project index in the displayed project list.
-* `PROJECT_INDEX` **must be a positive integer** `1, 2, 3, ...`
-* `TASK_INDEX` refers to task numbering from the selected person's assigned projects.
-* `TASK_INDEX` **must be a positive integer** `1, 2, 3, ...`
-* To assign multiple tasks in one command, repeat each -pi and -i pair with the corresponding indexes.
+* `PERSON_INDEX` refers to the person index displayed in `list`.
+* `PROJECT_INDEX` refers to the project index displayed in `project list`.
+* `TASK_INDEX_FROM_PROJECT` refers to the task ID shown in the specified project.
+* `PERSON_INDEX`, `PROJECT_INDEX`, `TASK_INDEX_FROM_PROJECT` **must be a positive integer** `1, 2, 3, ...`
+* To assign multiple tasks to a person in one command, repeat each -pi and -i pair with the corresponding indexes.
 
 Examples:
-* `task assign 1 -pi 1 -i 2`
-* `task assign 2 -pi 1 -i 3 -pi 2 -i 1`
+* `task assign 1 -pi 1 -i 2` assigns the 2nd task in the 1st project to the 1st person.
+* `task assign 2 -pi 1 -i 3 -pi 2 -i 1` assigns multiple tasks to the 2nd person.
 
 #### Unassigning a task : `task unassign`
 
 Unassigns one or more tasks from a person by task index.
 
-Format: `task unassign PERSON_INDEX {-i TASK_INDEX}`
+Format: `task unassign PERSON_INDEX {-i TASK_INDEX_FROM_PERSON}`
 
 * Deletes task(s) from the person at the specified `PERSON_INDEX`.
-* `TASK_INDEX` refers to the task numbering shown for that person in the app.
-* Both person `PERSON_INDEX` and `TASK_INDEX` **must be positive integers** `1, 2, 3, ...`
-* To unassign multiple tasks in one command, repeat the `-i` prefix.
+* `TASK_INDEX_FROM_PERSON` refers to the task ID shown for the specified person.
+* `PERSON_INDEX` and `TASK_INDEX_FROM_PERSON` **must be positive integers** `1, 2, 3, ...`
+* To unassign multiple tasks from a person in one command, repeat the `-i` prefix.
 
 Examples:
-* `task unassign 1 -i 2`
-* `task unassign 3 -i 1 -i 4`
+* `task unassign 1 -i 2` unassigns the 2nd task from the 1st person
+* `task unassign 3 -i 1 -i 4` unassigns multiple tasks from the 3rd person
 
 #### Viewing all tasks of a person : `task view`
 
@@ -365,24 +364,23 @@ Displays all tasks assigned to a person.
 Format: `task view PERSON_INDEX`
 
 * Shows all tasks assigned to the person at the specified `PERSON_INDEX`.
-* The person index refers to the index number shown in the displayed person list.
+* `PERSON_INDEX` refers to the person index displayed in `list`.
 * The index **must be a positive integer** `1, 2, 3, ...`
 * If the person has no tasks, a message will be shown.
 
-Examples:
+Example:
 * `task view 1`
-* `task view 2`
 
 #### Marking a task as done : `task mark`
 
 Marks a task as done for an existing person.
 
-Format: `task mark PERSON_INDEX TASK_INDEX`
+Format: `task mark PERSON_INDEX TASK_INDEX_FROM_PERSON`
 
-* Marks the task identified by `TASK_INDEX` as done for the person identified by `PERSON_INDEX`.
-* `PERSON_INDEX` refers to the person index in the displayed person list.
-* `TASK_INDEX` refers to the task index in the person's task list (visible via `task view`).
-* Both indices **must be positive integers** `1, 2, 3, ...`
+* Marks the task identified by `TASK_INDEX_FROM_PERSON` as done for the person identified by `PERSON_INDEX`.
+* `PERSON_INDEX` refers to the person index displayed in `list`.
+* `TASK_INDEX_FROM_PERSON` refers to the task ID shown for the specified person.
+* `PERSON_INDEX` and `TASK_INDEX_FROM_PERSON` **must be positive integers** `1, 2, 3, ...`
 
 Example:
 * `task mark 1 1` marks the 1st task of the 1st person as done.
@@ -391,28 +389,30 @@ Example:
 
 Unmarks a task as done for an existing person.
 
-Format: `task unmark PERSON_INDEX TASK_INDEX`
+Format: `task unmark PERSON_INDEX TASK_INDEX_FROM_PERSON`
 
-* Unmarks the task identified by `TASK_INDEX` as done for the person identified by `PERSON_INDEX`.
-* `PERSON_INDEX` refers to the person index in the displayed person list.
-* `TASK_INDEX` refers to the task index in the person's task list (visible via `task view`).
-* Both indices **must be positive integers** `1, 2, 3, ...`
+* Unmarks the task identified by `TASK_INDEX_FROM_PERSON` as done for the person identified by `PERSON_INDEX`.
+* `PERSON_INDEX` refers to the person index displayed in `list`.
+* `TASK_INDEX_FROM_PERSON` refers to the task ID shown for the specified person.
+* `PERSON_INDEX` and `TASK_INDEX_FROM_PERSON` **must be positive integers** `1, 2, 3, ...`
 
 Example:
 * `task unmark 1 1` marks the 1st task of the 1st person as not done.
 
 ### Clearing all entries : `clear`
 
-Clears all entries from TaskForge.
+Clears all entries(persons, projects, and tasks) from TaskForge.
 
 Format: `clear`
 
 ### Undoing previous command : `undo`
+
 Reverts the last change made in TaskForge.
 
 Format: `undo`
 
 ### Redoing previous command : `redo`
+
 Reapplies the last undone change, effectively canceling the undo.
 
 Format: `redo`
@@ -460,27 +460,26 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add Person** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
-**Add Project** | `project add PROJECT_NAME`<br> e.g., `project add WebApp`
-**Add Task** | `task add PROJECT_INDEX -n TASK_NAME`<br> e.g., `task add 1 -n Write report`
-**Delete Task** | `task delete PROJECT_INDEX -i TASK_INDEX_FROM_PROJECT`<br> e.g., `task delete 1 -i 2`
+**Add Person** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-d TASK]…​ [-l PROJECT]…​` <br> e.g., `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Add Task** | `task add PROJECT_INDEX {-n TASK_NAME}`<br> e.g., `task add 1 -n Write report`
+**Delete Task** | `task delete PROJECT_INDEX {-i TASK_INDEX_FROM_PROJECT}`<br> e.g., `task delete 1 -i 2`
 **Edit Task** | `task edit PERSON_INDEX -i TASK_INDEX_FROM_PERSON -n NEW_TASK_NAME`<br> e.g., `task edit 1 -i 1 -n Prepare sprint report`
 **List Tasks by Project** | `task list PROJECT_INDEX`<br> e.g., `task list 1`
 **Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]`<br> e.g., `task find report bug`
-**Assign Task** | `task assign PERSON_INDEX -pi PROJECT_INDEX -i TASK_INDEX_FROM_PROJECT`<br> e.g., `task assign 1 -pi 1 -i 2`
-**Unassign Task** | `task unassign PERSON_INDEX -i TASK_INDEX_FROM_PERSON`<br> e.g., `task unassign 2 -i 1`
+**Assign Task** | `task assign PERSON_INDEX {-pi PROJECT_INDEX -i TASK_INDEX_FROM_PROJECT}`<br> e.g., `task assign 1 -pi 1 -i 2`
+**Unassign Task** | `task unassign PERSON_INDEX {-i TASK_INDEX_FROM_PERSON}`<br> e.g., `task unassign 2 -i 1`
 **View Tasks** | `task view PERSON_INDEX`<br> e.g., `task view 1`
 **Mark Task** | `task mark PERSON_INDEX TASK_INDEX_FROM_PERSON`<br> e.g., `task mark 1 1`
 **Unmark Task** | `task unmark PERSON_INDEX TASK_INDEX_FROM_PERSON`<br> e.g., `task unmark 1 1`
-**Assign Project** | `project assign PERSON_INDEX -i PROJECT_INDEX`<br> e.g., `project assign 1 -i 2`
-**Unassign Project** | `project unassign PERSON_INDEX -i PROJECT_INDEX`<br> e.g., `project unassign 2 -i 1`
-**Add Project** | `project add PROJECT_NAME`<br> e.g., `project add WebApp`
+**Add Project** | `project add PROJECT_TITLE`<br> e.g., `project add WebApp`
+**Assign Project** | `project assign PERSON_INDEX {-i PROJECT_INDEX}`<br> e.g., `project assign 1 -i 2`
+**Unassign Project** | `project unassign PERSON_INDEX {-i PROJECT_INDEX_FROM_PERSON}`<br> e.g., `project unassign 2 -i 1`
 **Delete Project** | `project delete PROJECT_INDEX`<br> e.g., `project delete 1`
 **Find Project** | `project find KEYWORD [MORE_KEYWORDS]`<br> e.g., `project find Alpha Web`
 **View Project Members** | `project members PROJECT_INDEX`<br> e.g., `project members 1`
 **View Projects** | `project list`
 **Delete Person** | `delete PERSON_INDEX`<br> e.g., `delete 3`
-**Edit Person** | `edit PERSON_INDEX [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] [-l PROJECT_NAME] [-d TASK_NAME]…​` <br> e.g., `edit 1 -n James Ho -p 22224444 -e jamesho@example.com`
+**Edit Person** | `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-d TASK]…​ [-l PROJECT]…​` <br> e.g., `edit 1 -n James Ho -p 22224444 -e jamesho@example.com`
 **Find Person** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List Person** | `list`
 **Clear** | `clear`
