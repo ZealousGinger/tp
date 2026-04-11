@@ -330,4 +330,35 @@ public class PersonContainsKeywordsPredicateTest {
         }
         return fields;
     }
+
+    @Test
+    public void test_taskFieldMapperProvided_usedForMatching() {
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate()
+                .setTaskFieldMapper(person -> List.of("CustomTaskValue"))
+                .setTaskKeywords(List.of("CustomTaskValue"));
+        assertTrue(predicate.test(new PersonBuilder().withTasks("Task1").build()));
+    }
+
+    @Test
+    public void test_taskFieldMapperAbsent_usesTaskToString() {
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate()
+                .setTaskKeywords(List.of("taskIndex=0}"));
+        assertTrue(predicate.test(new PersonBuilder().withTasks("Task1").build()));
+    }
+
+    @Test
+    public void test_projectFieldMapperProvided_usedForMatching() {
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate()
+                .setProjectFieldMapper(person -> List.of("CustomProjectValue"))
+                .setProjectKeywords(List.of("CustomProjectValue"));
+        assertTrue(predicate.test(new PersonBuilder().withProjects("Project1").build()));
+    }
+
+    @Test
+    public void test_projectFieldMapperAbsent_usesProjectToString() {
+        String projectToken = PersonProject.class.getCanonicalName() + "{projectIndex=0}";
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate()
+                .setProjectKeywords(List.of(projectToken));
+        assertTrue(predicate.test(new PersonBuilder().withProjects("Project1").build()));
+    }
 }
