@@ -447,32 +447,77 @@ _Details coming soon ..._
 --------------------------------------------------------------------------------------------------------------------
 
 ## Command summary
+This summary is split into 4 main sections:
+- [Person commands](###person-commands)
+- [Project commands](###project-commands)
+- [Task commands](###task-commands)
+- [General commands](###general-commands)
 
-Action | Format, Examples
---------|------------------
-**Add Person** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-d TASK]…​ [-l PROJECT]…​` <br> e.g., `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
-**Add Task** | `task add PROJECT_INDEX {-n TASK_NAME}`<br> e.g., `task add 1 -n Write report`
-**Delete Task** | `task delete PROJECT_INDEX {-i TASK_INDEX_FROM_PROJECT}`<br> e.g., `task delete 1 -i 2`
-**Edit Task** | `task edit PERSON_INDEX -i TASK_INDEX_FROM_PERSON -n NEW_TASK_NAME`<br> e.g., `task edit 1 -i 1 -n Prepare sprint report`
-**List Tasks by Project** | `task list PROJECT_INDEX`<br> e.g., `task list 1`
-**Find Tasks** | `task find KEYWORD [MORE_KEYWORDS]`<br> e.g., `task find report bug`
-**Assign Task** | `task assign PERSON_INDEX {-pi PROJECT_INDEX -i TASK_INDEX_FROM_PROJECT}`<br> e.g., `task assign 1 -pi 1 -i 2`
-**Unassign Task** | `task unassign PERSON_INDEX {-i TASK_INDEX_FROM_PERSON}`<br> e.g., `task unassign 2 -i 1`
-**View Tasks** | `task view PERSON_INDEX`<br> e.g., `task view 1`
-**Mark Task** | `task mark PERSON_INDEX TASK_INDEX_FROM_PERSON`<br> e.g., `task mark 1 1`
-**Unmark Task** | `task unmark PERSON_INDEX TASK_INDEX_FROM_PERSON`<br> e.g., `task unmark 1 1`
-**Add Project** | `project add PROJECT_TITLE`<br> e.g., `project add WebApp`
-**Assign Project** | `project assign PERSON_INDEX {-i PROJECT_INDEX}`<br> e.g., `project assign 1 -i 2`
-**Unassign Project** | `project unassign PERSON_INDEX {-i PROJECT_INDEX_FROM_PERSON}`<br> e.g., `project unassign 2 -i 1`
-**Delete Project** | `project delete PROJECT_INDEX`<br> e.g., `project delete 1`
-**Find Project** | `project find KEYWORD [MORE_KEYWORDS]`<br> e.g., `project find Alpha Web`
-**View Project Members** | `project members PROJECT_INDEX`<br> e.g., `project members 1`
-**View Projects** | `project list`
-**Delete Person** | `delete PERSON_INDEX`<br> e.g., `delete 3`
-**Edit Person** | `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-d TASK]…​ [-l PROJECT]…​` <br> e.g., `edit 1 -n James Ho -p 22224444 -e jamesho@example.com`
-**Find Person** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List Person** | `list`
+---
+
+### Person Commands
+
+Action | Format | Example
+--------|--------|--------
+**Add** | `add -n NAME -p PHONE_NUMBER -e EMAIL [-d TASK]… [-l PROJECT]…` | `add -n James Ho -p 22224444 -e jamesho@example.com -l ProjectX -d TaskY`
+**Delete** | `delete PERSON_INDEX` | `delete 3`
+**Edit** | `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-d TASK]…​ [-l PROJECT]…​` | `edit 1 -n James Ho -p 22224444 -e jamesho@example.com`
+**List** | `list` |
+**Find** | `find KEYWORD [MORE_KEYWORDS]` | `find James Jake`
+
+---
+
+### Project Commands
+
+#### Basic
+
+Action | Format | Example
+--------|--------|--------
+**Add** | `project add PROJECT_TITLE` | `project add WebApp`
+**Delete** | `project delete PROJECT_INDEX` | `project delete 1`
+**List** | `project list` |
+**Find** | `project find KEYWORD [MORE_KEYWORDS]` | `project find Alpha Web`
+
+#### Management
+
+Action | Format | Example
+--------|--------|--------
+**Assign** | `project assign PERSON_INDEX {-i PROJECT_INDEX}` | `project assign 1 -i 2`
+**Unassign** | `project unassign PERSON_INDEX {-i PROJECT_INDEX_FROM_PERSON}` | `project unassign 2 -i 1`
+**List members** | `project members PROJECT_INDEX` | `project members 1`
+
+---
+
+### Task Commands
+
+#### Basic
+
+Action | Format | Example
+--------|--------|--------
+**Add** | `task add PROJECT_INDEX {-n TASK_NAME}` | `task add 1 -n Write report`
+**Delete** | `task delete PROJECT_INDEX {-i TASK_INDEX_FROM_PROJECT}` | `task delete 1 -i 2`
+**Edit** | `task edit PERSON_INDEX -i TASK_INDEX_FROM_PERSON -n NEW_TASK_NAME` | `task edit 1 -i 1 -n Prepare sprint report`
+**Find** | `task find KEYWORD [MORE_KEYWORDS]` | `task find report bug`
+
+#### Management
+
+Action | Format | Example
+--------|--------|--------
+**Assign** | `task assign PERSON_INDEX {-pi PROJECT_INDEX -i TASK_INDEX_FROM_PROJECT}` | `task assign 1 -pi 1 -i 2`
+**Unassign** | `task unassign PERSON_INDEX {-i TASK_INDEX_FROM_PERSON}` | `task unassign 2 -i 1`
+**Mark** | `task mark PERSON_INDEX TASK_INDEX_FROM_PERSON` | `task mark 1 1`
+**Unmark** | `task unmark PERSON_INDEX TASK_INDEX_FROM_PERSON` | `task unmark 1 1`
+**List by project** | `task list PROJECT_INDEX` | `task list 1`
+**List by person** | `task view PERSON_INDEX` | `task view 1`
+
+---
+
+### General Commands
+
+Action | Format
+--------|--------
 **Clear** | `clear`
 **Undo** | `undo`
 **Redo** | `redo`
 **Help** | `help`
+**Exit** | `exit`
