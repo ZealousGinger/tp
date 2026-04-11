@@ -448,10 +448,10 @@ _Details coming soon ..._
 
 ## Command summary
 This summary is split into 4 main sections:
-- [Person commands](###person-commands)
-- [Project commands](###project-commands)
-- [Task commands](###task-commands)
-- [General commands](###general-commands)
+- [Person commands](#person-commands)
+- [Project commands](#project-commands)
+- [Task commands](#task-commands)
+- [General commands](#general-commands)
 
 ---
 
