@@ -62,22 +62,14 @@ public class FindCommand extends Command {
         for (PersonTask personTask : person.getTasks()) {
             int projectIndex = personTask.getProjectIndex();
             assert projectIndex >= 0 && projectIndex < projects.size() : "Stale project reference in PersonTask";
-            if (projectIndex < 0 || projectIndex >= projects.size()) {
-                continue;
-            }
 
             Project project = projects.get(projectIndex);
             List<Task> tasks = project.getTasks();
             int taskIndex = personTask.getTaskIndex();
             assert taskIndex >= 0 && taskIndex < tasks.size() : "Stale task reference in PersonTask";
-            if (taskIndex < 0 || taskIndex >= tasks.size()) {
-                continue;
-            }
 
             Task task = tasks.get(taskIndex);
-            String projectTitle = project.title;
-            String description = task.description;
-            fields.add(projectTitle + " " + description + " " + projectTitle + ":" + description);
+            fields.add(task.description);
         }
         return fields;
     }
@@ -87,9 +79,6 @@ public class FindCommand extends Command {
         for (PersonProject personProject : person.getProjects()) {
             int projectIndex = personProject.getProjectIndex();
             assert projectIndex >= 0 && projectIndex < projects.size() : "Stale project reference in PersonProject";
-            if (projectIndex < 0 || projectIndex >= projects.size()) {
-                continue;
-            }
             fields.add(projects.get(projectIndex).title);
         }
         return fields;
