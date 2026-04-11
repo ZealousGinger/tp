@@ -10,9 +10,15 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.taskforge.model.project.Project;
+import seedu.taskforge.model.task.Task;
 import seedu.taskforge.testutil.PersonBuilder;
 
 public class PersonContainsKeywordsPredicateTest {
+
+    private static final List<Project> SAMPLE_PROJECTS = List.of(
+            new Project("Project1", List.of(new Task("Task1"), new Task("Task2"))),
+            new Project("Project2", List.of(new Task("Task3"))));
 
     @Test
     public void equals() {
@@ -160,51 +166,47 @@ public class PersonContainsKeywordsPredicateTest {
     @Test
     public void test_taskContainsKeywords_returnsTrue() {
         // One keyword
-        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate()
-                .setTaskKeywords(Collections.singletonList("taskIndex=0}"));
+        PersonContainsKeywordsPredicate predicate = withResolvedFields(new PersonContainsKeywordsPredicate()
+                .setTaskKeywords(Collections.singletonList("Project1:Task1")));
         assertTrue(predicate.test(new PersonBuilder().withTasks("Task1", "Task2").build()));
 
         // Multiple keywords
-        predicate = new PersonContainsKeywordsPredicate().setTaskKeywords(Arrays.asList(
-                "taskIndex=0}", "taskIndex=1}"));
+        predicate = withResolvedFields(new PersonContainsKeywordsPredicate().setTaskKeywords(Arrays.asList(
+                "Project1:Task1", "Project1:Task2")));
         assertTrue(predicate.test(new PersonBuilder().withTasks("Task1").build()));
 
         // Mixed-case keywords
-        predicate = new PersonContainsKeywordsPredicate().setTaskKeywords(Arrays.asList("tASkInDeX=0}"));
+        predicate = withResolvedFields(new PersonContainsKeywordsPredicate().setTaskKeywords(Arrays.asList(
+                "pROjEcT1:tASk1")));
         assertTrue(predicate.test(new PersonBuilder().withTasks("Task1").build()));
     }
 
     @Test
     public void test_projectContainsKeywords_returnsTrue() {
         // One keyword
-        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate()
-                .setProjectKeywords(Collections.singletonList(
-                        "seedu.taskforge.model.person.PersonProject{projectIndex=0}"));
+        PersonContainsKeywordsPredicate predicate = withResolvedFields(new PersonContainsKeywordsPredicate()
+                .setProjectKeywords(Collections.singletonList("Project1")));
         assertTrue(predicate.test(new PersonBuilder().withProjects("Project1", "Project2").build()));
 
         // Multiple keywords
-        predicate = new PersonContainsKeywordsPredicate()
-                .setProjectKeywords(Arrays.asList(
-                        "seedu.taskforge.model.person.PersonProject{projectIndex=0}",
-                        "seedu.taskforge.model.person.PersonProject{projectIndex=1}"));
+        predicate = withResolvedFields(new PersonContainsKeywordsPredicate()
+                .setProjectKeywords(Arrays.asList("Project1", "Project2")));
         assertTrue(predicate.test(new PersonBuilder().withProjects("Project1").build()));
 
         // Mixed-case keywords
-        predicate = new PersonContainsKeywordsPredicate()
-                .setProjectKeywords(Arrays.asList(
-                        "sEEDu.tASKfORGE.mODEL.pERSON.pERSoNpROjECt{pROjEcTiNdEx=0}"));
+        predicate = withResolvedFields(new PersonContainsKeywordsPredicate()
+                .setProjectKeywords(Arrays.asList("pROjeCT1")));
         assertTrue(predicate.test(new PersonBuilder().withProjects("Project1").build()));
     }
 
     @Test
     public void test_multipleFieldsContainsKeywords_returnsTrue() {
-        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate()
+        PersonContainsKeywordsPredicate predicate = withResolvedFields(new PersonContainsKeywordsPredicate()
                 .setNameKeywords(Collections.singletonList("Alice"))
                 .setPhoneKeywords(Collections.singletonList("91234567"))
                 .setEmailKeywords(Collections.singletonList("alice@example.com"))
-                .setTaskKeywords(Collections.singletonList("taskIndex=0}"))
-                .setProjectKeywords(Collections.singletonList(
-                        "seedu.taskforge.model.person.PersonProject{projectIndex=0}"));
+                .setTaskKeywords(Collections.singletonList("Project1:Task1"))
+                .setProjectKeywords(Collections.singletonList("Project1")));
         assertTrue(predicate.test(new PersonBuilder()
                 .withName("Alice")
                 .withPhone("91234567")
@@ -251,16 +253,16 @@ public class PersonContainsKeywordsPredicateTest {
     @Test
     public void test_taskDoesNotContainKeywords_returnsFalse() {
         // Non-matching keyword
-        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate()
-                .setTaskKeywords(Arrays.asList("Task1"));
+        PersonContainsKeywordsPredicate predicate = withResolvedFields(new PersonContainsKeywordsPredicate()
+                .setTaskKeywords(Arrays.asList("Project1:Task3")));
         assertFalse(predicate.test(new PersonBuilder().withTasks("Task2").build()));
     }
 
     @Test
     public void test_projectDoesNotContainKeywords_returnsFalse() {
         // Non-matching keyword
-        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate()
-                .setProjectKeywords(Arrays.asList("Project1"));
+        PersonContainsKeywordsPredicate predicate = withResolvedFields(new PersonContainsKeywordsPredicate()
+                .setProjectKeywords(Arrays.asList("Project3")));
         assertFalse(predicate.test(new PersonBuilder().withProjects("Project2").build()));
     }
 
@@ -288,5 +290,44 @@ public class PersonContainsKeywordsPredicateTest {
         String expected = PersonContainsKeywordsPredicate.class.getCanonicalName() + "{nameKeywords=" + keywords
                 + ", phoneKeywords=null, emailKeywords=null, taskKeywords=null, projectKeywords=null}";
         assertEquals(expected, predicate.toString());
+    }
+
+    private PersonContainsKeywordsPredicate withResolvedFields(PersonContainsKeywordsPredicate predicate) {
+        return predicate
+                .setTaskFieldMapper(person -> resolveTaskFields(person, SAMPLE_PROJECTS))
+                .setProjectFieldMapper(person -> resolveProjectFields(person, SAMPLE_PROJECTS));
+    }
+
+    private List<String> resolveTaskFields(Person person, List<Project> projects) {
+        List<String> fields = new java.util.ArrayList<>();
+        for (PersonTask personTask : person.getTasks()) {
+            int projectIndex = personTask.getProjectIndex();
+            if (projectIndex < 0 || projectIndex >= projects.size()) {
+                continue;
+            }
+            Project project = projects.get(projectIndex);
+            List<Task> tasks = project.getTasks();
+            int taskIndex = personTask.getTaskIndex();
+            if (taskIndex < 0 || taskIndex >= tasks.size()) {
+                continue;
+            }
+            Task task = tasks.get(taskIndex);
+            String projectTitle = project.title;
+            String description = task.description;
+            fields.add(projectTitle + " " + description + " " + projectTitle + ":" + description);
+        }
+        return fields;
+    }
+
+    private List<String> resolveProjectFields(Person person, List<Project> projects) {
+        List<String> fields = new java.util.ArrayList<>();
+        for (PersonProject personProject : person.getProjects()) {
+            int projectIndex = personProject.getProjectIndex();
+            if (projectIndex < 0 || projectIndex >= projects.size()) {
+                continue;
+            }
+            fields.add(projects.get(projectIndex).title);
+        }
+        return fields;
     }
 }

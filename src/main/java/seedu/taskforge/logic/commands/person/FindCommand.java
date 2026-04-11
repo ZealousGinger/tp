@@ -7,12 +7,20 @@ import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_PROJECT_TITLE;
 import static seedu.taskforge.logic.parser.CliSyntax.PREFIX_TASK;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import seedu.taskforge.commons.util.ToStringBuilder;
 import seedu.taskforge.logic.Messages;
 import seedu.taskforge.logic.commands.Command;
 import seedu.taskforge.logic.commands.CommandResult;
 import seedu.taskforge.model.Model;
+import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonContainsKeywordsPredicate;
+import seedu.taskforge.model.person.PersonProject;
+import seedu.taskforge.model.person.PersonTask;
+import seedu.taskforge.model.project.Project;
+import seedu.taskforge.model.task.Task;
 
 /**
  * Finds and lists all persons in TaskForge whose name contains any of the argument keywords.
@@ -40,10 +48,51 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        // call another function to get composed predicates here then call model update filteredpersonlist on that
+        List<Project> projectList = model.getProjectList();
+        predicate.setTaskFieldMapper(person -> getTaskSearchFields(person, projectList))
+                .setProjectFieldMapper(person -> getProjectSearchFields(person, projectList));
+
         model.updateFilteredPersonList(predicate);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+    }
+
+    private static List<String> getTaskSearchFields(Person person, List<Project> projects) {
+        List<String> fields = new ArrayList<>();
+        for (PersonTask personTask : person.getTasks()) {
+            int projectIndex = personTask.getProjectIndex();
+            assert projectIndex >= 0 && projectIndex < projects.size() : "Stale project reference in PersonTask";
+            if (projectIndex < 0 || projectIndex >= projects.size()) {
+                continue;
+            }
+
+            Project project = projects.get(projectIndex);
+            List<Task> tasks = project.getTasks();
+            int taskIndex = personTask.getTaskIndex();
+            assert taskIndex >= 0 && taskIndex < tasks.size() : "Stale task reference in PersonTask";
+            if (taskIndex < 0 || taskIndex >= tasks.size()) {
+                continue;
+            }
+
+            Task task = tasks.get(taskIndex);
+            String projectTitle = project.title;
+            String description = task.description;
+            fields.add(projectTitle + " " + description + " " + projectTitle + ":" + description);
+        }
+        return fields;
+    }
+
+    private static List<String> getProjectSearchFields(Person person, List<Project> projects) {
+        List<String> fields = new ArrayList<>();
+        for (PersonProject personProject : person.getProjects()) {
+            int projectIndex = personProject.getProjectIndex();
+            assert projectIndex >= 0 && projectIndex < projects.size() : "Stale project reference in PersonProject";
+            if (projectIndex < 0 || projectIndex >= projects.size()) {
+                continue;
+            }
+            fields.add(projects.get(projectIndex).title);
+        }
+        return fields;
     }
 
     @Override

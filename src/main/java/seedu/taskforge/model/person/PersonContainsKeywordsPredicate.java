@@ -2,6 +2,7 @@ package seedu.taskforge.model.person;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import seedu.taskforge.commons.util.StringUtil;
@@ -16,6 +17,8 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     private List<String> emailKeywords;
     private List<String> taskKeywords;
     private List<String> projectKeywords;
+    private Function<Person, List<String>> taskFieldMapper;
+    private Function<Person, List<String>> projectFieldMapper;
 
     public PersonContainsKeywordsPredicate() {
 
@@ -48,6 +51,16 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         return this;
     }
 
+    public PersonContainsKeywordsPredicate setTaskFieldMapper(Function<Person, List<String>> taskFieldMapper) {
+        this.taskFieldMapper = taskFieldMapper;
+        return this;
+    }
+
+    public PersonContainsKeywordsPredicate setProjectFieldMapper(Function<Person, List<String>> projectFieldMapper) {
+        this.projectFieldMapper = projectFieldMapper;
+        return this;
+    }
+
     @Override
     public boolean test(Person person) {
         if (!isAnyFieldChecked()) {
@@ -57,10 +70,22 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         return isKeywordMatch(person, nameKeywords, p -> p.getName().fullName)
                 && isKeywordMatch(person, phoneKeywords, p -> p.getPhone().value)
                 && isKeywordMatch(person, emailKeywords, p -> p.getEmail().value)
-                && isKeywordMatchForCollection(person, taskKeywords, p -> p.getTasks().stream()
-                    .map(PersonTask::toString).toList())
-                && isKeywordMatchForCollection(person, projectKeywords, p -> p.getProjects().stream()
-                        .map(project -> project.toString()).toList());
+                && isKeywordMatchForCollection(person, taskKeywords, this::getTaskFields)
+                && isKeywordMatchForCollection(person, projectKeywords, this::getProjectFields);
+    }
+
+    private List<String> getTaskFields(Person person) {
+        if (taskFieldMapper != null) {
+            return taskFieldMapper.apply(person);
+        }
+        return person.getTasks().stream().map(PersonTask::toString).toList();
+    }
+
+    private List<String> getProjectFields(Person person) {
+        if (projectFieldMapper != null) {
+            return projectFieldMapper.apply(person);
+        }
+        return person.getProjects().stream().map(PersonProject::toString).toList();
     }
 
     private boolean isKeywordMatch(Person person, List<String> keywords,
