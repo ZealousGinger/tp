@@ -508,7 +508,6 @@ Action | Format | Example
 **[Mark](#marking-a-task-as-done--task-mark)** | `task mark PERSON_INDEX TASK_INDEX_FROM_PERSON` | `task mark 1 1`
 **[Unmark](#unmarking-a-task-as-done--task-unmark)** | `task unmark PERSON_INDEX TASK_INDEX_FROM_PERSON` | `task unmark 1 1`
 **[List by project](#listing-all-tasks-in-a-project--task-list)** | `task list PROJECT_INDEX` | `task list 1`
-**[List by person](#viewing-all-tasks-of-a-person--task-view)** | `task view PERSON_INDEX` | `task view 1`
 
 ---
 
