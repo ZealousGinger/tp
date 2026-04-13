@@ -15,13 +15,33 @@ TaskForge is a **desktop app for managing contacts, optimized for use via a Comm
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/AY2526S2-CS2103T-W09-4/tp/releases).
+1. Download the latest `taskforge.jar` file from [here](https://github.com/AY2526S2-CS2103T-W09-4/tp/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your TaskForge.
+1. Create a new folder in your computer that you want to use as the **taskforge folder**.
+This **taskforge folder** will be used by TaskForge to store its data and configuration files.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar taskforge.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
-   ![Ui](images/Ui.png)
+1. Copy `taskforge.jar` file from your **Downloads folder** to the newly created **taskforge folder**.
+
+1. Take note of the **path** to your newly created **taskforge folder**. You will need to use that path to change your directory before running the app in the next step. e.g. if you created the folder in your Desktop.
+    <br><br>For Windows, the path should be:
+    ```
+    C:\User\YourName\Desktop\taskforge
+    ```
+    For Mac and Linux, the path should be:
+    ```
+    /User/YourName/Desktop/taskforge
+    ```
+
+1. Open a command terminal and type:
+    ```
+    cd <path_to_your_taskforge_folder>
+    ```
+    Then type the following command to run TaskForge on your computer:
+    ```
+    java -jar taskforge.jar
+    ```
+    <br>A GUI similar to the below should appear in a few seconds. Note that the app will contain some sample data.<br>
+       ![Ui](images/Ui.png)
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
