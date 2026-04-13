@@ -1345,3 +1345,9 @@ Team Size: 4
 1. **Make window restoration more robust for multi-screen setups**: The current behavior can restore the GUI off-screen when the previous session was on a secondary screen that is no longer connected. To tackle this, our team plan to validate window coordinates against available screen bounds when starting the app and automatically reposition the GUI on the primary screen if needed.
 
 2. **Make Help Window re-open behavior more intuitive after minimize**: The current behavior keeps the original Help Window minimized when `help` is triggered again, and the new Help Window did not appear. To tackle this, we plan to detect the minimized state of the Help Window and then, restore or focus on the existing Help Window.
+
+3. **Improve error message for multiple task assignments**: The current behavior generates a general error message for every duplicate or invalid task assignment when executing the `assign` command. To tackle this, we plan to add the task details, such as the task name, in the error message so users can identify which assignment caused the issue.
+
+4. **Improve error message for index-related error**: The current implementation generates different errors for negative index (invalid index error) and positive index (out-of-bound index error). We plan to make both scenarios use the out-of-bound index error.
+
+5. **Improve person name validation**: The current behaviour only accepts names containing alphabet characters. In the future, we plan to improve name validation to accept valid names containing special characters (for example: ', -).
