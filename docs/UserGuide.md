@@ -244,11 +244,11 @@ Format: `list`
 
 #### Locating persons by multiple fields: `find`
 
-Finds persons whose fields (name, phone, email, tasks, projects) match the given keywords.
+Finds persons whose fields (name, phone, email) match the given keywords.
 > [!IMPORTANT]
 > This command will update to show the filtered list of persons that match the search criteria. To restore the original list of all persons, use the `list` command.
 
-Format: `find [-n NAME_KEYWORDS] [-p PHONE_KEYWORDS] [-e EMAIL_KEYWORDS] [-d TASK_KEYWORDS] [-l PROJECT_KEYWORDS]`
+Format: `find [-n NAME_KEYWORDS] [-p PHONE_KEYWORDS] [-e EMAIL_KEYWORDS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * For a specific field, persons matching at least one keyword will be returned (i.e. `OR` search).
@@ -262,7 +262,6 @@ Examples:
 * `find -n John` returns `john` and `John Doe`
 * `find -n alex david` returns `Alex Yeoh`, `David Li`
 * `find -n Alice -p 91234567` returns any person named `Alice` whose phone number is `91234567`.
-* `find -d "Task 1" -l ProjectA` returns any person who has a task containing "Task 1" and belongs to project `ProjectA`.
 
 [↑ Back to Features](#features)
 
@@ -586,8 +585,7 @@ Action | Format | Example
 **[Delete](#deleting-a-person--delete)** | `delete PERSON_INDEX` | `delete 3`
 **[Edit](#editing-a-person--edit)** | `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL]` | `edit 1 -n James Ho -p 22224444 -e jamesho@example.com`
 **[List](#listing-all-persons--list)** | `list` |
-**[Find](#locating-persons-by-multiple-fields-find)** | `find KEYWORD [MORE_KEYWORDS]` | `find James Jake`
-
+**[Find](#locating-persons-by-multiple-fields-find)** | `find [-n NAME_KEYWORDS] [-p PHONE_KEYWORDS] [-e EMAIL_KEYWORDS]` | `find -n James -p 91234567`
 ---
 
 ### Project Commands
