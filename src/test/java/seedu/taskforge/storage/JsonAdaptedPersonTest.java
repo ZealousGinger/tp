@@ -18,7 +18,7 @@ import seedu.taskforge.model.person.Phone;
 
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";
-    private static final String INVALID_PHONE = "+651234";
+    private static final String INVALID_PHONE = "91!@"; // special characters not allowed
     private static final String INVALID_EMAIL = "example.com";
 
     private static final String VALID_NAME = BENSON.getName().toString();

@@ -11,8 +11,13 @@ public class Phone {
 
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Phone numbers should only contain numbers, and it should be at least 3 digits long";
-    public static final String VALIDATION_REGEX = "\\d{3,}";
+            "Phone numbers can contain digits, spaces, hyphens (between numbers), parentheses, plus signs, "
+            + "and letters (for labels). It should be at least 4 characters long. "
+            + "Only one optional leading plus sign is allowed. Spaces must be single spaces (no consecutive spaces). "
+            + "Dashes must be between numbers, not at the start or end. "
+            + "Examples: +65 93767163, 1234 5678 (HP) 1111-3333 (Office)";
+    public static final String VALIDATION_REGEX =
+            "^(?=.{4,}$)(?!.*\\s{2,})\\+?\\d[\\d()a-zA-Z\\- ]*[\\d)a-zA-Z]$";
     public final String value;
 
     /**

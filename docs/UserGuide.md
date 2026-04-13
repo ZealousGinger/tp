@@ -188,8 +188,12 @@ A person must have valid unique phone number and email.
     * Duplicate names are allowed.
 
 * **Phone number**
-    * Must contain numbers only.
-    * Must be at least 3 digits long.
+    * Must contain at least 4 digits minimally.
+    * Other symbols such as dashes, plus, alphabets, and curve brackets are allowed with some rules.
+    * It can be preceeded by an optional `+` sign.
+    * If dashes are used they must occur between digits.
+    * If alphabets are used they must be surrounded by curve brackets e.g.`1234 (HP)` or `1234 5678 (HP) 1111-3333 (Office)` or and must occur after the digits.
+    * If spaces are used, then they must be single spaces between digits or bracketed alphabets.
     * Must be unique across all persons.
 
 * **Email**

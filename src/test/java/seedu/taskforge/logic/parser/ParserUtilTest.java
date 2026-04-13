@@ -22,7 +22,7 @@ import seedu.taskforge.model.task.Task;
 
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
-    private static final String INVALID_PHONE = "+651234";
+    private static final String INVALID_PHONE = "123"; // less than 4 characters
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_PROJECT = "#alpha";
     private static final String INVALID_TASK = "#refactor code";

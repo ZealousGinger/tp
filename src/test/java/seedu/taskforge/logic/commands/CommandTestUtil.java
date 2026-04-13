@@ -58,7 +58,7 @@ public class CommandTestUtil {
     public static final String PROJECT_DESC_ALPHA = " " + PREFIX_PROJECT_TITLE + VALID_PROJECT_ALPHA;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
-    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
+    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911!@"; // '!@' not allowed in phones
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_TASK_DESC = " " + CliSyntax.PREFIX_TASK
             + "refactor code*"; // '*' not allowed in tasks
