@@ -167,6 +167,27 @@ A person can have any number of tasks and projects (including 0)
 A person must have valid unique phone number and email.
 </div>
 
+**Input constraints:**
+* **Name**
+    * Can contain only alphanumeric characters and spaces.
+    * Cannot be blank.
+    * Duplicate names are allowed.
+
+* **Phone number**
+    * Must contain numbers only.
+    * Must be at least 3 digits long.
+    * Must be unique across all persons.
+
+* **Email**
+    * Must be in the format `local-part@domain`.
+    * The local-part may contain only alphanumeric characters and the special characters `+`, `_`, `.`, `-`.
+    * The local-part must not start or end with a special character.
+    * The domain consists of domain labels separated by periods.
+    * The domain must end with a label that is at least 2 characters long.
+    * Each domain label must start and end with an alphanumeric character.
+    * Each domain label may contain hyphens, but only between alphanumeric characters.
+    * Must be unique across all persons.
+
 Examples:
 * `add -n John Doe -p 98765432 -e johnd@example.com`
 * `add -n Betsy Crowe -d newTask2 -e betsycrowe@example.com -p 1234567 -d newTask1`
@@ -221,6 +242,7 @@ Format: `find [-n NAME_KEYWORDS] [-p PHONE_KEYWORDS] [-e EMAIL_KEYWORDS] [-d TAS
 * When multiple fields are specified, only persons matching ALL specified fields will be returned (i.e. `AND` search).
   e.g. `find -n Alice -p 91234567` will return only persons named Alice AND with the phone number 91234567.
 * Only full words will be matched e.g. `Han` will not match `Hans`.
+* If no one is found by the keywords searched, the message will display "0 persons. listed".
 
 Examples:
 * `find -n John` returns `john` and `John Doe`
@@ -255,9 +277,9 @@ Adds a new project to TaskForge into the project list.
 Format: `project add PROJECT_TITLE`
 
 * Adds a new project with the specified project title.
-* `PROJECT_TITLE` must be alphanumeric (only letters and numbers), between 1 to 64 characters.
+* `PROJECT_TITLE` must contain letters, numbers, and spaces only, and it should be between 1 to 64 characters.
 * Duplicate project title are not allowed.
-* Project titles are automatically normalized to title case. For each word, the first letter is capitalized and the remaining letters are converted to lowercase.
+* Project titles are automatically normalized to title case, where for each word(separated by space) in the project name, the first letter is capitalized and the remaining letters are converted to lowercase.
 
 Examples:
 * `project add web app` adds a new project named `Web App`.
@@ -364,7 +386,6 @@ Task management commands:
 - [mark](#marking-a-task-as-done--task-mark)
 - [unmark](#unmarking-a-task-as-done--task-unmark)
 - [list](#listing-all-tasks-in-a-project--task-list)
-- [view](#viewing-all-tasks-of-a-person--task-view)
 
 #### Adding a task to a project : `task add`
 
@@ -413,7 +434,7 @@ Format: `task edit PERSON_INDEX -i TASK_INDEX_FROM_PERSON -n NEW_TASK_NAME`
 * `NEW_TASK_NAME` must follow the same naming constraints as `TASK_NAME` in `task add`.
 
 Example:
-* `task edit 1 -i 1 -n Prepare sprint report` renames the 2nd task from 1st person to `Prepare sprint report`
+* `task edit 1 -i 2 -n Prepare sprint report` renames the 2nd task from 1st person to `Prepare sprint report`
 
 #### Finding tasks by keyword : `task find`
 
