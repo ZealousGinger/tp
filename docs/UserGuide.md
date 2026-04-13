@@ -48,16 +48,16 @@ This **taskforge folder** will be used by TaskForge to store its data and config
     <br>A GUI similar to the below should appear in a few seconds. Note that the app will contain some sample data.<br>
        ![Ui](images/Ui.png)
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+1. Type the command in the command box and press Enter to execute it. e.g., typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `list` : Lists all contacts.
+   * `list` : Lists all persons.
 
-   * `add -n John Doe -p 98765432 -e johnd@example.com` : Adds a contact named `John Doe` to TaskForge.
+   * `add -n John Doe -p 98765432 -e johnd@example.com` : Adds a person named `John Doe` to TaskForge.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `delete 3` : Deletes the third person shown in the current list.
 
-   * `clear` : Deletes all contacts.
+   * `clear` : Deletes all entries (persons, projects, and tasks) from TaskForge.
 
    * `exit` : Exits the app.
 
