@@ -6,12 +6,12 @@ title: User Guide
 TaskForge is a **desktop app for project management**, optimized for project/team managers and leaders who prefer typing commands.
 It combines a fast Command Line Interface (CLI) with visual lists so you can verify changes at a glance.
 
-**TaskForge brings value to users** who find existing project management apps cumbersome to use due to issues such as:
+**Value proposition**: TaskForge brings value to those who find existing project management apps cumbersome to use due to issues such as:
 - complicated user interface with features that are unnecessary
 - limited features available for free users, requiring users to subscribe to paid plans to access essential features
 - lack of support for efficient keyboard-based interactions
 
-**Who this guide is for**
+**Target users**:
 - Working professionals or students who are project/team managers, and leaders.
 - Users comfortable reading simple command formats like `add -n NAME -p PHONE`.
 - Users comfortable with basic command-line usage (e.g., running `java -jar ...`).
