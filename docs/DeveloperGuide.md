@@ -566,6 +566,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *` | user | delete tasks from a contact            | easily remove tasks that is falsely assigned to the contact or has been done |
 | `* * *` | user | view all contacts                      | see all the project members contacts                                         |
 | `* * *` | user | view all projects                      | easily have an overview of all projects                                      |
+| `* * *` | user | view all tasks assigned to the contact | see all the tasks assigned to a contact                                      |
 | `* * *` | user | find projects by name                  | quickly locate relevant projects from the global project list                |
 | `* * *` | user | find contacts by any parameters        | quickly find someone                                                         |
 | `*`     | user | view team member's availability        | who is free to take on work                                                  |
