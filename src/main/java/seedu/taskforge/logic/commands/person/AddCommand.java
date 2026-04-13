@@ -21,6 +21,7 @@ import seedu.taskforge.model.Model;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.person.PersonProject;
 import seedu.taskforge.model.person.PersonTask;
+import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
 
@@ -109,7 +110,11 @@ public class AddCommand extends Command {
 
         model.addPerson(personWithProjects);
         model.commitTaskForge(COMMAND_WORD);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatPersonSummary(personWithProjects)));
+        String feedback = String.format(MESSAGE_SUCCESS, Messages.formatPersonSummary(personWithProjects));
+        if (!Phone.isStandardPhone(toAdd.getPhone().value)) {
+            feedback += System.lineSeparator() + Phone.MESSAGE_NON_STANDARD_WARNING;
+        }
+        return new CommandResult(feedback);
     }
 
     private static List<Project> globalProjectListOrEmpty(Model model) {
@@ -162,11 +167,9 @@ public class AddCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof AddCommand)) {
+        if (!(other instanceof AddCommand otherAddCommand)) {
             return false;
         }
-
-        AddCommand otherAddCommand = (AddCommand) other;
         return toAdd.equals(otherAddCommand.toAdd);
     }
 

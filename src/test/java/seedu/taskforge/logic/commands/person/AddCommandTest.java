@@ -28,6 +28,7 @@ import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.person.Person;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
+import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -45,6 +46,19 @@ public class AddCommandTest {
         CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
 
         assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.formatPersonSummary(validPerson)),
+                commandResult.getFeedbackToUser());
+        assertEquals(Arrays.asList(validPerson), modelStub.personsAdded);
+    }
+
+    @Test
+    public void execute_nonStandardPhoneAccepted_withWarning() throws Exception {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+        Person validPerson = new PersonBuilder().withPhone("+65 93767163").build();
+
+        CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
+
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.formatPersonSummary(validPerson))
+                + System.lineSeparator() + Phone.MESSAGE_NON_STANDARD_WARNING,
                 commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validPerson), modelStub.personsAdded);
     }

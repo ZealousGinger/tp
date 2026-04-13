@@ -26,6 +26,7 @@ import seedu.taskforge.model.ModelManager;
 import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.UserPrefs;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.testutil.EditPersonDescriptorBuilder;
 import seedu.taskforge.testutil.PersonBuilder;
 
@@ -70,6 +71,24 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
             Messages.formatPersonSummary(editedPerson));
+
+        Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
+        expectedModel.setPerson(lastPerson, editedPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_nonStandardPhoneSpecified_successWithWarning() {
+        Index indexLastPerson = Index.fromOneBased(model.getFilteredPersonList().size());
+        Person lastPerson = model.getFilteredPersonList().get(indexLastPerson.getZeroBased());
+
+        Person editedPerson = new PersonBuilder(lastPerson).withPhone("+65 93767163").build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withPhone("+65 93767163").build();
+        EditCommand editCommand = new EditCommand(indexLastPerson, descriptor);
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+            Messages.formatPersonSummary(editedPerson)) + System.lineSeparator() + Phone.MESSAGE_NON_STANDARD_WARNING;
 
         Model expectedModel = new ModelManager(new TaskForge(model.getTaskForge()), new UserPrefs());
         expectedModel.setPerson(lastPerson, editedPerson);

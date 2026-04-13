@@ -16,6 +16,8 @@ public class Phone {
             + "Only one optional leading plus sign is allowed. Spaces must be single spaces (no consecutive spaces). "
             + "Dashes must be between numbers, not at the start or end. "
             + "Examples: +65 93767163, 1234 5678 (HP) 1111-3333 (Office)";
+    public static final String MESSAGE_NON_STANDARD_WARNING =
+            "Warning: non-standard phone number accepted.";
     public static final String VALIDATION_REGEX =
             "^(?=.{4,}$)(?!.*\\s{2,})\\+?\\d[\\d()a-zA-Z\\- ]*[\\d)a-zA-Z]$";
     public final String value;
@@ -38,6 +40,13 @@ public class Phone {
         return test.matches(VALIDATION_REGEX);
     }
 
+    /**
+     * Returns true if a given string is a standard phone number.
+     */
+    public static boolean isStandardPhone(String test) {
+        return test.matches("\\d{4,}");
+    }
+
     @Override
     public String toString() {
         return value;
@@ -50,11 +59,9 @@ public class Phone {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof Phone)) {
+        if (!(other instanceof Phone otherPhone)) {
             return false;
         }
-
-        Phone otherPhone = (Phone) other;
         return value.equals(otherPhone.value);
     }
 

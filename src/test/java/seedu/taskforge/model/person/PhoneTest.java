@@ -51,6 +51,16 @@ public class PhoneTest {
     }
 
     @Test
+    public void isStandardPhone() {
+        assertTrue(Phone.isStandardPhone("1234"));
+        assertTrue(Phone.isStandardPhone("93121534"));
+
+        assertFalse(Phone.isStandardPhone("+65 93767163"));
+        assertFalse(Phone.isStandardPhone("1234 1234 1234"));
+        assertFalse(Phone.isStandardPhone("1111-3333"));
+    }
+
+    @Test
     public void equals() {
         Phone phone = new Phone("9999");
 
