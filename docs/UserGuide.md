@@ -539,20 +539,6 @@ Format: `task list PROJECT_INDEX`
 Examples:
 * `task list 1`
 
-#### Viewing all tasks of a person : `task view`
-
-Displays all tasks assigned to a person.
-
-Format: `task view PERSON_INDEX`
-
-* Shows all tasks assigned to the person at the specified `PERSON_INDEX`.
-* `PERSON_INDEX` refers to the person index displayed in `list`.
-* `PERSON_INDEX` **must be a positive integer** `1, 2, 3, ...`
-* If the person has no tasks, a message will be shown.
-
-Example:
-* `task view 1`
-
 [↑ Back to Features](#features)
 
 --------------------------------------------------------------------------------------------------------------------
