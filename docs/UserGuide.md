@@ -370,9 +370,11 @@ Examples:
 * `task delete 1 -i 2` deletes the 2nd task from the 1st project
 * `task delete 2 -i 1 -i 3` deletes the 1st and 3rd tasks from the 2nd project
 
-#### Editing a task in a project : `task edit`
+#### Editing a task assigned to a person : `task edit`
 
-Edits the name of an existing task in a project.
+Edits the name of a task assigned to a person.
+> [!IMPORTANT]
+> This will also update the task name in the project list and for all other persons who are assigned that task.
 
 Format: `task edit PERSON_INDEX -i TASK_INDEX_FROM_PERSON -n NEW_TASK_NAME`
 
