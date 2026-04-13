@@ -32,11 +32,16 @@ This **taskforge folder** will be used by TaskForge to store its data and config
     /User/YourName/Desktop/taskforge
     ```
 
-1. Open a command terminal and type:
+1. Open a command terminal <br>
+   **Windows users:** You can open Command Prompt by searching for `cmd` in the Start menu. <br>
+   **Mac users:** You can open Terminal by searching for `Terminal` in Spotlight Search (Cmd + Space). <br>
+   **Linux users:** You can open Terminal by searching for `Terminal` in your applications.
+
+1. Type the following commands in your terminal and press enter to change the directory:
     ```
     cd <path_to_your_taskforge_folder>
     ```
-    Then type the following command to run TaskForge on your computer:
+    Then type the following command and press enter to run TaskForge on your computer:
     ```
     java -jar taskforge.jar
     ```
