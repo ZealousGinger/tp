@@ -130,14 +130,17 @@ There are 5 basic person commands that deal with adding, deleting, editing, list
 
 #### Adding a person: `add`
 
-Adds a person to TaskForge.
+Adds a person to TaskForge. A person must have a valid unique phone number and email.
 
 Format: `add -n NAME -p PHONE_NUMBER -e EMAIL [-d TASK]…​ [-l PROJECT]…​`
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tasks and projects (including 0)
-A person must have valid unique phone number and email.
-</div>
+> [!IMPORTANT]
+> When adding a task to a person, the project of the task must also be added to the person.
+
+> [!CAUTION]
+> When trying to add multiple tasks with the same names from different projects to a person.
+> It is recommended that you add the projects to the person, and then use `task assign` to assign tasks with the same name separately.
+> Otherwise, the add command may assign the task to the unintended project or complain that the task already exists for the person.
 
 Examples:
 * `add -n John Doe -p 98765432 -e johnd@example.com`
