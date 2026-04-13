@@ -920,7 +920,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Person**: A person who have a name, phone number, email and can be assigned to projects and tasks
 * **Task**: A unit of project that needs to be completed by a person
-* **Project**: A collection of tasks adn can be assigned to person
+* **Project**: A collection of tasks and can be assigned to person
 * **GUI**: Graphical user interface of the application
 * **Mainstream OS**: Mainstream OS stands for Mainstream Operating System which include MacOS, Linux and Windows
 * **PR**: Pull request in Github
