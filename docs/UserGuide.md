@@ -161,18 +161,17 @@ Examples:
 
 Edits an existing person in TaskForge.
 
-Format: `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-d TASK]…​ [-l PROJECT]…​`
+Format: `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL]`
 
 * Edits the person at the specified `PERSON_INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tasks/projects, the existing tasks/projects of the person will be removed i.e adding of tasks/projects is not cumulative.
-* You can remove all the person’s tasks/projects by typing `-d`/`-l` without
-    specifying any tasks/projects after it.
+> [!NOTE]
+> Project and task assignments are managed by the `project assign/unassign` and `task assign/unassign` commands.
 
 Examples:
 *  `edit 1 -p 91234567 -e johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 -n Betsy Crower -d` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tasks.
+*  `edit 2 -n Betsy Crower` Edits the name of the 2nd person to be `Betsy Crower`.
 
 #### Listing all persons : `list`
 
@@ -540,7 +539,7 @@ Action | Format, Examples
 **View Project Members** | `project members PROJECT_INDEX`<br> e.g., `project members 1`
 **View Projects** | `project list`
 **Delete Person** | `delete PERSON_INDEX`<br> e.g., `delete 3`
-**Edit Person** | `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-d TASK]…​ [-l PROJECT]…​` <br> e.g., `edit 1 -n James Ho -p 22224444 -e jamesho@example.com`
+**Edit Person** | `edit PERSON_INDEX [-n NAME] [-p PHONE] [-e EMAIL]` <br> e.g., `edit 1 -n James Ho -p 22224444 -e jamesho@example.com`
 **Find Person** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List Person** | `list`
 **Clear** | `clear`
