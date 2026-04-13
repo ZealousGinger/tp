@@ -34,7 +34,6 @@ public class PhoneTest {
         assertFalse(Phone.isValidPhone("++65234")); // multiple plus signs
         assertFalse(Phone.isValidPhone("1234   1234")); // multiple consecutive spaces
         assertFalse(Phone.isValidPhone("(Office) 1234 (Home) 912387123")); // label at start
-        assertTrue(Phone.isValidPhone("1234 5678 HP")); // complex format
 
         // valid phone numbers - digits only
         assertTrue(Phone.isValidPhone("1234")); // exactly 4 numbers
@@ -48,6 +47,7 @@ public class PhoneTest {
         assertTrue(Phone.isValidPhone("1111-3333")); // hyphens between numbers
         assertTrue(Phone.isValidPhone("1234 5678 (HP)")); // spaces and label in parentheses
         assertTrue(Phone.isValidPhone("1234 5678 (HP) 1111-3333 (Office)")); // complex format
+        assertTrue(Phone.isValidPhone("1234 5678 HP")); // label without parentheses at end is accepted
     }
 
     @Test

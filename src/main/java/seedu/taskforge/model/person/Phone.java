@@ -12,7 +12,8 @@ public class Phone {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Phone numbers can contain digits, spaces, hyphens (between numbers), parentheses, plus signs, "
-            + "and letters (for labels). It should be at least 4 characters long. "
+            + "and letters (for labels). It should be at least 4 characters long. Letters must be in "
+            + "parentheses and can only be at the end of the phone number. "
             + "Only one optional leading plus sign is allowed. Spaces must be single spaces (no consecutive spaces). "
             + "Dashes must be between numbers, not at the start or end. "
             + "Examples: +65 93767163, 1234 5678 (HP) 1111-3333 (Office)";

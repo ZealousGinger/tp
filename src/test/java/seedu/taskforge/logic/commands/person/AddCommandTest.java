@@ -26,9 +26,9 @@ import seedu.taskforge.model.ReadOnlyTaskForge;
 import seedu.taskforge.model.ReadOnlyUserPrefs;
 import seedu.taskforge.model.TaskForge;
 import seedu.taskforge.model.person.Person;
+import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.model.project.Project;
 import seedu.taskforge.model.task.Task;
-import seedu.taskforge.model.person.Phone;
 import seedu.taskforge.testutil.PersonBuilder;
 
 public class AddCommandTest {
